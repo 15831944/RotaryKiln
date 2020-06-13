@@ -6,10 +6,8 @@
 #include "CurveDialog.h"
 #include "afxdialogex.h"
 #include "Afxsock.h"
-//mysql必须包含网络相关头文件  
-#include "winsock.h"  
-//mysql头文件自然要包含    
-#include "mysql.h"
+
+#include "SQLConnect.hpp"
 #include "easylogging++.h"
 
 std::vector<int> RegionLeft;
@@ -100,47 +98,27 @@ BOOL CCurveDialog::OnInitDialog()
 
 	//new初始化数据要和数据库连接
 	int index_sum;
-	MYSQL mysql; //数据库连接句柄
-	MYSQL_RES *res;
-	MYSQL_ROW row;
-	mysql_init(&mysql);
-	//设置数据库编码格式
-	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
-	//密码加字符串""
-	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
-	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
-		AfxMessageBox("数据库连接失败");
-		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
-		AfxMessageBox(e);  
-		LOG(ERROR)<< "login:"+e;
-		return FALSE;
-	}
 
 	CString select_sql;
-	select_sql="select * from region_info where region_state=1";
-	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
-	if(ress==0) //检测查询成功
+	SQLResult res;
+	if(accessConnect.executeSQL("select * from region_info where region_state=1", res) ==S_OK) //检测查询成功
 	{
-		res = mysql_store_result(&mysql);
-		int resnum=mysql_num_rows(res);
-		if(resnum==0) //查询结果为空
+		if(res.empty()||res.begin()->second.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有区域数据！");
 			LOG(WARNING)<<"没有区域数据";
 		}
 		else
 		{
+			int resnum = res.begin()->second.size();
 			for(int i=0;i<resnum;i++)
 			{
-				row=mysql_fetch_row(res);
-				
-				RegionName.push_back(row[1]);
-				RegionLeft.push_back(atoi(row[2]));
-				RegionRight.push_back(atoi(row[3]));
+				RegionName.push_back(res["region_name"][i].c_str());
+				RegionLeft.push_back(std::stoi(res["region_left"][i]));
+				RegionRight.push_back(std::stoi(res["region_right"][i]));
 			}		
 		}
 	}
-	mysql_close(&mysql);
 
 	/*CRect m_crect=m_ChartCtrl1.GetPlottingRect();
 	for(int i=0;i<RegionName.size();i++)

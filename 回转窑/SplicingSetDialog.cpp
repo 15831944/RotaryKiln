@@ -5,10 +5,8 @@
 #include "回转窑.h"
 #include "SplicingSetDialog.h"
 #include "afxdialogex.h"
-//mysql必须包含网络相关头文件  
-#include "winsock.h"  
-//mysql头文件自然要包含    
-#include "mysql.h"
+
+#include "SQLConnect.hpp"
 
 
 extern ATL::CImage m_image;
@@ -61,34 +59,16 @@ END_MESSAGE_MAP()
 
 void CSplicingSetDialog::OnBnClickedButtonSave()
 {
-	// TODO: 在此添加控件通知处理程序代码
-	MYSQL mysql; //数据库连接句柄
-	MYSQL_RES *res;
-	MYSQL_ROW row;
-	mysql_init(&mysql);
-	//设置数据库编码格式
-	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
-	//密码加字符串""
-	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
-	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
-		AfxMessageBox("数据库连接失败");
-		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
-		MessageBox(e);  
-		//return;
-	}
-
 	CString sql_command;
 	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
 	//select_sql="select * from sys_para where para_name='signalequipment'";
 	UpdateData(TRUE);
 	
-	int ress;
 	for(int i=0;i<m_listctrl.GetItemCount();i++)
 	{
 		sql_command.Format("update sys_para set para0=\'%s\', para1=\'%s\' where para_name='splicingregion'",m_listctrl.GetItemText(i,1),m_listctrl.GetItemText(i,2));
-		ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
+		accessConnect.executeSQL(sql_command.GetString());
 	}
-	mysql_close(&mysql);
 }
 
 
@@ -136,62 +116,39 @@ BOOL CSplicingSetDialog::OnInitDialog()
 	free(order);
 
 	int index_sum;
-	MYSQL mysql; //数据库连接句柄
-	MYSQL_RES *res;
-	MYSQL_ROW row;
-	mysql_init(&mysql);
-	//设置数据库编码格式
-	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
-	//密码加字符串""
-	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
-	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
-		AfxMessageBox("数据库连接失败");
-		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
-		MessageBox(e);  
-		//return;
-	}
-
-	CString select_sql;
-	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
-	select_sql="select * from sys_para where para_name='signalequipment'";
-	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
-	if(ress==0) //检测查询成功
+	
+	SQLResult res;
+	
+	if(accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res)== S_OK) //检测查询成功
 	{
-		res = mysql_store_result(&mysql);
-		int resnum=mysql_num_rows(res);
-		if(resnum==0) //查询结果为空
+		if(res.empty() || res.begin()->second.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有设置拼接数，请先设置！");
 		}
 		else
 		{
-			row=mysql_fetch_row(res);
-			index_sum=atoi(row[5]);
-	
+			index_sum=stoi(res["para3"].front());	
 		}
 
 	}
+	CString select_sql;
 	select_sql.Format("select * from sys_para where para_name='splicingregion' and para_index<%d",index_sum);
-	ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
-	if(ress==0) //检测查询成功
+	if (accessConnect.executeSQL(select_sql.GetString(), res) == S_OK)//检测查询成功
 	{
-		res = mysql_store_result(&mysql);
-		int resnum=mysql_num_rows(res);
-		CString indexstr;
-		for(int index=0;index<resnum;index++)
+		if (!res.empty() && !res.begin()->second.empty())
 		{
-			row=mysql_fetch_row(res);
-			indexstr.Format("%d",index);
-			m_listctrl.InsertItem(index,"");//增加一行
-			m_listctrl.SetItemText(index,1,row[2]);//在第一行上设置第二列的内容
-			m_listctrl.SetItemText(index,2,row[3]);
-			m_listctrl.SetItemText(index,3,indexstr);	
-		}	
+			int resnum = res.begin()->second.size();
+			CString indexstr;
+			for (int index = 0; index < resnum; index++)
+			{
+				indexstr.Format("%d", index);
+				m_listctrl.InsertItem(index, "");//增加一行
+				m_listctrl.SetItemText(index, 1, res["para0"][index].c_str());//在第一行上设置第二列的内容
+				m_listctrl.SetItemText(index, 2, res["para1"][index].c_str());
+				m_listctrl.SetItemText(index, 3, indexstr);
+			}
+		}
 	}
-	mysql_close(&mysql);
-
-
-
 	//int index_sum=10;
 	//int index;
 	//UpdateData(FALSE);

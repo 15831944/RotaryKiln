@@ -8,4 +8,4 @@
 
 AccessConnection accessConnect;
 
-
+int MachineKey = 0;

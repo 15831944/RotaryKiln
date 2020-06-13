@@ -121,7 +121,7 @@ bool WriteTemp(AreaVessel& areavessel)
 	{
 		sql_command.Format("insert into region_temperature (line_index,region_index,region_temp) values(%d,%d,%0.2f)",LineIndex,atoi(areavessel.areaVector[i].Id),areavessel.areaVector[i].MaxTemp);
 		
-		if (!accessConnect.executeSQL(sql_command.GetString()))
+		if (accessConnect.executeSQL(sql_command.GetString()) != S_OK)
 		{
 			AfxMessageBox("写入温度数据失败!");
 			return false;
@@ -194,7 +194,9 @@ int ConnectSign(CSocket& mysocket)
 	}
 	if (!mysocket.Connect(IP, atoi(Port))) //连接服务器
 	{
+#ifndef _DEBUG
 		AfxMessageBox("连接服务器失败!");
+#endif // !_DEBUG
 		LOG(ERROR)<< "连接服务器失败";
 		return 0;
 	}
@@ -285,7 +287,9 @@ DWORD WINAPI   ThreadVideoProc(LPVOID lpParameter)
 	s32 previewHandle=Camera_login(loginInfo,cameraBasicInfo,userHandle);
 	if(previewHandle<0)
 	{
+#ifndef _DEBUG
 		AfxMessageBox("连接热像仪失败！");
+#endif // DEBUG
 		LOG(ERROR)<< "连接热像仪失败";
 		HermalShowFlag=false;
 		return previewHandle;
@@ -559,13 +563,14 @@ BOOL C回转窑App::InitInstance()
 
 	CWinAppEx::InitInstance();
 
+	
 
-	// 初始化 OLE 库
-	if (!AfxOleInit())
-	{
-		AfxMessageBox(IDP_OLE_INIT_FAILED);
-		return FALSE;
-	}
+	//// 初始化 OLE 库
+	//if (!AfxOleInit())
+	//{
+	//	AfxMessageBox(IDP_OLE_INIT_FAILED);
+	//	return FALSE;
+	//}
 
 	AfxEnableControlContainer();
 
@@ -583,7 +588,23 @@ BOOL C回转窑App::InitInstance()
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
 	LoadStdProfileSettings(4);  // 加载标准 INI 文件选项(包括 MRU)
-
+	
+	MachineKey = VerifyMachineDialog();
+	if (MachineKey == -1)
+	{
+		MessageBox(nullptr, "注册码格式错误", "验证失败", MB_OK);
+		return FALSE;
+	}
+	else if (MachineKey == -2)
+	{
+		MessageBox(nullptr, "注册库禁止在虚拟机上运行", "验证失败", MB_OK);
+		return FALSE;
+	}
+	else if (MachineKey == 0)
+	{
+		MessageBox(nullptr, "注册码错误", "验证失败", MB_OK);
+		return FALSE;
+	}
 
 	InitContextMenuManager();
 
@@ -754,21 +775,8 @@ BOOL C回转窑App::InitInstance()
 	//创建第一个线程ThreadProc,相对优先级THREAD_PRIORITY_IDLE面对任何等级调整为1    
 	AfxBeginThread((AFX_THREADPROC)ThreadVideoProc, (LPVOID)&alldialog_p,THREAD_PRIORITY_IDLE);
 
-	//注册
-	std::string strKey="2551b7a69845407894c8aa642189d8a1";//明码：中国江苏南京工程学院
-
-	auto key = VerifyMachineDialog();
-	if (key == -1)
-	{
-		MessageBox(nullptr, "注册码格式错误", "验证失败", MB_OK);
-		return FALSE;
-	}
-	else if (key == 0)
-	{
-		MessageBox(nullptr, "注册码错误", "验证失败", MB_OK);
-		return FALSE;
-	}
-
+	////注册
+	//std::string strKey="2551b7a69845407894c8aa642189d8a1";//明码：中国江苏南京工程学院
 
 	//typedef void (*lpCall)(char*);
 	////创建dll句柄  

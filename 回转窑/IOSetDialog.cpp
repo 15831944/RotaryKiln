@@ -6,10 +6,8 @@
 #include "IOSetDialog.h"
 #include "afxdialogex.h"
 #include "Afxsock.h"
-//mysql必须包含网络相关头文件  
-#include "winsock.h"  
-//mysql头文件自然要包含    
-#include "mysql.h"
+
+#include "SQLConnect.hpp"
 #include "easylogging++.h"
 
 // CIOSetDialog 对话框
@@ -54,51 +52,27 @@ BOOL CIOSetDialog::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// TODO:  在此添加额外的初始化
-	MYSQL mysql; //数据库连接句柄
-	MYSQL_RES *res;
-	MYSQL_ROW row;
-	mysql_init(&mysql);
-	//设置数据库编码格式
-	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
-	//密码加字符串""
-	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
-	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
-		AfxMessageBox("数据库连接失败");
-		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
-		MessageBox(e);  
-		//return;
-	}
-
-	CString select_sql;
-	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
-	select_sql="select * from sys_para where para_name='signalequipment'";
-	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
-	if(ress==0) //检测查询成功
+	SQLResult res;
+	
+	if(accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res) == S_OK) //检测查询成功
 	{
-		res = mysql_store_result(&mysql);
-		int resnum=mysql_num_rows(res);
-		if(resnum==0) //查询结果为空
+		if (res.empty() || res.begin()->second.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有区域数据！");
 		}
 		else
 		{
-			//while((row=mysql_fetch_row(res)))
+			int resnum = res.begin()->second.size();
 			for(int i=0;i<resnum;i++)
 			{
-				row=mysql_fetch_row(res);
-				m_ip= ntohl(inet_addr(row[2]));
-				m_port=row[3];
-				m_passwd=row[4];
-				m_splicingnumber=row[5];
+				m_ip= ntohl(inet_addr(res["para0"][i].c_str()));
+				m_port= res["para1"][i].c_str();
+				m_passwd= res["para2"][i].c_str();
+				m_splicingnumber= res["para3"][i].c_str();
 			}		
 		}
 
 	}
-	mysql_close(&mysql);
-	
-
 
     m_spin.SetRange32(0,20);
 	m_spin.SetBase(atoi(m_splicingnumber));
@@ -138,22 +112,6 @@ void CIOSetDialog::OnBnClickedButton1()
 
 void CIOSetDialog::OnBnClickedButton2()
 {
-	// TODO: 在此添加控件通知处理程序代码
-	MYSQL mysql; //数据库连接句柄
-	MYSQL_RES *res;
-	MYSQL_ROW row;
-	mysql_init(&mysql);
-	//设置数据库编码格式
-	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
-	//密码加字符串""
-	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
-	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
-		AfxMessageBox("数据库连接失败");
-		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
-		MessageBox(e);  
-		//return;
-	}
-
 	CString sql_command;
 	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
 	//select_sql="select * from sys_para where para_name='signalequipment'";
@@ -163,6 +121,5 @@ void CIOSetDialog::OnBnClickedButton2()
 	pIP  =   (unsigned   char*)&m_ip; 
 	strIP.Format("%u.%u.%u.%u",*(pIP+3),   *(pIP+2),  *(pIP+1),   *pIP);
 	sql_command.Format("update sys_para set para0=\'%s\', para1=\'%s\' ,  para2=\'%s\' , para3=\'%s\' where para_name='signalequipment'",strIP,m_port,m_passwd,m_splicingnumber);
-	int ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
-	mysql_close(&mysql);
+	accessConnect.executeSQL(sql_command.GetString());
 }

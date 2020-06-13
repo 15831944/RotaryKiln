@@ -11,6 +11,7 @@
 
 #include "SQLConnect.hpp"
 #include "easylogging++.h"
+#include "CCopyDialog.h"
 
 
 
@@ -31,7 +32,7 @@ CLogon::CLogon(CWnd* pParent /*=NULL*/)
 	GetLocalTime(&st);
 	strDateTime.Format("%4d-%2d-%2d %2d:%2d:%2d",st.wYear,st.wMonth,st.wDay,st.wHour,st.wMinute,st.wSecond);
 	MD5 md5;
-	strDateTime=strDateTime+MD5STR;
+	strDateTime = strDateTime + MD5STR;// +std::to_string(MachineKey).c_str();
 	md5.update(strDateTime.GetBuffer());
 	administrator_passwd=md5.toString().c_str();
 }
@@ -80,7 +81,7 @@ void CLogon::OnBnClickedButtonLogon()
 	m_comboxUser.GetWindowText(user_number);
 
 	MD5 md5;
-	user_passwd = m_password + MD5STR;
+	user_passwd = user_number + m_password + MD5STR + std::to_string(MachineKey).c_str();
 	md5.update(user_passwd.GetBuffer());
 	user_passwd = md5.toString().c_str();//toString()函数获得加密字符串，c_str();函数重新转换成CString
 
@@ -158,16 +159,17 @@ BOOL CLogon::PreTranslateMessage(MSG* pMsg)
 				GetLocalTime(&st);
 				strDateTime.Format("%4d-%2d-%2d %2d:%2d:%2d",st.wYear,st.wMonth,st.wDay,st.wHour,st.wMinute,st.wSecond);
 				MD5 md5;
-				strDateTime=strDateTime+MD5STR;
+				strDateTime = strDateTime + MD5STR;// +std::to_string(MachineKey).c_str();
 				md5.update(strDateTime.GetBuffer());
 				strDateTime=md5.toString().c_str();//toString()函数获得加密字符串，c_str();函数重新转换成CString
-				administrator_passwd=strDateTime+MD5STR;
+				administrator_passwd = strDateTime + MD5STR;// +std::to_string(MachineKey).c_str();
 				md5.reset();
 				md5.update(administrator_passwd.GetBuffer());
 				administrator_passwd=md5.toString().c_str();
 				m_comboxUser.SetWindowText("administrator");
 				UpdateData(false);
-				AfxMessageBox(strDateTime);
+				ShowInfoDialog(strDateTime);
+				//AfxMessageBox(strDateTime);
 				return true;
 			}
 			break;

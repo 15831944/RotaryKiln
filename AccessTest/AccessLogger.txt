@@ -1,0 +1,8 @@
+2020-6-13 16:56:00  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 16:56:00  [INFO]  SQL:select * from user_info where  user_number= "chenj"  Success.
+2020-6-13 16:56:00  [INFO]  Record:1 Field:12
+2020-6-13 16:56:00  [ERROR]  SQL:update user_info set user_name="ddd" where  user_number= "chenj"  Failure.ErrorCode: 0x800a0e78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+2020-6-13 17:00:01  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 17:00:01  [INFO]  SQL:select * from user_info where  user_number= "chenj"  Success.
+2020-6-13 17:00:01  [INFO]  Record:1 Field:12
+2020-6-13 17:00:01  [ERROR]  SQL:update user_info set user_name="ddd" where  user_number= "chenj"  Failure.ErrorCode: 0x800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。

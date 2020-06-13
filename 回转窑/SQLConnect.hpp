@@ -1,23 +1,73 @@
 #pragma once 
-#include "stdafx.h"
+#ifndef _SQL_CONNECT_HPP_
+#define _SQL_CONNECT_HPP_
+
+//#include "stdafx.h"
 #include <map>
 #include <vector>
 #include <string>
-
+#include "../../Logger/Logger/Logger.hpp"
 
 /// <summary>
 /// SQL结果集
 /// </summary>
-using SQLResult = std::map<std::string, std::vector<std::string>>;
+struct AccessRecord 
+    : public std::vector<std::string>
+{
+    AccessRecord(std::map<std::string, size_t>& map)
+        : fieldMap(map)
+        , std::vector<std::string>(map.size())
+    {}
+    AccessRecord(AccessRecord&&) = default;
+    AccessRecord(const AccessRecord&) = default;
+    std::map<std::string, size_t>& fieldMap;
+    std::string& operator[](std::string name)
+    {
+        return std::vector<std::string>::operator[](fieldMap[name]);
+    }
+};
 
+struct AccessResult
+    : public std::vector<AccessRecord>
+{
+    std::map<std::string, size_t> fieldMap;
+
+    void appendField(std::string name, bool ifRebuild = false)
+    {
+        fieldMap[name] = fieldMap.size();
+        if (ifRebuild)
+            rebuild();
+    }
+
+    void rebuild()
+    {
+        for (auto& record : *this)
+            record.resize(fieldMap.size());
+    }
+
+    AccessRecord& appendRecord()
+    {
+        push_back(AccessRecord(fieldMap));
+        return back();
+    }
+
+    void clear()
+    {
+        fieldMap.clear();
+        std::vector<AccessRecord>::clear();
+    }
+};
 /// <summary>
 /// Access连接
 /// </summary>
 struct AccessConnection
 {
+protected:
+    using LogLevel = thatboy::logger::LogLevel;
     _ConnectionPtr m_pConnection;
     _RecordsetPtr m_pRecordset;
 
+public:
     AccessConnection()
     {
         m_pConnection.CreateInstance(__uuidof(Connection));
@@ -25,12 +75,12 @@ struct AccessConnection
     }
     ~AccessConnection()
     {
-        if (m_pConnection->State)
+        if (m_pConnection->GetState() != adStateClosed)
         {
             m_pConnection->Close();
         }
-        m_pConnection = nullptr;
-        m_pRecordset = nullptr;
+        m_pConnection.Release();
+        m_pRecordset.Release();
     }
 
     /// <summary>
@@ -42,19 +92,24 @@ struct AccessConnection
     /// <returns>成功>0</returns>
     HRESULT openDatabase(LPCSTR dbFile, LPCSTR userId = "", LPCSTR passwd = "")
     {
+        lastError = "";
         try
         {
             m_pConnection->Provider = "Microsoft.ACE.OLEDB.12.0";
             std::string connectString = "Data Source=";
             connectString += dbFile;
+
+            logger.log(LogLevel::Info, " Open ", dbFile, ", userId=", std::string(userId).empty() ? "null" : userId);
             return m_pConnection->Open(connectString.c_str(), "", "", adModeUnknown);
         }
         catch (_com_error& e)
         {
-            lastError = e.ErrorMessage();
-            return -1;// e.Error();
+            lastError = std::string("[ErrorMessage:") + e.ErrorMessage()
+                + std::string(", Source:") + _com_util::ConvertBSTRToString(e.Source())
+                + std::string(", Description:") + _com_util::ConvertBSTRToString(e.Description()) + "]";
+            logger.log(LogLevel::Error, " Open ", dbFile, ", userId=", userId, ", ", lastError);
+            return e.Error();
         }
-        return -2;
     }
 
     /// <summary>
@@ -62,69 +117,84 @@ struct AccessConnection
     /// </summary>
     /// <param name="sqlCmd"></param>
     /// <returns>成功>0</returns>
-    HRESULT executeSQL(LPCSTR sqlCmd, SQLResult& res)
+    HRESULT executeSQL(LPCSTR sqlCmd, AccessResult& res)
     {
+        lastError = "";
         try
         {
-            auto ret{ m_pRecordset->Open(sqlCmd, m_pConnection.GetInterfacePtr(), adOpenDynamic, adLockOptimistic, adCmdText) };
-
-
             res.clear();
-            if (m_pRecordset->BOF)
-                return -1;
-
-            /// 字段
-            auto fields{ m_pRecordset->GetFields() };
-            for (int i = fields->GetCount() - 1; i >= 0; i--)
+            auto ret{ m_pRecordset->Open(sqlCmd, m_pConnection.GetInterfacePtr(), adOpenStatic, adLockReadOnly, adCmdText) };
+            if (!m_pRecordset->BOF)
             {
-                auto fieldName{ _com_util::ConvertBSTRToString(fields->GetItem(static_cast<short>(i))->GetName()) };
+                // 添加字段
+                auto fields{ m_pRecordset->GetFields() };
+                for (size_t i = 0; i < fields->GetCount(); i++)
+                    res.appendField(_com_util::ConvertBSTRToString(fields->GetItem(static_cast<short>(i))->GetName()));
 
-                res[fieldName] = std::vector<std::string>();
-            }
-
-            // 结果
-            m_pRecordset->MoveFirst();
-            while (!m_pRecordset->adoEOF)
-            {
-                for(auto&field:res)
+                // 添加记录
+                m_pRecordset->MoveFirst();
+                while (!m_pRecordset->adoEOF)
                 {
-                    auto& fieldName = field.first;
-                    auto& fieldCont = field.second;
-                    auto var{ m_pRecordset->GetCollect(fieldName.c_str()) };
-                    if (var.vt != VT_NULL)
-                        fieldCont.push_back(_com_util::ConvertBSTRToString(static_cast<_bstr_t>(var)));
+                    auto& record = res.appendRecord();
+                    for (auto& field : res.fieldMap)
+                    {
+                        auto& fieldName = field.first;
+                        auto var{ m_pRecordset->GetCollect(fieldName.c_str()) };
+                        record[fieldName] = var.vt != VT_NULL ? _com_util::ConvertBSTRToString(static_cast<_bstr_t>(var)) : "";
+                    }
+                    m_pRecordset->MoveNext();
                 }
-
-                m_pRecordset->MoveNext();
             }
+            logger.log(LogLevel::Info, " SQL:", sqlCmd, " Success.");
+            logger.log(LogLevel::Info, " Record:", res.size(), " Field:", res.fieldMap.size());
             m_pRecordset->Close();
             return ret;
         }
         catch (_com_error& e)
         {
-            lastError = e.ErrorMessage();
-            return -1;
+            return handleError(sqlCmd, e);
         }
+        logger.log(LogLevel::Error, " SQL:", sqlCmd, " Unknow error.");
         return -2;
     }
 
 
-    HRESULT executeSQL(const std::string& sqlCmd, SQLResult& res)
+    HRESULT executeSQL(const std::string& sqlCmd, AccessResult& res)
     {
         return executeSQL(sqlCmd.c_str(), res);
     }
 
     HRESULT executeSQL(const std::string& sqlCmd)
     {
+        lastError = "";
         try
         {
-            return { m_pRecordset->Open(sqlCmd.c_str(), m_pConnection.GetInterfacePtr(), adOpenDynamic, adLockOptimistic, adCmdText) };
+            //m_pRecordset->Valid();
+            auto ret = m_pRecordset->Open(sqlCmd.c_str(), m_pConnection.GetInterfacePtr(), adOpenStatic, adLockReadOnly, adCmdText);
+            logger.log(LogLevel::Error, " SQL:", sqlCmd, " Success.");
+            m_pRecordset->Close(); 
+            return ret;
         }
         catch (_com_error& e)
         {
-            lastError = e.ErrorMessage();
-            return -1;
+            return handleError(sqlCmd, e);
         }
+    }
+
+    HRESULT handleError(const std::string& sqlCmd, _com_error& e)
+    {
+        lastError = std::string("[")
+            + "ErrorMessage:" + e.ErrorMessage()
+            + ", ErrorCode:" + std::to_string(e.Error())
+            + ", Source:" + _com_util::ConvertBSTRToString(e.Source())
+            + ", Description:" + _com_util::ConvertBSTRToString(e.Description()) + "]";
+        if(e.Error()== 0x800A0E78)
+        logger.log(LogLevel::Error, " SQL:", sqlCmd, " Failure."
+            , "ErrorCode: ", std::hex, std::setiosflags(std::ios::uppercase), e.Error()
+            , ", Message:", e.ErrorMessage()
+            , ", Source:", _com_util::ConvertBSTRToString(e.Source())
+            , ", Description:", _com_util::ConvertBSTRToString(e.Description()));
+        return e.Error();
     }
 
     const std::string& getLastError()const
@@ -132,20 +202,34 @@ struct AccessConnection
         return lastError;
     }
 private:
+    thatboy::logger::FileLogger logger{ "AccessLogger.txt" };
     std::string lastError;
+    static bool ifInitialize;
+
     /// <summary>
     /// 自动初始化
     /// </summary>
-    static struct _AutoInitialize
+    struct _AutoInitialize
     {
         _AutoInitialize()
         {
-            CoInitialize(nullptr);
+#ifndef __AFX_H__
+            ifInitialize = SUCCEEDED(CoInitialize(nullptr));
+#else
+            ifInitialize = AfxOleInit();
+#endif
         }
         ~_AutoInitialize()
         {
+#ifndef __AFX_H__
             CoUninitialize();
-        }
+            ifInitialize = false;
+#endif
+        }     
+    };
 
-    } _;
+    static _AutoInitialize _;
 };
+bool AccessConnection::ifInitialize{ false };
+AccessConnection::_AutoInitialize AccessConnection::_;
+#endif

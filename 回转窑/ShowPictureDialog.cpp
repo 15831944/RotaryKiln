@@ -5,9 +5,8 @@
 #include "回转窑.h"
 #include "ShowPictureDialog.h"
 #include "afxdialogex.h"
-#include "winsock.h"  
-//mysql头文件自然要包含    
-#include "mysql.h"
+
+#include "SQLConnect.hpp"
 #include "easylogging++.h"
 
 #define LEL 5
@@ -316,84 +315,54 @@ BOOL ShowPictureDialog::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	int index_sum;
-	MYSQL mysql; //数据库连接句柄
-	MYSQL_RES *res;
-	MYSQL_ROW row;
-	mysql_init(&mysql);
-	//设置数据库编码格式
-	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
-	//密码加字符串""
-	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
-	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
-		AfxMessageBox("数据库连接失败");
-		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
-		AfxMessageBox(e);  
-		LOG(ERROR)<< "login:"+e;
-		return FALSE;
-	}
 
-	CString select_sql;
-	select_sql="select * from region_info where region_state=1 order by region_index";
-	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
-	if(ress==0) //检测查询成功
+	SQLResult res;
+	if (accessConnect.executeSQL("select * from region_info where region_state=1 order by region_index", res) == S_OK) //检测查询成功
 	{
-		res = mysql_store_result(&mysql);
-		int resnum=mysql_num_rows(res);
-		if(resnum==0) //查询结果为空
+		if(res.empty() || res.begin()->second.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有区域数据！");
 			LOG(WARNING)<<"没有区域数据";
 		}
 		else
 		{
+			int resnum = res.begin()->second.size();
 			for(int i=0;i<resnum;i++)
 			{
-				row=mysql_fetch_row(res);
-
-				RegionName.push_back(row[1]);
-				RegionLeft.push_back(atoi(row[2]));
-				RegionRight.push_back(atoi(row[3]));
-				emiss.push_back(atof(row[6]));
+				RegionName.push_back(res["region_name"][i].c_str());
+				RegionLeft.push_back(stoi(res["region_left"][i]));
+				RegionRight.push_back(stoi(res["region_right"][i]));
+				emiss.push_back(stof(res["region_emissivity"][i]));
 			}		
 		}
 	}
 
-	select_sql="select * from sys_para where para_name='signalequipment'";
-	ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
-	if(ress==0) //检测查询成功
+	if(accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res) == S_OK) //检测查询成功
 	{
-		res = mysql_store_result(&mysql);
-		int resnum=mysql_num_rows(res);
-		if(resnum==0) //查询结果为空
+		if(res.empty() || res.begin()->second.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有设置拼接数，请先设置！");
 			LOG(WARNING)<<"没有设置拼接数";
 		}
 		else
 		{
-			row=mysql_fetch_row(res);
-			index_sum=atoi(row[5]);
-
+			index_sum = stoi(res["para3"].front());
 		}
-
 	}
-	select_sql.Format("select * from sys_para where para_name='splicingregion' and para_index<%d order by para_index",index_sum);
-	ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
-	if(ress==0) //检测查询成功
+	CString select_sql;
+	select_sql.Format("select * from sys_para where para_name='splicingregion' and para_index<%d order by para_index", index_sum);
+	if(accessConnect.executeSQL(select_sql.GetString(), res) == S_OK) //检测查询成功
 	{
-		res = mysql_store_result(&mysql);
-		int resnum=mysql_num_rows(res);
-		CString indexstr;
-		for(int index=0;index<resnum;index++)
+		if (!res.empty() && !res.begin()->second.empty())
 		{
-			row=mysql_fetch_row(res);
-			//piecesplicing.push_back(PIECESPLICING(index,atoi(row[2]),atoi(row[3])));
-			SplicingRows.push_back(atoi(row[3])-atoi(row[2]));
+			int resnum = res.begin()->second.size();
+			CString indexstr;
+			for (int index = 0; index < resnum; index++)
+			{
+				SplicingRows.push_back(stoi(res["para1"][index]) - stoi(res["para0"][index]));
+			}
 		}
 	}
-	mysql_close(&mysql);
-	// TODO:  在此添加额外的初始化
-
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }

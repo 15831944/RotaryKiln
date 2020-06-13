@@ -8,10 +8,7 @@
 
 #define MD5STR "南京工程学院计算工程学院王杰"
 
-//mysql必须包含网络相关头文件  
-#include "winsock.h"  
-//mysql头文件自然要包含    
-#include "mysql.h"
+#include "SQLConnect.hpp"
 
 
 extern ATL::CImage m_image;
@@ -111,51 +108,29 @@ BOOL CRegionSetDialog::OnInitDialog()
 	m_listctrl.InsertColumn(nIndex++, "发射率", LVCFMT_CENTER, rect.Width()/7);
 	m_left=m_right=m_top=m_bottom="0";
 
-	MYSQL mysql; //数据库连接句柄
-	MYSQL_RES *res;
-	MYSQL_ROW row;
-	mysql_init(&mysql);
-	//设置数据库编码格式
-	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
-	//密码加字符串""
-	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
-	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
-		AfxMessageBox("数据库连接失败");
-		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
-		MessageBox(e);  
-		//return;
-	}
-	
-	CString select_sql;
-	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
-	select_sql="select * from region_info where region_state=1";
-	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
-	if(ress==0) //检测查询成功
+	SQLResult res;
+	if (accessConnect.executeSQL("select * from region_info where region_state=1", res) == S_OK) //检测查询成功
 	{
-		res = mysql_store_result(&mysql);
-		int resnum=mysql_num_rows(res);
-		if(resnum==0) //查询结果为空
+		if(res.empty() || res.begin()->second.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有区域数据！");
 		}
 		else
 		{
-			//while((row=mysql_fetch_row(res)))
+			int resnum = res.begin()->second.size();
 			for(int i=0;i<resnum;i++)
 			{
-				row=mysql_fetch_row(res);
-				m_listctrl.InsertItem(i,row[0]);//增加一行
-				m_listctrl.SetItemText(i,1,row[1]);//在第一行上设置第二列的内容
-				m_listctrl.SetItemText(i,2,row[2]);
-				m_listctrl.SetItemText(i,3,row[3]);
-				m_listctrl.SetItemText(i,4,row[4]);
-				m_listctrl.SetItemText(i,5,row[5]);
-				m_listctrl.SetItemText(i,6,row[6]);
+				m_listctrl.InsertItem(i, res["region_index"][i].c_str());//增加一行
+				m_listctrl.SetItemText(i,1, res["region_name"][i].c_str());//在第一行上设置第二列的内容
+				m_listctrl.SetItemText(i,2, res["region_left"][i].c_str());
+				m_listctrl.SetItemText(i,3, res["region_right"][i].c_str());
+				m_listctrl.SetItemText(i,4, res["region_top"][i].c_str());
+				m_listctrl.SetItemText(i,5, res["region_bottom"][i].c_str());
+				m_listctrl.SetItemText(i,6, res["region_emissivity"][i].c_str());
 			}		
 		}
 
 	}
-	mysql_close(&mysql);
 	UpdateData(FALSE);
 	SetTimer(1,100,NULL);
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -354,38 +329,19 @@ void CRegionSetDialog::OnOK()
 
 
 void CRegionSetDialog::OnBnClickedButton4()
-{
-	// TODO: 在此添加控件通知处理程序代码
-	MYSQL mysql; //数据库连接句柄
-	MYSQL_RES *res;
-	MYSQL_ROW row;
-	mysql_init(&mysql);
-	//设置数据库编码格式
-	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
-	//密码加字符串""
-	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
-	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
-		AfxMessageBox("数据库连接失败");
-		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
-		MessageBox(e);  
-		return;
-	}
-	
+{	
 	CString sql_command;
 	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
 	sql_command="update region_info set region_state=0 where region_state=1";
-	int ress;
-	ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
+	accessConnect.executeSQL(sql_command.GetString());
 	for(int i=0;i<m_listctrl.GetItemCount();i++)
 	{
 		sql_command.Format("insert into region_info (region_index,region_name,region_left,region_right,region_top,region_bottom,region_emissivity)  values(%s,\'%s\',%s,%s,%s,%s,%s)",m_listctrl.GetItemText(i, 0),m_listctrl.GetItemText(i, 1),m_listctrl.GetItemText(i, 2),m_listctrl.GetItemText(i, 3),m_listctrl.GetItemText(i,4),m_listctrl.GetItemText(i,5),m_listctrl.GetItemText(i,6));
-		ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
-		if(ress)
+		if (accessConnect.executeSQL(sql_command.GetString()) != S_OK)
 		{
 			AfxMessageBox("保存失败！");
 			return;
 		}
     }
-	mysql_close(&mysql);
 	AfxMessageBox("保存成功！");
 }

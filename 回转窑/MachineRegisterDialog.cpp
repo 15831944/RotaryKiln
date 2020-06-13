@@ -6,6 +6,7 @@
 #include "MachineRegisterDialog.h"
 #include "afxdialogex.h"
 #include "MachineRegistrationClient.h"
+#include "Config.h"
 
 
 // MachineRegisterDialog 对话框
@@ -53,12 +54,28 @@ void MachineRegisterDialog::OnBnClickedOk()
 	CString regCode;
 	GetDlgItemText(IDC_REGCODE, regCode);
 	regKeyValue = VerifyMachine(envirent, regCode.GetString());
+	Config cfg;
+	cfg.Add("MachineId", QueryMachineId());
+	cfg.Add("RegistrationCode", regCode.GetString());
+	cfg.SaveFile("application.cfg");
 	CDialogEx::OnOK();
 }
 
 int VerifyMachineDialog()
 {
-	MachineRegisterDialog dlg;
-	dlg.DoModal();
-	return dlg.regKeyValue;
+	try 
+	{
+		const char envirent[] = "huizhuanyao";
+		Config cfg("application.cfg");
+		int code = VerifyMachine(envirent, cfg.Read<std::string>("RegistrationCode").c_str());
+		if (code == 0 || code == -1 || code == -2)
+			throw std::invalid_argument("Error RegistrationCode");
+		return code;
+	}
+	catch (...)
+	{
+		MachineRegisterDialog dlg;
+		dlg.DoModal();
+		return dlg.regKeyValue;
+	}
 }
