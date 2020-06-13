@@ -170,10 +170,10 @@ END_MESSAGE_MAP()
 int CDockableDlgCurve::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
-		return -1; 
+		return -1;
 
-	// TODO:  Add your specialized creation code here 
-	if (!m_curvedlg.Create(IDD_VIEW_CURVE,this))
+	// EXCEPTION Create会抛异常
+	if (!m_curvedlg.Create(IDD_VIEW_CURVE, this))
 	{
 		TRACE0("未能创建窗口/n");
 		return -1;

@@ -52,24 +52,23 @@ BOOL CIOSetDialog::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	SQLResult res;
+	AccessResult res;
 	
-	if(accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res) == S_OK) //检测查询成功
+	if(SUCCEEDED(accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res))) //检测查询成功
 	{
-		if (res.empty() || res.begin()->second.empty()) //查询结果为空
+		if (res.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有区域数据！");
 		}
 		else
 		{
-			int resnum = res.begin()->second.size();
-			for(int i=0;i<resnum;i++)
+			for (auto& record : res)
 			{
-				m_ip= ntohl(inet_addr(res["para0"][i].c_str()));
-				m_port= res["para1"][i].c_str();
-				m_passwd= res["para2"][i].c_str();
-				m_splicingnumber= res["para3"][i].c_str();
-			}		
+				m_ip = ntohl(inet_addr(record["para0"].c_str()));
+				m_port = record["para1"].c_str();
+				m_passwd = record["para2"].c_str();
+				m_splicingnumber = record["para3"].c_str();
+			}
 		}
 
 	}

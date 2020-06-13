@@ -108,26 +108,25 @@ BOOL CRegionSetDialog::OnInitDialog()
 	m_listctrl.InsertColumn(nIndex++, "发射率", LVCFMT_CENTER, rect.Width()/7);
 	m_left=m_right=m_top=m_bottom="0";
 
-	SQLResult res;
-	if (accessConnect.executeSQL("select * from region_info where region_state=1", res) == S_OK) //检测查询成功
+	AccessResult res;
+	if (SUCCEEDED(accessConnect.executeSQL("select * from region_info where region_state=1", res))) //检测查询成功
 	{
-		if(res.empty() || res.begin()->second.empty()) //查询结果为空
+		if(res.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有区域数据！");
 		}
 		else
 		{
-			int resnum = res.begin()->second.size();
-			for(int i=0;i<resnum;i++)
+			for (size_t i = 0; i < res.size(); i++)
 			{
-				m_listctrl.InsertItem(i, res["region_index"][i].c_str());//增加一行
-				m_listctrl.SetItemText(i,1, res["region_name"][i].c_str());//在第一行上设置第二列的内容
-				m_listctrl.SetItemText(i,2, res["region_left"][i].c_str());
-				m_listctrl.SetItemText(i,3, res["region_right"][i].c_str());
-				m_listctrl.SetItemText(i,4, res["region_top"][i].c_str());
-				m_listctrl.SetItemText(i,5, res["region_bottom"][i].c_str());
-				m_listctrl.SetItemText(i,6, res["region_emissivity"][i].c_str());
-			}		
+				m_listctrl.InsertItem(i, res[i]["region_index"].c_str());//增加一行
+				m_listctrl.SetItemText(i, 1, res[i]["region_name"].c_str());//在第一行上设置第二列的内容
+				m_listctrl.SetItemText(i, 2, res[i]["region_left"].c_str());
+				m_listctrl.SetItemText(i, 3, res[i]["region_right"].c_str());
+				m_listctrl.SetItemText(i, 4, res[i]["region_top"].c_str());
+				m_listctrl.SetItemText(i, 5, res[i]["region_bottom"].c_str());
+				m_listctrl.SetItemText(i, 6, res[i]["region_emissivity"].c_str());
+			}	
 		}
 
 	}
@@ -337,7 +336,7 @@ void CRegionSetDialog::OnBnClickedButton4()
 	for(int i=0;i<m_listctrl.GetItemCount();i++)
 	{
 		sql_command.Format("insert into region_info (region_index,region_name,region_left,region_right,region_top,region_bottom,region_emissivity)  values(%s,\'%s\',%s,%s,%s,%s,%s)",m_listctrl.GetItemText(i, 0),m_listctrl.GetItemText(i, 1),m_listctrl.GetItemText(i, 2),m_listctrl.GetItemText(i, 3),m_listctrl.GetItemText(i,4),m_listctrl.GetItemText(i,5),m_listctrl.GetItemText(i,6));
-		if (accessConnect.executeSQL(sql_command.GetString()) != S_OK)
+		if (FAILED(accessConnect.executeSQL(sql_command.GetString()) ))
 		{
 			AfxMessageBox("保存失败！");
 			return;

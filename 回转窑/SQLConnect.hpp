@@ -188,13 +188,12 @@ public:
             + ", ErrorCode:" + std::to_string(e.Error())
             + ", Source:" + _com_util::ConvertBSTRToString(e.Source())
             + ", Description:" + _com_util::ConvertBSTRToString(e.Description()) + "]";
-        if(e.Error()== 0x800A0E78)
-        logger.log(LogLevel::Error, " SQL:", sqlCmd, " Failure."
+        logger.log(e.Error() == 0x800A0E78 ? LogLevel::Warning : LogLevel::Error, " SQL:", sqlCmd, " Failure."
             , "ErrorCode: ", std::hex, std::setiosflags(std::ios::uppercase), e.Error()
             , ", Message:", e.ErrorMessage()
             , ", Source:", _com_util::ConvertBSTRToString(e.Source())
             , ", Description:", _com_util::ConvertBSTRToString(e.Description()));
-        return e.Error();
+        return e.Error() == 0x800A0E78 ? 0 : e.Error();
     }
 
     const std::string& getLastError()const
@@ -216,7 +215,7 @@ private:
 #ifndef __AFX_H__
             ifInitialize = SUCCEEDED(CoInitialize(nullptr));
 #else
-            ifInitialize = AfxOleInit();
+            //ifInitialize = AfxOleInit();
 #endif
         }
         ~_AutoInitialize()

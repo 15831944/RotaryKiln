@@ -56,7 +56,7 @@ void AddThermalDialog::OnBnClickedButton1()
 	strIP.Format("%u.%u.%u.%u", *(pIP + 3), *(pIP + 2), *(pIP + 1), *pIP);
 	sql_command.Format("update sys_para set para0=\'%s\',para1=\'%s\', para2=\'%s\' ,  para3=\'%s\' , para4=\'%s\' where para_name='thermalequipment'", m_thermalname, strIP, m_port, m_name, m_psd);
 
-	if (accessConnect.executeSQL(sql_command.GetString()) == S_OK)
+	if (SUCCEEDED(accessConnect.executeSQL(sql_command.GetString())))
 		AfxMessageBox("添加成功！");
 	else
 		AfxMessageBox("添加失败！");

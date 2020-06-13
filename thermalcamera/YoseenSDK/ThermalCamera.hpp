@@ -246,10 +246,7 @@ static void __stdcall _previewCallback(s32 errorCode, DataFrame* frame, void* cu
 		double max,min,itof=tempHead->Slope+tempHead->Offset;
 		//minMaxIdx(image/itof,&min,&max);
 		
-		uchar * p;
 		float* pf,* pfe;
-		int j3;
-		int temp;
 		for(int i=0;i<tempHead->Height;i++)
 		{
 			pf = matdata->tempMat.ptr<float>(i);

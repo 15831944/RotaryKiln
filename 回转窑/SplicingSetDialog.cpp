@@ -117,36 +117,32 @@ BOOL CSplicingSetDialog::OnInitDialog()
 
 	int index_sum;
 	
-	SQLResult res;
+	AccessResult res;
 	
-	if(accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res)== S_OK) //检测查询成功
+	if(SUCCEEDED( accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res))) //检测查询成功
 	{
-		if(res.empty() || res.begin()->second.empty()) //查询结果为空
+		if(res.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有设置拼接数，请先设置！");
 		}
 		else
 		{
-			index_sum=stoi(res["para3"].front());	
+			index_sum=stoi(res[0]["para3"]);	
 		}
 
 	}
 	CString select_sql;
 	select_sql.Format("select * from sys_para where para_name='splicingregion' and para_index<%d",index_sum);
-	if (accessConnect.executeSQL(select_sql.GetString(), res) == S_OK)//检测查询成功
+	if (SUCCEEDED( accessConnect.executeSQL(select_sql.GetString(), res)))//检测查询成功
 	{
-		if (!res.empty() && !res.begin()->second.empty())
+		for (size_t index = 0; index < res.size(); index++)
 		{
-			int resnum = res.begin()->second.size();
 			CString indexstr;
-			for (int index = 0; index < resnum; index++)
-			{
-				indexstr.Format("%d", index);
-				m_listctrl.InsertItem(index, "");//增加一行
-				m_listctrl.SetItemText(index, 1, res["para0"][index].c_str());//在第一行上设置第二列的内容
-				m_listctrl.SetItemText(index, 2, res["para1"][index].c_str());
-				m_listctrl.SetItemText(index, 3, indexstr);
-			}
+			indexstr.Format("%d", index);
+			m_listctrl.InsertItem(index, "");//增加一行
+			m_listctrl.SetItemText(index, 1, res[index]["para0"].c_str());//在第一行上设置第二列的内容
+			m_listctrl.SetItemText(index, 2, res[index]["para1"].c_str());
+			m_listctrl.SetItemText(index, 3, indexstr);
 		}
 	}
 	//int index_sum=10;

@@ -122,7 +122,7 @@ void UserManageDialog::OnUserDrop()
 	
 	CString sql_command;	
 	sql_command.Format("delete  from user_info where  user_number=\'%s\'",strusername);
-	if(accessConnect.executeSQL(sql_command.GetString()) != S_OK)
+	if(FAILED(accessConnect.executeSQL(sql_command.GetString())))
 	{
 		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
 		return;
@@ -149,20 +149,20 @@ void UserManageDialog::OnUserDisable()
 
 	CString sql_command;
 	sql_command.Format("update user_info set user_state=0 where  user_number=\'%s\'", strusername);
-	if (accessConnect.executeSQL(sql_command.GetString()) != S_OK)
+	if (FAILED(accessConnect.executeSQL(sql_command.GetString())))
 	{
 		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
 		return;
 	}
-	SQLResult res;
+	AccessResult res;
 	sql_command.Format("select * from user_info where user_number= \'%s\'", strusername);
-	if (accessConnect.executeSQL(sql_command.GetString(), res) != S_OK)
+	if (FAILED(accessConnect.executeSQL(sql_command.GetString(), res)))
 	{
 		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
 		return;
 	}
 	CString strveri = "";
-	if (res.empty() || res.begin()->second.empty()) //查询结果为空
+	if (res.empty()) //查询结果为空
 	{
 		AfxMessageBox("用户不存在");
 		return;
@@ -189,21 +189,20 @@ void UserManageDialog::OnUserEnable()
 
 	CString sql_command;
 	sql_command.Format("update user_info set user_state=1 where  user_number=\'%s\'", strusername);
-	if (accessConnect.executeSQL(sql_command.GetString()) != S_OK)
+	if (FAILED(accessConnect.executeSQL(sql_command.GetString())))
 	{
 		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
 		return;
 	}
 
-	SQLResult res;
+	AccessResult res;
 	sql_command.Format("select * from user_info where user_number= \'%s\'", strusername);
-	if (accessConnect.executeSQL(sql_command.GetString(), res) != S_OK)
+	if (FAILED(accessConnect.executeSQL(sql_command.GetString(), res)))
 	{
 		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
 		return;
 	}
-	CString strveri = "";
-	if (res.empty() || res.begin()->second.empty()) //查询结果为空
+	if (res.empty()) //查询结果为空
 	{
 		AfxMessageBox("用户不存在");
 		return;
@@ -246,28 +245,24 @@ void UserManageDialog::OnUserModify()
 void UserManageDialog::initData(void)
 {
 	CString select_sql;
-	SQLResult res;
+	AccessResult res;
 	select_sql="select * from user_info";
-	if(accessConnect.executeSQL(select_sql.GetString(), res) == S_OK) //检测查询成功
+	if(SUCCEEDED(accessConnect.executeSQL(select_sql.GetString(), res))) //检测查询成功
 	{
-		if(res.empty() || res.begin()->second.empty()) //查询结果为空
+		if(res.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有用户数据！");
 		}
 		else
 		{
-			int resnum = res.begin()->second.size();
-			CString strindex;
 			m_listctrl.DeleteAllItems();
-			for (int i = 0; i < resnum; i++)
+			for (size_t i = 0; i < res.size(); i++)
 			{
-				strindex.Format("%d", i);
-				m_listctrl.InsertItem(i, strindex);//增加一行
-				m_listctrl.SetItemText(i, 1, res["user_number"][i].c_str());//在第一行上设置第二列的内容
-				m_listctrl.SetItemText(i, 2, res["user_type"][i].c_str());
-				m_listctrl.SetItemText(i, 3, res["user_name"][i].c_str());
-				CString str = res["user_state"][i].c_str();
-				if (str == "1")
+				m_listctrl.InsertItem(i, std::to_string(i).c_str());//增加一行
+				m_listctrl.SetItemText(i, 1, res[i]["user_number"].c_str());//在第一行上设置第二列的内容
+				m_listctrl.SetItemText(i, 2, res[i]["user_type"].c_str());
+				m_listctrl.SetItemText(i, 3, res[i]["user_name"].c_str());
+				if (res[i]["user_state"] == "1")
 					m_listctrl.SetItemText(i, 4, "正常");
 				else
 					m_listctrl.SetItemText(i, 4, "禁用");

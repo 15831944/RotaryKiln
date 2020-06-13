@@ -60,26 +60,25 @@ BOOL HDataDialog::OnInitDialog()
 	int nIndex = 0;
 	m_listctrl.InsertColumn(nIndex++, "索引", LVCFMT_CENTER, 80);   
 	m_listctrl.InsertColumn(nIndex++, "时间", LVCFMT_CENTER, 150); 
-	int index_sum;
 
-	SQLResult res;
-	if (accessConnect.executeSQL("select * from region_info where region_state=1 order by region_index", res) == S_OK) //检测查询成功
+	AccessResult res;
+	if (SUCCEEDED(accessConnect.executeSQL("select * from region_info where region_state=1 order by region_index", res))) //检测查询成功
 	{
-		if (res.empty() || res.begin()->second.empty()) //查询结果为空
+		if (res.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有区域数据！");
 		}
 		else
 		{
-			int resnum = res.begin()->second.size();
 			list_title="索引\t时间";
-			for (int i = 0; i < resnum; i++)
+			for (size_t i = 0; i < res.size(); i++)
 			{
-				m_listctrl.InsertColumn(nIndex++, res["region_name"][i].c_str(), LVCFMT_CENTER, 100);
-				region_name.push_back(res["region_name"][i].c_str());
-				list_title = list_title + "\t" + res["region_name"][i].c_str();
+				m_listctrl.InsertColumn(nIndex++, res[i]["region_name"].c_str(), LVCFMT_CENTER, 100);
+				region_name.push_back(res[i]["region_name"].c_str());
+				list_title += "\t";
+				list_title += res[i]["region_name"].c_str();
 			}
-			list_title+="\n";
+			list_title += "\n";
 		}
 	}
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -91,7 +90,7 @@ void HDataDialog::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	int index_sum,line_index=-1,list_line_index=-1;
+	int line_index=-1,list_line_index=-1;
 
 	 m_listctrl.SetRedraw(FALSE);
 	 //m_listctrl.SetExtendedStyle(m_listctrl.GetExtendedStyle()|LVS_EX_DOUBLEBUFFER);
@@ -100,34 +99,31 @@ void HDataDialog::OnBnClickedButton1()
 	select_sql.Format("select * from region_temperature where line_time>=\'%s\' and line_time<=\'%s\' order by line_index",m_startime.Format("%Y-%m-%d"),m_endtime.Format("%Y-%m-%d"));
 	//select_sql.Format("select * from region_temperature where line_time>=\'%s\' and line_time<=\'%s\'",m_startime.Format("%Y-%m-%d"),m_endtime.Format("%Y-%m-%d"));
 
-	SQLResult res;
-	if (accessConnect.executeSQL(select_sql.GetString(), res) == S_OK) //检测查询成功
+	AccessResult res;
+	if (SUCCEEDED(accessConnect.executeSQL(select_sql.GetString(), res))) //检测查询成功
 	{
-		if (res.empty() || res.begin()->second.empty()) //查询结果为空
+		if (res.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有历史数据！");
 		}
 		else
 		{
-			int resnum = res.begin()->second.size();
 			m_listctrl.DeleteAllItems();
-			CString strindex;
-			for(int i=0;i<resnum;i++)
+			for (auto& record : res)
 			{
-				if(line_index!=stoi(res["line_index"][i]))
+				if (line_index != stoi(record["line_index"]))
 				{
-					line_index = stoi(res["line_index"][i]);
-					strindex.Format("%d",++list_line_index);
-				    m_listctrl.InsertItem(list_line_index,strindex);//增加一行
-					m_listctrl.SetItemText(list_line_index,1, res["line_time"][i].c_str());//在第一行上设置第二列的内容
-					m_listctrl.SetItemText(list_line_index, stoi(res["region_index"][i]) + 2, res["region_temp"][i].c_str());//在第一行上设置第二列的内容
+					line_index = stoi(record["line_index"]);
+					m_listctrl.InsertItem(list_line_index, std::to_string(++list_line_index).c_str());//增加一行
+					m_listctrl.SetItemText(list_line_index, 1, record["line_time"].c_str());//在第一行上设置第二列的内容
+					m_listctrl.SetItemText(list_line_index, stoi(record["region_index"]) + 2, record["region_temp"].c_str());//在第一行上设置第二列的内容
 				}
 				else
 				{
-					m_listctrl.SetItemText(list_line_index, stoi(res["region_index"][i]) + 2, res["region_temp"][i].c_str());//在第一行上设置第二列的内容
+					m_listctrl.SetItemText(list_line_index, stoi(record["region_index"]) + 2, record["region_temp"].c_str());//在第一行上设置第二列的内容
 				}
-			
-			}		
+
+			}
 		}
 	}
     m_listctrl.SetRedraw(TRUE) ;

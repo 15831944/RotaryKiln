@@ -316,52 +316,44 @@ BOOL ShowPictureDialog::OnInitDialog()
 	CDialogEx::OnInitDialog();
 	int index_sum;
 
-	SQLResult res;
-	if (accessConnect.executeSQL("select * from region_info where region_state=1 order by region_index", res) == S_OK) //检测查询成功
+	AccessResult res;
+	if (SUCCEEDED(accessConnect.executeSQL("select * from region_info where region_state=1 order by region_index", res))) //检测查询成功
 	{
-		if(res.empty() || res.begin()->second.empty()) //查询结果为空
+		if (res.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有区域数据！");
-			LOG(WARNING)<<"没有区域数据";
+			LOG(WARNING) << "没有区域数据";
 		}
 		else
 		{
-			int resnum = res.begin()->second.size();
-			for(int i=0;i<resnum;i++)
+			for (auto& record : res)
 			{
-				RegionName.push_back(res["region_name"][i].c_str());
-				RegionLeft.push_back(stoi(res["region_left"][i]));
-				RegionRight.push_back(stoi(res["region_right"][i]));
-				emiss.push_back(stof(res["region_emissivity"][i]));
-			}		
+				RegionName.push_back(record["region_name"].c_str());
+				RegionLeft.push_back(stoi(record["region_left"]));
+				RegionRight.push_back(stoi(record["region_right"]));
+				emiss.push_back(stof(record["region_emissivity"]));
+			}
 		}
 	}
 
-	if(accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res) == S_OK) //检测查询成功
+	if( SUCCEEDED( accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res) )) //检测查询成功
 	{
-		if(res.empty() || res.begin()->second.empty()) //查询结果为空
+		if(res.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有设置拼接数，请先设置！");
 			LOG(WARNING)<<"没有设置拼接数";
 		}
 		else
 		{
-			index_sum = stoi(res["para3"].front());
+			index_sum = stoi(res[0]["para3"]);
 		}
 	}
 	CString select_sql;
 	select_sql.Format("select * from sys_para where para_name='splicingregion' and para_index<%d order by para_index", index_sum);
-	if(accessConnect.executeSQL(select_sql.GetString(), res) == S_OK) //检测查询成功
+	if (SUCCEEDED(accessConnect.executeSQL(select_sql.GetString(), res))) //检测查询成功
 	{
-		if (!res.empty() && !res.begin()->second.empty())
-		{
-			int resnum = res.begin()->second.size();
-			CString indexstr;
-			for (int index = 0; index < resnum; index++)
-			{
-				SplicingRows.push_back(stoi(res["para1"][index]) - stoi(res["para0"][index]));
-			}
-		}
+		for (auto& record : res)
+			SplicingRows.push_back(stoi(record["para1"]) - stoi(record["para0"]));
 	}
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE

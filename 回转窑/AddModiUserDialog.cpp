@@ -93,17 +93,17 @@ BOOL AddModiUserDialog::OnInitDialog()
 		CString select_sql_by_user;
 		//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
 		select_sql_by_user.Format("select * from user_info where user_number= \'%s\'",usernumber);
-		SQLResult res;
-		if(accessConnect.executeSQL(select_sql_by_user.GetString(), res) ==S_OK) //检测查询成功
+		AccessResult res;
+		if (SUCCEEDED(accessConnect.executeSQL(select_sql_by_user.GetString(), res)))//检测查询成功
 		{
-			if(res.empty()|| res.begin()->second.empty()) //查询结果为空
+			if(res.empty()) //查询结果为空
 				AfxMessageBox("用户不存在");
 			else
 			{
 				m_usernumber = usernumber;
-				m_usertypevalue = res["user_type"].front().c_str();
-				m_username = res["user_name"].front().c_str();
-				CString strqx = res["user_permission"].front().c_str();
+				m_usertypevalue = res[0]["user_type"].c_str();
+				m_username = res[0]["user_name"].c_str();
+				CString strqx = res[0]["user_permission"].c_str();
 				for (int i = 0; i < QXNUM; i++)
 				{
 					if (strqx.Find(65 + i) > -1)
@@ -116,19 +116,19 @@ BOOL AddModiUserDialog::OnInitDialog()
 
 		}
 	}
-	SQLResult res;
+	AccessResult res;
 	CString select_sql_by_user;
 	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
 	select_sql_by_user.Format("select * from user_info where user_number= \'%s\'",userNumber);
-	if(accessConnect.executeSQL(select_sql_by_user.GetString(), res) ==S_OK) //检测查询成功
+	if (SUCCEEDED(accessConnect.executeSQL(select_sql_by_user.GetString(), res))) //检测查询成功
 	{
-		if(res.empty() || res.begin()->second.empty()) //查询结果为空
+		if(res.empty()) //查询结果为空
 		{
 			AfxMessageBox("用户不存在");
 		}
 		else
 		{
-			CString strqx= res["user_permission"].front().c_str();
+			CString strqx= res[0]["user_permission"].c_str();
 			for(int i=0;i<QXNUM;i++)
 			{
 				if(strqx.Find (65+i)==-1)
@@ -164,7 +164,6 @@ void AddModiUserDialog::OnBnClickedButton1()
 	user_passwd=md5.toString().c_str();
 
 	CString sql_command;
-	int ress;
 	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
 	if(usernumber=="")
 	{
@@ -177,7 +176,7 @@ void AddModiUserDialog::OnBnClickedButton1()
 		}
 		sql_command.Format("insert into user_info (user_permission,user_passwd,user_type,user_name,user_number,add_user_number) values(\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')",strqx,user_passwd,m_usertypevalue,m_username,m_usernumber,userNumber);
 		
-		if (accessConnect.executeSQL(sql_command.GetString()) != S_OK)
+		if (FAILED(accessConnect.executeSQL(sql_command.GetString())))
 		{
 			AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
 			LOG(ERROR) << "添加用户失败 " << accessConnect.getLastError();
@@ -190,7 +189,7 @@ void AddModiUserDialog::OnBnClickedButton1()
 			sql_command.Format("update user_info set user_permission=\'%s\',user_type=\'%s\',user_name=\'%s\' where  user_number=\'%s\'",strqx,m_usertypevalue,m_username,m_usernumber);
 		else
 			sql_command.Format("update user_info set user_permission=\'%s\',user_passwd=\'%s\',user_type=\'%s\',user_name=\'%s\' where  user_number=\'%s\'",strqx,user_passwd,m_usertypevalue,m_username,m_usernumber);
-		if(accessConnect.executeSQL(sql_command.GetString()) != S_OK)
+		if(FAILED(accessConnect.executeSQL(sql_command.GetString())))
 		{
 			AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
 			LOG(ERROR) << "修改用户失败" << accessConnect.getLastError();

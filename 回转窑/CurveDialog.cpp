@@ -97,26 +97,23 @@ BOOL CCurveDialog::OnInitDialog()
 
 
 	//new初始化数据要和数据库连接
-	int index_sum;
-
 	CString select_sql;
-	SQLResult res;
-	if(accessConnect.executeSQL("select * from region_info where region_state=1", res) ==S_OK) //检测查询成功
+	AccessResult res;
+	if (SUCCEEDED(accessConnect.executeSQL("select * from region_info where region_state=1", res)))//检测查询成功
 	{
-		if(res.empty()||res.begin()->second.empty()) //查询结果为空
+		if(res.empty()) //查询结果为空
 		{
 			AfxMessageBox("现在还没有区域数据！");
 			LOG(WARNING)<<"没有区域数据";
 		}
 		else
 		{
-			int resnum = res.begin()->second.size();
-			for(int i=0;i<resnum;i++)
+			for (auto& record : res)
 			{
-				RegionName.push_back(res["region_name"][i].c_str());
-				RegionLeft.push_back(std::stoi(res["region_left"][i]));
-				RegionRight.push_back(std::stoi(res["region_right"][i]));
-			}		
+				RegionName.push_back(record["region_name"].c_str());
+				RegionLeft.push_back(std::stoi(record["region_left"]));
+				RegionRight.push_back(std::stoi(record["region_right"]));
+			}
 		}
 	}
 

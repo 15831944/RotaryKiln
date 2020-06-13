@@ -1,0 +1,308 @@
+2020-6-13 18:04:46  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:04:51  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:04:51  [INFO]  Record:5 Field:17
+2020-6-13 18:05:20  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:05:21  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:05:21  [INFO]  Record:5 Field:17
+2020-6-13 18:05:32  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:05:32  [INFO]  Record:5 Field:17
+2020-6-13 18:05:51  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 18:05:51  [INFO]  Record:1 Field:8
+2020-6-13 18:05:51  [INFO]  SQL:select * from sys_para where para_name='splicingregion' and para_index<5 order by para_index Success.
+2020-6-13 18:05:51  [INFO]  Record:5 Field:8
+2020-6-13 18:05:51  [INFO]  SQL:select * from sys_para where para_name='thermalequipment' Success.
+2020-6-13 18:05:51  [INFO]  Record:1 Field:8
+2020-6-13 18:05:51  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 18:05:51  [INFO]  Record:1 Field:8
+2020-6-13 18:05:58  [INFO]  SQL:select * from user_info Success.
+2020-6-13 18:05:58  [INFO]  Record:2 Field:12
+2020-6-13 18:06:00  [INFO]  SQL:select * from user_info where user_number= 'chenj' Success.
+2020-6-13 18:06:00  [INFO]  Record:1 Field:12
+2020-6-13 18:06:01  [INFO]  SQL:select * from user_info where user_number= 'administrator' Success.
+2020-6-13 18:06:01  [INFO]  Record:0 Field:0
+2020-6-13 18:06:07  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='e02b7e0d432223e62563cc0e24b4de7a',user_type='管理员',user_name='李四' where  user_number='chenj' Success.
+2020-6-13 18:06:07  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='e02b7e0d432223e62563cc0e24b4de7a',user_type='管理员',user_name='李四' where  user_number='chenj' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:06:09  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='e02b7e0d432223e62563cc0e24b4de7a',user_type='管理员',user_name='李四' where  user_number='chenj' Success.
+7E4-6-D 12:06:09  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='e02b7e0d432223e62563cc0e24b4de7a',user_type='管理员',user_name='李四' where  user_number='chenj' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:06:0A  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:06:0A  [INFO]  Record:2 Field:C
+7E4-6-D 12:06:0C  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+7E4-6-D 12:06:0C  [INFO]  Record:1 Field:C
+7E4-6-D 12:06:10  [INFO]  SQL:select * from user_info where user_number= 'administrator' Success.
+7E4-6-D 12:06:10  [INFO]  Record:0 Field:0
+7E4-6-D 12:07:2C  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b1ff56f14abd7534bfccfe0eeed21092',user_type='管理员',user_name='管理员' where  user_number='admin' Success.
+7E4-6-D 12:07:2C  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b1ff56f14abd7534bfccfe0eeed21092',user_type='管理员',user_name='管理员' where  user_number='admin' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:07:2E  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:07:2E  [INFO]  Record:2 Field:C
+2020-6-13 18:07:53  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:07:54  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:07:54  [INFO]  Record:5 Field:17
+2020-6-13 18:08:02  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-13 18:08:02  [INFO]  Record:1 Field:12
+2020-6-13 18:08:03  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:08:03  [INFO]  Record:5 Field:17
+2020-6-13 18:08:03  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 18:08:03  [INFO]  Record:1 Field:8
+2020-6-13 18:08:03  [INFO]  SQL:select * from sys_para where para_name='splicingregion' and para_index<5 order by para_index Success.
+2020-6-13 18:08:03  [INFO]  Record:5 Field:8
+2020-6-13 18:08:03  [INFO]  SQL:select * from sys_para where para_name='thermalequipment' Success.
+2020-6-13 18:08:03  [INFO]  Record:1 Field:8
+2020-6-13 18:08:03  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 18:08:03  [INFO]  Record:1 Field:8
+2020-6-13 18:08:09  [INFO]  SQL:select * from user_info Success.
+2020-6-13 18:08:09  [INFO]  Record:2 Field:12
+2020-6-13 18:08:11  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-13 18:08:11  [INFO]  Record:1 Field:12
+2020-6-13 18:08:12  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-13 18:08:12  [INFO]  Record:1 Field:12
+2020-6-13 18:08:16  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b1ff56f14abd7534bfccfe0eeed21092',user_type='管理员',user_name='管理员' where  user_number='admin' Success.
+2020-6-13 18:08:16  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b1ff56f14abd7534bfccfe0eeed21092',user_type='管理员',user_name='管理员' where  user_number='admin' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:08:11  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:08:11  [INFO]  Record:2 Field:C
+7E4-6-D 12:08:14  [INFO]  SQL:select * from user_info where user_number= 'chenj' Success.
+7E4-6-D 12:08:14  [INFO]  Record:1 Field:C
+7E4-6-D 12:08:14  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+7E4-6-D 12:08:14  [INFO]  Record:1 Field:C
+7E4-6-D 12:08:18  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='李四' where  user_number='chenj' Success.
+7E4-6-D 12:08:18  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='李四' where  user_number='chenj' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:08:1C  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:08:1C  [INFO]  Record:2 Field:C
+7E4-6-D 12:08:23  [INFO]  SQL:select * from user_info where user_number= 'chenj' Success.
+7E4-6-D 12:08:23  [INFO]  Record:1 Field:C
+7E4-6-D 12:08:2B  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:08:2B  [INFO]  Record:2 Field:C
+7E4-6-D 12:08:32  [ERROR]  SQL:update user_info set user_state=0 where  user_number='chenj' Success.
+7E4-6-D 12:08:32  [WARNING]  SQL:update user_info set user_state=0 where  user_number='chenj' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:08:32  [INFO]  SQL:select * from user_info where user_number= 'chenj' Success.
+7E4-6-D 12:08:32  [INFO]  Record:1 Field:C
+7E4-6-D 12:08:33  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:08:33  [INFO]  Record:2 Field:C
+7E4-6-D 12:08:3B  [INFO]  SQL:select * from user_info where user_number= 'chenj' Success.
+7E4-6-D 12:08:3B  [INFO]  Record:1 Field:C
+2020-6-13 18:09:05  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:09:05  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:09:05  [INFO]  Record:5 Field:17
+2020-6-13 18:09:14  [INFO]  SQL:select * from user_info where user_number= 'chenj' Success.
+2020-6-13 18:09:14  [INFO]  Record:1 Field:12
+2020-6-13 18:09:15  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:09:15  [INFO]  Record:5 Field:17
+2020-6-13 18:09:15  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 18:09:15  [INFO]  Record:1 Field:8
+2020-6-13 18:09:15  [INFO]  SQL:select * from sys_para where para_name='splicingregion' and para_index<5 order by para_index Success.
+2020-6-13 18:09:15  [INFO]  Record:5 Field:8
+2020-6-13 18:09:15  [INFO]  SQL:select * from sys_para where para_name='thermalequipment' Success.
+2020-6-13 18:09:15  [INFO]  Record:1 Field:8
+2020-6-13 18:09:15  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 18:09:15  [INFO]  Record:1 Field:8
+2020-6-13 18:09:22  [INFO]  SQL:select * from user_info Success.
+2020-6-13 18:09:22  [INFO]  Record:2 Field:12
+2020-6-13 18:09:32  [INFO]  SQL:select * from user_info where user_number= 'chenj' Success.
+2020-6-13 18:09:32  [INFO]  Record:1 Field:12
+2020-6-13 18:12:43  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:13:01  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:13:47  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:13:47  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:13:47  [INFO]  Record:5 Field:17
+2020-6-13 18:13:54  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:13:54  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:13:54  [INFO]  Record:5 Field:17
+2020-6-13 18:14:00  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:15:07  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:15:40  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:15:55  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:16:12  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:19:18  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:44:05  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:45:48  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:46:43  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:46:58  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:46:58  [INFO]  Record:5 Field:17
+2020-6-13 18:49:08  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-13 18:49:08  [INFO]  Record:1 Field:12
+2020-6-13 18:49:23  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:49:23  [INFO]  Record:5 Field:17
+2020-6-13 18:49:34  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 18:49:34  [INFO]  Record:1 Field:8
+2020-6-13 18:49:34  [INFO]  SQL:select * from sys_para where para_name='splicingregion' and para_index<5 order by para_index Success.
+2020-6-13 18:49:34  [INFO]  Record:5 Field:8
+2020-6-13 18:49:40  [INFO]  SQL:select * from sys_para where para_name='thermalequipment' Success.
+2020-6-13 18:49:40  [INFO]  Record:1 Field:8
+2020-6-13 18:51:04  [INFO]  SQL:select * from user_info Success.
+2020-6-13 18:51:04  [INFO]  Record:2 Field:12
+2020-6-13 18:51:06  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-13 18:51:06  [INFO]  Record:1 Field:12
+2020-6-13 18:51:18  [ERROR]  SQL:insert into user_info (user_permission,user_passwd,user_type,user_name,user_number,add_user_number) values('DGJ','40349c15ff51b6692671d3ee734b990f','操作员','test','test','admin') Success.
+2020-6-13 18:51:18  [WARNING]  SQL:insert into user_info (user_permission,user_passwd,user_type,user_name,user_number,add_user_number) values('DGJ','40349c15ff51b6692671d3ee734b990f','操作员','test','test','admin') Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:33:16  [ERROR]  SQL:insert into user_info (user_permission,user_passwd,user_type,user_name,user_number,add_user_number) values('DGJ','40349c15ff51b6692671d3ee734b990f','操作员','test','test','admin') Success.
+7E4-6-D 12:33:16  [WARNING]  SQL:insert into user_info (user_permission,user_passwd,user_type,user_name,user_number,add_user_number) values('DGJ','40349c15ff51b6692671d3ee734b990f','操作员','test','test','admin') Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:33:18  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:33:18  [INFO]  Record:4 Field:C
+7E4-6-D 12:33:1D  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:33:1D  [INFO]  Record:4 Field:C
+7E4-6-D 12:33:20  [ERROR]  SQL:update user_info set user_state=1 where  user_number='test' Success.
+7E4-6-D 12:33:20  [WARNING]  SQL:update user_info set user_state=1 where  user_number='test' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:33:20  [INFO]  SQL:select * from user_info where user_number= 'test' Success.
+7E4-6-D 12:33:20  [INFO]  Record:2 Field:C
+7E4-6-D 12:33:21  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:33:21  [INFO]  Record:4 Field:C
+7E4-6-D 12:33:24  [ERROR]  SQL:update user_info set user_state=1 where  user_number='chenj' Success.
+7E4-6-D 12:33:24  [WARNING]  SQL:update user_info set user_state=1 where  user_number='chenj' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:33:24  [INFO]  SQL:select * from user_info where user_number= 'chenj' Success.
+7E4-6-D 12:33:24  [INFO]  Record:1 Field:C
+7E4-6-D 12:33:24  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:33:24  [INFO]  Record:4 Field:C
+7E4-6-D 12:33:27  [ERROR]  SQL:delete  from user_info where  user_number='test' Success.
+7E4-6-D 12:33:27  [WARNING]  SQL:delete  from user_info where  user_number='test' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:33:28  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:33:28  [INFO]  Record:2 Field:C
+2020-6-13 18:53:04  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:53:04  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:53:04  [INFO]  Record:5 Field:17
+2020-6-13 18:53:09  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-13 18:53:09  [INFO]  Record:1 Field:12
+2020-6-13 18:53:13  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-13 18:53:13  [INFO]  Record:1 Field:12
+2020-6-13 18:53:16  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-13 18:53:16  [INFO]  Record:1 Field:12
+2020-6-13 18:53:21  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-13 18:53:21  [INFO]  Record:1 Field:12
+2020-6-13 18:53:32  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:53:32  [INFO]  Record:5 Field:17
+2020-6-13 18:53:32  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 18:53:32  [INFO]  Record:1 Field:8
+2020-6-13 18:53:32  [INFO]  SQL:select * from sys_para where para_name='splicingregion' and para_index<5 order by para_index Success.
+2020-6-13 18:53:32  [INFO]  Record:5 Field:8
+2020-6-13 18:53:32  [INFO]  SQL:select * from sys_para where para_name='thermalequipment' Success.
+2020-6-13 18:53:32  [INFO]  Record:1 Field:8
+2020-6-13 18:53:32  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 18:53:32  [INFO]  Record:1 Field:8
+2020-6-13 18:53:38  [INFO]  SQL:select * from user_info Success.
+2020-6-13 18:53:38  [INFO]  Record:4 Field:12
+2020-6-13 18:53:41  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-13 18:53:41  [INFO]  Record:1 Field:12
+2020-6-13 18:53:42  [INFO]  SQL:select * from user_info where user_number= 'administrator' Success.
+2020-6-13 18:53:42  [INFO]  Record:0 Field:0
+2020-6-13 18:53:50  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b1ff56f14abd7534bfccfe0eeed21092',user_type='管理员',user_name='管理员' where  user_number='admin' Success.
+2020-6-13 18:53:50  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b1ff56f14abd7534bfccfe0eeed21092',user_type='管理员',user_name='管理员' where  user_number='admin' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:35:34  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:35:34  [INFO]  Record:4 Field:C
+7E4-6-D 12:35:3A  [INFO]  SQL:select * from user_info where user_number= 'chenj' Success.
+7E4-6-D 12:35:3A  [INFO]  Record:1 Field:C
+7E4-6-D 12:35:3A  [INFO]  SQL:select * from user_info where user_number= 'administrator' Success.
+7E4-6-D 12:35:3A  [INFO]  Record:0 Field:0
+7E4-6-D 12:36:06  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Success.
+7E4-6-D 12:36:06  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:36:08  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:36:08  [INFO]  Record:4 Field:C
+7E4-6-D 12:36:0B  [ERROR]  SQL:delete  from user_info where  user_number='zhu' Success.
+7E4-6-D 12:36:0B  [WARNING]  SQL:delete  from user_info where  user_number='zhu' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:36:0C  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:36:0C  [INFO]  Record:3 Field:C
+7E4-6-D 12:36:11  [ERROR]  SQL:delete  from user_info where  user_number='zhu2' Success.
+7E4-6-D 12:36:11  [WARNING]  SQL:delete  from user_info where  user_number='zhu2' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:36:12  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:36:12  [INFO]  Record:2 Field:C
+2020-6-13 18:56:24  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:56:24  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:56:24  [INFO]  Record:5 Field:17
+2020-6-13 18:56:28  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-13 18:56:28  [INFO]  Record:1 Field:12
+2020-6-13 18:56:30  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 18:56:30  [INFO]  Record:5 Field:17
+2020-6-13 18:56:30  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 18:56:30  [INFO]  Record:1 Field:8
+2020-6-13 18:56:30  [INFO]  SQL:select * from sys_para where para_name='splicingregion' and para_index<5 order by para_index Success.
+2020-6-13 18:56:30  [INFO]  Record:5 Field:8
+2020-6-13 18:56:30  [INFO]  SQL:select * from sys_para where para_name='thermalequipment' Success.
+2020-6-13 18:56:30  [INFO]  Record:1 Field:8
+2020-6-13 18:56:30  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 18:56:30  [INFO]  Record:1 Field:8
+2020-6-13 18:56:44  [INFO]  SQL:select * from user_info Success.
+2020-6-13 18:56:44  [INFO]  Record:2 Field:12
+2020-6-13 18:56:51  [INFO]  SQL:select * from user_info where user_number= 'chenj' Success.
+2020-6-13 18:56:51  [INFO]  Record:1 Field:12
+2020-6-13 18:56:56  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-13 18:56:56  [INFO]  Record:1 Field:12
+2020-6-13 18:57:01  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Success.
+2020-6-13 18:57:01  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:39:05  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Success.
+7E4-6-D 12:39:05  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:39:09  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Success.
+7E4-6-D 12:39:09  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:39:0B  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Success.
+7E4-6-D 12:39:0B  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:39:0C  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Success.
+7E4-6-D 12:39:0C  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:39:0F  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Success.
+7E4-6-D 12:39:0F  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:39:11  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Success.
+7E4-6-D 12:39:11  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:39:15  [ERROR]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Success.
+7E4-6-D 12:39:15  [WARNING]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Failure.ErrorCode: 800A0E78, Message:Unknown error 0x800A0E78, Source:ADODB.Recordset, Description:对象关闭时，不允许操作。
+7E4-6-D 12:39:19  [INFO]  SQL:select * from user_info Success.
+7E4-6-D 12:39:19  [INFO]  Record:2 Field:C
+2020-6-13 18:57:50  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 18:58:16  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:00:21  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:01:34  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:11:46  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:11:46  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 19:11:46  [INFO]  Record:5 Field:17
+2020-6-13 19:16:00  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:16:22  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:16:30  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:16:40  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:17:53  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:18:06  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:18:10  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:18:31  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:19:01  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:19:30  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:21:04  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:21:24  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:22:20  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:23:16  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:23:36  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:23:56  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:26:52  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:27:17  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:27:39  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:27:40  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 19:27:40  [INFO]  Record:5 Field:17
+2020-6-13 19:27:49  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-13 19:27:49  [INFO]  Record:1 Field:12
+2020-6-13 19:27:50  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 19:27:50  [INFO]  Record:5 Field:17
+2020-6-13 19:27:50  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 19:27:50  [INFO]  Record:1 Field:8
+2020-6-13 19:27:50  [INFO]  SQL:select * from sys_para where para_name='splicingregion' and para_index<5 order by para_index Success.
+2020-6-13 19:27:50  [INFO]  Record:5 Field:8
+2020-6-13 19:27:50  [INFO]  SQL:select * from sys_para where para_name='thermalequipment' Success.
+2020-6-13 19:27:50  [INFO]  Record:1 Field:8
+2020-6-13 19:27:50  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 19:27:50  [INFO]  Record:1 Field:8
+2020-6-13 19:28:06  [INFO]  SQL:select * from user_info Success.
+2020-6-13 19:28:06  [INFO]  Record:2 Field:12
+2020-6-13 19:28:59  [INFO]  Open RotaryKiln.accdb, userId=null
+2020-6-13 19:29:00  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 19:29:00  [INFO]  Record:5 Field:17
+2020-6-13 19:29:05  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-13 19:29:05  [INFO]  Record:1 Field:12
+2020-6-13 19:29:05  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-13 19:29:05  [INFO]  Record:5 Field:17
+2020-6-13 19:29:05  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 19:29:05  [INFO]  Record:1 Field:8
+2020-6-13 19:29:05  [INFO]  SQL:select * from sys_para where para_name='splicingregion' and para_index<5 order by para_index Success.
+2020-6-13 19:29:05  [INFO]  Record:5 Field:8
+2020-6-13 19:29:05  [INFO]  SQL:select * from sys_para where para_name='thermalequipment' Success.
+2020-6-13 19:29:05  [INFO]  Record:1 Field:8
+2020-6-13 19:29:05  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-13 19:29:05  [INFO]  Record:1 Field:8
+2020-6-13 19:30:23  [INFO]  SQL:select * from region_info where region_state=1 order by region_index Success.
+2020-6-13 19:30:23  [INFO]  Record:5 Field:17
+2020-6-13 19:30:28  [INFO]  SQL:select * from region_temperature where line_time>='2020-06-13' and line_time<='2020-06-13' order by line_index Success.
+2020-6-13 19:30:28  [INFO]  Record:0 Field:0
+2020-6-13 19:30:35  [INFO]  SQL:select * from region_info where region_state=1 order by region_index Success.
+2020-6-13 19:30:35  [INFO]  Record:5 Field:17
+2020-6-13 19:30:43  [INFO]  SQL:select * from region_temperature where line_time>='2019-10-13' and line_time<='2020-06-13' order by line_index Success.
+2020-6-13 19:30:43  [INFO]  Record:0 Field:0

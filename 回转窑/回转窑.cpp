@@ -15,6 +15,8 @@
 #include "Afxsock.h"
 #include "easylogging++.h"
 
+#include "Config.h"
+
 // 注册
 #include "MachineRegisterDialog.h"
 
@@ -80,10 +82,10 @@ END_MESSAGE_MAP()
 
 int GetLineIndex()
 {
-	SQLResult res;
-	if (S_OK == accessConnect.executeSQL("select max(line_index) as max_index from region_temperature", res)
-		&& !res.empty() && !res.begin()->second.empty())
-		return stoi(res["max_index"].front());
+	AccessResult res;
+	if (SUCCEEDED( accessConnect.executeSQL("select max(line_index) as max_index from region_temperature", res))
+		&& !res.empty())
+		return stoi(res[0]["max_index"]);
 	else
 		return 0;
 	return -1;
@@ -115,13 +117,12 @@ bool WriteTemp(AreaVessel& areavessel)
 	LineIndex++;
 
 	CString sql_command;
-	int ress;
 
 	for(int i=0;i<areavessel.defaultAreaNum;i++)
 	{
 		sql_command.Format("insert into region_temperature (line_index,region_index,region_temp) values(%d,%d,%0.2f)",LineIndex,atoi(areavessel.areaVector[i].Id),areavessel.areaVector[i].MaxTemp);
 		
-		if (accessConnect.executeSQL(sql_command.GetString()) != S_OK)
+		if (FAILED(accessConnect.executeSQL(sql_command.GetString())))
 		{
 			AfxMessageBox("写入温度数据失败!");
 			return false;
@@ -174,17 +175,15 @@ C回转窑App theApp;
  //CWinThread  * pVideoThread; 
 int ConnectSign(CSocket& mysocket)
 {
-	int index_sum;
-
 	//获取信号地址、端口
 
 	CString IP,Port;
-	SQLResult res;
+	AccessResult res;
 	accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res);
-	if (!res.empty() && !res.begin()->second.empty())
+	if (!res.empty())
 	{
-		IP = res["para0"].front().c_str();
-		Port = res["para1"].front().c_str();
+		IP = res[0]["para0"].c_str();
+		Port = res[0]["para1"].c_str();
 	}
 	if (!mysocket.Create()) //创建套接字
 	{
@@ -194,9 +193,7 @@ int ConnectSign(CSocket& mysocket)
 	}
 	if (!mysocket.Connect(IP, atoi(Port))) //连接服务器
 	{
-#ifndef _DEBUG
 		AfxMessageBox("连接服务器失败!");
-#endif // !_DEBUG
 		LOG(ERROR)<< "连接服务器失败";
 		return 0;
 	}
@@ -287,9 +284,7 @@ DWORD WINAPI   ThreadVideoProc(LPVOID lpParameter)
 	s32 previewHandle=Camera_login(loginInfo,cameraBasicInfo,userHandle);
 	if(previewHandle<0)
 	{
-#ifndef _DEBUG
 		AfxMessageBox("连接热像仪失败！");
-#endif // DEBUG
 		LOG(ERROR)<< "连接热像仪失败";
 		HermalShowFlag=false;
 		return previewHandle;
@@ -365,9 +360,6 @@ DWORD WINAPI   ThreadVideoProc(LPVOID lpParameter)
 					{
 						Mat mat_for_save=cv::Mat(all_splicing_mat.rows,all_splicing_mat.cols,CV_8UC3);
 						Mat mat_for_show=cv::Mat(all_splicing_mat.rows,all_splicing_mat.cols,CV_8UC3);
-						uchar *p_show,*p_save;
-						float *pf;
-						int j3;
 						double max,min;
 						minMaxIdx(all_splicing_mat,&min,&max);
 						cv::Mat grayImage=cv::Mat(all_splicing_mat.rows,all_splicing_mat.cols,CV_8UC1);
@@ -565,12 +557,12 @@ BOOL C回转窑App::InitInstance()
 
 	
 
-	//// 初始化 OLE 库
-	//if (!AfxOleInit())
-	//{
-	//	AfxMessageBox(IDP_OLE_INIT_FAILED);
-	//	return FALSE;
-	//}
+	// 初始化 OLE 库
+	if (!AfxOleInit())
+	{
+		AfxMessageBox(IDP_OLE_INIT_FAILED);
+		return FALSE;
+	}
 
 	AfxEnableControlContainer();
 
@@ -629,7 +621,21 @@ BOOL C回转窑App::InitInstance()
 	AddDocTemplate(pDocTemplate);
 
 	// 打开数据库
-	if (S_OK != accessConnect.openDatabase("RotaryKiln.accdb"))
+	Config cfg;
+	std::string dbFile;
+	try
+	{
+		cfg.ReadFile("application.cfg");
+		dbFile = cfg.Read<std::string>("DatabasePath", "RotaryKiln.accdb");
+	}
+	catch (...)
+	{
+		dbFile = "RotaryKiln.accdb";
+	}
+	cfg.Add("DatabasePath", dbFile);
+	cfg.SaveFile("application.cfg");
+
+	if (FAILED(accessConnect.openDatabase(dbFile.c_str())))
 	{
 		AfxMessageBox(("数据库连接失败:" + accessConnect.getLastError()).c_str());
 		LOG(ERROR) << "login:" + accessConnect.getLastError();
@@ -639,15 +645,30 @@ BOOL C回转窑App::InitInstance()
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);	
 
-	// 调度在命令行中指定的命令。如果
-	// 用 /RegServer、/Register、/Unregserver 或 /Unregister 启动应用程序，则返回 FALSE。
-	if (!ProcessShellCommand(cmdInfo))
+	 //调度在命令行中指定的命令。如果
+	 //用 /RegServer、/Register、/Unregserver 或 /Unregister 启动应用程序，则返回 FALSE。
+	try
+	{
+		if (!ProcessShellCommand(cmdInfo))
+			return FALSE;
+	}
+	catch (...)
+	{
+		AfxMessageBox("发生异常！");
 		return FALSE;
+	}
 
 	// 唯一的一个窗口已初始化，因此显示它并对其进行更新
-	m_pMainWnd->SetWindowText("回转窑");  
-	m_pMainWnd->ShowWindow(SW_SHOW);
-	m_pMainWnd->UpdateWindow();
+	try
+	{
+		m_pMainWnd->SetWindowText("回转窑");
+		m_pMainWnd->ShowWindow(SW_SHOW);
+		m_pMainWnd->UpdateWindow();
+	}
+	catch (...)
+	{
+		AfxMessageBox("发生异常！");
+	}
 	// 仅当具有后缀时才调用 DragAcceptFiles
 	//  在 SDI 应用程序中，这应在 ProcessShellCommand 之后发生
 	//初始化日志
@@ -667,35 +688,34 @@ BOOL C回转窑App::InitInstance()
 	pFrame->m_wndStatusBar.SetPaneText(0,"用户名："+userNumber);
 
 	int index_sum = 0;
-	SQLResult res;
-	if (accessConnect.executeSQL("select * from region_info where region_state=1", res) != S_OK)
+	AccessResult res;
+	if (FAILED( accessConnect.executeSQL("select * from region_info where region_state=1", res) ))
 	{
 		AfxMessageBox("执行SQL语句出错！");
 		LOG(WARNING) << "执行SQL语句出错";
 	}
-	if (res.empty() || res.begin()->second.empty())
+	if (res.empty())
 	{
 		AfxMessageBox("现在还没有区域数据！");
 		LOG(WARNING) << "没有区域数据";
 	}
 	else
 	{
-		int resnum = res.begin()->second.size();
-		for (int i = 0; i < resnum; i++)
+		for (auto& record : res)
 		{
 			AreaTempInfo tempareateminfo{
-				res["region_index"].front().c_str(),
-				res["region_name"].front().c_str(),
+				record["region_index"].c_str(),
+				record["region_name"].c_str(),
 				RectRgn,
-				stoi(res["region_left"].front()),
-				stoi(res["region_top"].front()),
-				stoi(res["region_right"].front()),
-				stoi(res["region_bottom"].front()),
-				stof(res["region_alarm1"].front()),
-				stof(res["region_alarm2"].front()),
-				stof(res["region_alarm3"].front())
+				stoi(record["region_left"]),
+				stoi(record["region_top"]),
+				stoi(record["region_right"]),
+				stoi(record["region_bottom"]),
+				stof(record["region_alarm1"]),
+				stof(record["region_alarm2"]),
+				stof(record["region_alarm3"])
 			};
-			tempareateminfo.SetEmissivity(stof(res["region_emissivity"].front()));
+			tempareateminfo.SetEmissivity(stof(record["region_emissivity"]));
 			tempareateminfo.MaxTemp = 0.0;
 			areavessel.AddArea(tempareateminfo);
 			areavessel.defaultAreaNum++;
@@ -704,34 +724,27 @@ BOOL C回转窑App::InitInstance()
 
 	//从文件读取自定义区域
 	areavessel.ReadRegion();
-	if (S_OK != accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res)
-		|| res.empty() || res.begin()->second.empty())
+	if (FAILED( accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res))
+		|| res.empty())
 	{
 		AfxMessageBox("现在还没有设置拼接数，请先设置！");
 		LOG(WARNING) << "没有设置拼接数";
 	}
 	else
 	{
-		index_sum = stoi(res["para3"].front());
+		index_sum = stoi(res[0]["para3"]);
 	}
 	accessConnect.executeSQL("select * from sys_para where para_name='splicingregion' and para_index<" 
 		+ std::to_string(index_sum) + " order by para_index", res);
 
-	if (!res.empty() && !res.begin()->second.empty())
-	{
-		int resnum = res.begin()->second.size();
-		for (int index = 0; index < resnum; index++)
-		{
-			piecesplicing.push_back(PIECESPLICING(index, stoi(res["para0"].front()), stoi(res["para1"].front())));
-		}
-	}
+
+	for (size_t index = 0; index < res.size(); index++)
+		piecesplicing.push_back(PIECESPLICING(index, stoi(res[index]["para0"]), stoi(res[index]["para1"])));
 
 	//获取热像仪地址、用户名、密码
 	accessConnect.executeSQL("select * from sys_para where para_name='thermalequipment'", res);
-	if (!res.empty() && !res.begin()->second.empty())
-	{
-		strcpy(loginInfo.CameraAddr, res["para1"].front().c_str());
-	}
+	if (!res.empty())
+		strcpy(loginInfo.CameraAddr, res[0]["para1"].c_str());
 	
 
 	//获取热像仪数据并显示

@@ -100,21 +100,21 @@ void CLogon::OnBnClickedButtonLogon()
 		return;
 	}
 
-	SQLResult res;	
+	AccessResult res;	
 	CString select_sql_by_user;
 	select_sql_by_user.Format("select * from user_info where user_number= \'%s\'",user_number);
 	accessConnect.executeSQL(select_sql_by_user.GetString(), res);
 	BOOL logon_flag=false;
-	if (res.empty() || res.begin()->second.empty())//查询结果为空
+	if (res.empty())//查询结果为空
 	{
 		AfxMessageBox("用户不存在");
 	}
 	else
 	{
-		if (user_passwd == res["user_passwd"][0].c_str())
+		if (user_passwd == res[0]["user_passwd"].c_str())
 		{
 			userNumber = user_number;
-			userPermission = res["user_permission"][0].c_str();
+			userPermission = res[0]["user_permission"].c_str();
 			logon_flag = true;
 			AfxMessageBox("登录成功!");
 			LOG(INFO) << userNumber + "登录";
