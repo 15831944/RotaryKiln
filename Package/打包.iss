@@ -72,8 +72,6 @@ Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\YoseenSDK.dll"; 
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\YoseenSDKCS.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\db"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs    
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\db\RotaryKiln.accdb"; DestDir: "{app}\db"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\logs\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\picture\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; 注意: 不要在任何共享系统文件上使用“Flags: ignoreversion”
 
 [Icons]
