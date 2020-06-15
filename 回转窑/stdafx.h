@@ -39,11 +39,11 @@
 
 
 
-#import "C:\Program Files\Common Files\System\ADO\msado15.dll"  no_namespace  rename ("EOF", "adoEOF")  
 
-#include "SQLConnect.hpp"
-extern int MachineKey;
-extern AccessConnection accessConnect;
+
+
+
+
 
 #ifdef _UNICODE
 #if defined _M_IX86

@@ -5,8 +5,10 @@
 #include "回转窑.h"
 #include "AlarmSetDialog.h"
 #include "afxdialogex.h"
-
-#include "SQLConnect.hpp"
+//mysql必须包含网络相关头文件  
+#include "winsock.h"  
+//mysql头文件自然要包含    
+#include "mysql.h"
 
 
 extern int alarmSetVersion;
@@ -52,11 +54,27 @@ void CAlarmSetDialog::OnBnClickedOk()
 	v_alarmTH2[RegionIndex]=atof(m_alarmTH2);
 	v_alarmTH3[RegionIndex]=atof(m_alarmTH3);
 	alarmSetVersion++;
+	//写入数据库
+	MYSQL mysql; //数据库连接句柄
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+	//设置数据库编码格式
+	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
+	//密码加字符串""
+	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
+	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
+		AfxMessageBox("数据库连接失败");
+		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
+		MessageBox(e);  
+		return;
+	}
 
 	CString sql_command;
 	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
 	sql_command.Format("update region_info set region_alarm1=%f,region_alarm2=%f,region_alarm3=%f where  region_state=1 and region_index=%d",v_alarmTH1[RegionIndex],v_alarmTH2[RegionIndex],v_alarmTH3[RegionIndex],RegionIndex);
-	accessConnect.executeSQL(sql_command.GetString());
+	int ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
+	mysql_close(&mysql);
 	CDialogEx::OnOK();
 }
 

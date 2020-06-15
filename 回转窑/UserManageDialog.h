@@ -23,10 +23,10 @@ public:
 	virtual BOOL OnInitDialog();
 	CListCtrl m_listctrl;
 	afx_msg void OnRclickList1(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnUserDrop();
-	afx_msg void OnUserAppend();
-	afx_msg void OnUserModify();
+	afx_msg void On32792();
+	afx_msg void On32790();
+	afx_msg void On32791();
 	void initData(void);
-	afx_msg void OnUserDisable();
-	afx_msg void OnUserEnable();
+	afx_msg void On32793();
+	afx_msg void On32794();
 };

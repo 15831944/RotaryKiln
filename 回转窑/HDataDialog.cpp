@@ -5,8 +5,10 @@
 #include "回转窑.h"
 #include "HDataDialog.h"
 #include "afxdialogex.h"
-
-#include "SQLConnect.hpp"
+//mysql必须包含网络相关头文件  
+#include "winsock.h"  
+//mysql头文件自然要包含    
+#include "mysql.h"
 #include "HistoryCurve.h"
 
 
@@ -60,27 +62,48 @@ BOOL HDataDialog::OnInitDialog()
 	int nIndex = 0;
 	m_listctrl.InsertColumn(nIndex++, "索引", LVCFMT_CENTER, 80);   
 	m_listctrl.InsertColumn(nIndex++, "时间", LVCFMT_CENTER, 150); 
+	int index_sum;
+	MYSQL mysql; //数据库连接句柄
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+	//设置数据库编码格式
+	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
+	//密码加字符串""
+	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
+	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
+		AfxMessageBox("数据库连接失败");
+		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
+		AfxMessageBox(e);  
+		//return;
+	}
 
-	AccessResult res;
-	if (SUCCEEDED(accessConnect.executeSQL("select * from region_info where region_state=1 order by region_index", res))) //检测查询成功
+	CString select_sql;
+	select_sql="select * from region_info where region_state=1 order by region_index";
+	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
+	if(ress==0) //检测查询成功
 	{
-		if (res.empty()) //查询结果为空
+		res = mysql_store_result(&mysql);
+		int resnum=mysql_num_rows(res);
+		if(resnum==0) //查询结果为空
 		{
 			AfxMessageBox("现在还没有区域数据！");
 		}
 		else
 		{
 			list_title="索引\t时间";
-			for (size_t i = 0; i < res.size(); i++)
+			for(int i=0;i<resnum;i++)
 			{
-				m_listctrl.InsertColumn(nIndex++, res[i]["region_name"].c_str(), LVCFMT_CENTER, 100);
-				region_name.push_back(res[i]["region_name"].c_str());
-				list_title += "\t";
-				list_title += res[i]["region_name"].c_str();
+				row=mysql_fetch_row(res);
+				m_listctrl.InsertColumn(nIndex++, row[1], LVCFMT_CENTER, 100); 
+				region_name.push_back(row[1]);
+				list_title=list_title+"\t"+row[1];
 			}
-			list_title += "\n";
+			list_title+="\n";
 		}
 	}
+	mysql_free_result(res);
+	mysql_close(&mysql);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
@@ -90,8 +113,21 @@ void HDataDialog::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	int line_index=-1,list_line_index=-1;
-
+	int index_sum,line_index=-1,list_line_index=-1;
+	MYSQL mysql; //数据库连接句柄
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+	//设置数据库编码格式
+	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
+	//密码加字符串""
+	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
+	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
+		AfxMessageBox("数据库连接失败");
+		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
+		AfxMessageBox(e);  
+		//return;
+	}
 	 m_listctrl.SetRedraw(FALSE);
 	 //m_listctrl.SetExtendedStyle(m_listctrl.GetExtendedStyle()|LVS_EX_DOUBLEBUFFER);
 	 //m_listctrl.LockWindowUpdate();
@@ -99,36 +135,44 @@ void HDataDialog::OnBnClickedButton1()
 	select_sql.Format("select * from region_temperature where line_time>=\'%s\' and line_time<=\'%s\' order by line_index",m_startime.Format("%Y-%m-%d"),m_endtime.Format("%Y-%m-%d"));
 	//select_sql.Format("select * from region_temperature where line_time>=\'%s\' and line_time<=\'%s\'",m_startime.Format("%Y-%m-%d"),m_endtime.Format("%Y-%m-%d"));
 
-	AccessResult res;
-	if (SUCCEEDED(accessConnect.executeSQL(select_sql.GetString(), res))) //检测查询成功
+	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
+	if(ress==0) //检测查询成功
 	{
-		if (res.empty()) //查询结果为空
+		res = mysql_store_result(&mysql);
+		int resnum=mysql_num_rows(res);
+		if(resnum==0) //查询结果为空
 		{
 			AfxMessageBox("现在还没有历史数据！");
 		}
 		else
 		{
 			m_listctrl.DeleteAllItems();
-			for (auto& record : res)
+			CString strindex;
+			for(int i=0;i<resnum;i++)
 			{
-				if (line_index != stoi(record["line_index"]))
+				row=mysql_fetch_row(res);
+				if(line_index!=atoi(row[0]))
 				{
-					line_index = stoi(record["line_index"]);
-					m_listctrl.InsertItem(list_line_index, std::to_string(++list_line_index).c_str());//增加一行
-					m_listctrl.SetItemText(list_line_index, 1, record["line_time"].c_str());//在第一行上设置第二列的内容
-					m_listctrl.SetItemText(list_line_index, stoi(record["region_index"]) + 2, record["region_temp"].c_str());//在第一行上设置第二列的内容
+					line_index=atoi(row[0]);
+					strindex.Format("%d",++list_line_index);
+				    m_listctrl.InsertItem(list_line_index,strindex);//增加一行
+					m_listctrl.SetItemText(list_line_index,1,row[1]);//在第一行上设置第二列的内容
+					m_listctrl.SetItemText(list_line_index,atoi(row[2])+2,row[3]);//在第一行上设置第二列的内容
 				}
 				else
 				{
-					m_listctrl.SetItemText(list_line_index, stoi(record["region_index"]) + 2, record["region_temp"].c_str());//在第一行上设置第二列的内容
+					m_listctrl.SetItemText(list_line_index,atoi(row[2])+2,row[3]);//在第一行上设置第二列的内容
 				}
-
-			}
+			
+			}		
 		}
 	}
     m_listctrl.SetRedraw(TRUE) ;
 	m_listctrl.Update(0); // 更新索引为0的行
     //m_listctrl.UnlockWindowUpdate(); 
+	mysql_free_result(res);
+	mysql_close(&mysql);
+
 }
 
 

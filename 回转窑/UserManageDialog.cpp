@@ -7,8 +7,10 @@
 #include "afxdialogex.h"
 #include "AddModiUserDialog.h"
 #include "md5.h"
-
-#include "SQLConnect.hpp"
+//mysql必须包含网络相关头文件  
+#include "winsock.h"  
+//mysql头文件自然要包含    
+#include "mysql.h"
 #include "easylogging++.h"
 
 
@@ -39,11 +41,11 @@ void UserManageDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(UserManageDialog, CDialogEx)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST1, &UserManageDialog::OnRclickList1)
-	ON_COMMAND(ID_USER_DROP, &UserManageDialog::OnUserDrop)
-	ON_COMMAND(ID_USER_APPEND, &UserManageDialog::OnUserAppend)
-	ON_COMMAND(ID_USER_MODIFY, &UserManageDialog::OnUserModify)
-	ON_COMMAND(ID_USER_DISBLE, &UserManageDialog::OnUserDisable)
-	ON_COMMAND(ID_USER_ENABLE, &UserManageDialog::OnUserEnable)
+	ON_COMMAND(ID_32792, &UserManageDialog::On32792)
+	ON_COMMAND(ID_32790, &UserManageDialog::On32790)
+	ON_COMMAND(ID_32791, &UserManageDialog::On32791)
+	ON_COMMAND(ID_32793, &UserManageDialog::On32793)
+	ON_COMMAND(ID_32794, &UserManageDialog::On32794)
 END_MESSAGE_MAP()
 
 
@@ -104,7 +106,7 @@ void UserManageDialog::OnRclickList1(NMHDR *pNMHDR, LRESULT *pResult)
 }
 
 //删除用户
-void UserManageDialog::OnUserDrop()
+void UserManageDialog::On32792()
 {
 	// TODO: 在此添加命令处理程序代码
 	if(strusername=="")
@@ -119,94 +121,192 @@ void UserManageDialog::OnUserDrop()
 	}
 	if(2==AfxMessageBox(_T("您确定要删除用户吗？"), MB_OKCANCEL | MB_ICONQUESTION, 0))
 		return;
-	
-	CString sql_command;	
-	sql_command.Format("delete  from user_info where  user_number=\'%s\'",strusername);
-	if(FAILED(accessConnect.executeSQL(sql_command.GetString())))
-	{
-		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
+	//写入数据库
+	MYSQL mysql; //数据库连接句柄
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+	//设置数据库编码格式
+	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
+	//密码加字符串""
+	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
+	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
+		AfxMessageBox("数据库连接失败");
+		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
+		MessageBox(e);  
 		return;
 	}
+	CString sql_command;	
+	sql_command.Format("delete  from user_info where  user_number=\'%s\'",strusername);
+	int ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
+	if(ress)
+	{
+		AfxMessageBox("操作失败!");
+		return;
+	}
+	mysql_close(&mysql);
 	AfxMessageBox("操作成功!");
 	LOG(INFO) << "删除用户:"+strusername;
 	initData();
 	return;
 }
 //禁用用户
-void UserManageDialog::OnUserDisable()
+void UserManageDialog::On32793()
 {
 	// TODO: 在此添加命令处理程序代码
-	if (strusername == "")
+	if(strusername=="")
 	{
 		AfxMessageBox("你没有选择用户！");
 		return;
 	}
-	if (-1 == userPermission.Find('E'))
+	if(-1==userPermission.Find('E'))
 	{
 		AfxMessageBox("你的权限不够，请切换用户！");
 		return;
 	}
+	//写入数据库
+	MYSQL mysql; //数据库连接句柄
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+	//设置数据库编码格式
+	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
+	//密码加字符串""
+	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
+	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
+		AfxMessageBox("数据库连接失败");
+		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
+		MessageBox(e);  
+		return;
+	}
+	CString sql_command;	
+	sql_command.Format("update user_info set user_state=0 where  user_number=\'%s\'",strusername);
+	int ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
+	if(ress)
+	{
+		AfxMessageBox("操作失败!");
+		return;
+	}
+	sql_command.Format("select * from user_info where user_number= \'%s\'",strusername);
+	ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
+	if(ress)
+	{
+		AfxMessageBox("操作失败!");
+		return;
+	}
+	CString strveri="";
+	if(ress==0) //检测查询成功
+	{
+		res = mysql_store_result(&mysql);
+		if(mysql_num_rows(res)==0) //查询结果为空
+		{
+			AfxMessageBox("用户不存在");
+			return;
+		}
+		else
+		{
 
-	CString sql_command;
-	sql_command.Format("update user_info set user_state=0 where  user_number=\'%s\'", strusername);
-	if (FAILED(accessConnect.executeSQL(sql_command.GetString())))
+			row=mysql_fetch_row(res);
+			for(int i=0;i<11;i++)
+				strveri+=row[i];
+			MD5 md5;
+			md5.reset();
+			md5.update(strveri.GetBuffer());
+			strveri=md5.toString().c_str();
+		}
+		mysql_free_result(res);
+	}
+
+	sql_command.Format("update user_info set verification=\'%s\' where  user_number=\'%s\'",strveri,strusername);
+	ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
+	if(ress)
 	{
-		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
+		AfxMessageBox("操作失败!");
 		return;
 	}
-	AccessResult res;
-	sql_command.Format("select * from user_info where user_number= \'%s\'", strusername);
-	if (FAILED(accessConnect.executeSQL(sql_command.GetString(), res)))
-	{
-		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
-		return;
-	}
-	CString strveri = "";
-	if (res.empty()) //查询结果为空
-	{
-		AfxMessageBox("用户不存在");
-		return;
-	}
+
+	mysql_close(&mysql);
 	AfxMessageBox("操作成功!");
 	LOG(INFO) << "禁用用户:"+strusername;
 	initData();
 	return;
 }
 //激活用户
-void UserManageDialog::OnUserEnable()
+void UserManageDialog::On32794()
 {
 	// TODO: 在此添加命令处理程序代码
-	if (strusername == "")
+	if(strusername=="")
 	{
 		AfxMessageBox("你没有选择用户！");
 		return;
 	}
-	if (-1 == userPermission.Find('G'))
+	if(-1==userPermission.Find('G'))
 	{
 		AfxMessageBox("你的权限不够，请切换用户！");
 		return;
 	}
+	//写入数据库
+	MYSQL mysql; //数据库连接句柄
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+	//设置数据库编码格式
+	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
+	//密码加字符串""
+	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
+	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
+		AfxMessageBox("数据库连接失败");
+		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
+		MessageBox(e);  
+		return;
+	}
+	CString sql_command;	
+	sql_command.Format("update user_info set user_state=1 where  user_number=\'%s\'",strusername);
+	int ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
+	if(ress)
+	{
+		AfxMessageBox("操作失败!");
+		return;
+	}
+	sql_command.Format("select * from user_info where user_number= \'%s\'",strusername);
+	ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
+	if(ress)
+	{
+		AfxMessageBox("操作失败!");
+		return;
+	}
+	CString strveri="";
+	if(ress==0) //检测查询成功
+	{
+		res = mysql_store_result(&mysql);
+		if(mysql_num_rows(res)==0) //查询结果为空
+		{
+			AfxMessageBox("用户不存在");
+			return;
+		}
+		else
+		{
 
-	CString sql_command;
-	sql_command.Format("update user_info set user_state=1 where  user_number=\'%s\'", strusername);
-	if (FAILED(accessConnect.executeSQL(sql_command.GetString())))
+			row=mysql_fetch_row(res);
+			for(int i=0;i<11;i++)
+				strveri+=row[i];
+			MD5 md5;
+			md5.reset();
+			md5.update(strveri.GetBuffer());
+			strveri=md5.toString().c_str();
+		}
+		mysql_free_result(res);
+	}
+
+	sql_command.Format("update user_info set verification=\'%s\' where  user_number=\'%s\'",strveri,strusername);
+	ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
+	if(ress)
 	{
-		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
+		AfxMessageBox("操作失败!");
 		return;
 	}
 
-	AccessResult res;
-	sql_command.Format("select * from user_info where user_number= \'%s\'", strusername);
-	if (FAILED(accessConnect.executeSQL(sql_command.GetString(), res)))
-	{
-		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
-		return;
-	}
-	if (res.empty()) //查询结果为空
-	{
-		AfxMessageBox("用户不存在");
-		return;
-	}
+	mysql_close(&mysql);
 	AfxMessageBox("操作成功!");
 	LOG(INFO) << "激活用户:"+strusername;
 	initData();
@@ -214,7 +314,7 @@ void UserManageDialog::OnUserEnable()
 }
 
 //添加用户
-void UserManageDialog::OnUserAppend()
+void UserManageDialog::On32790()
 {
 	// TODO: 在此添加命令处理程序代码
 	AddModiUserDialog adduserdialog;
@@ -225,7 +325,7 @@ void UserManageDialog::OnUserAppend()
 }
 
 //修改用户
-void UserManageDialog::OnUserModify()
+void UserManageDialog::On32791()
 {
 	// TODO: 在此添加命令处理程序代码
 	if(strusername=="")
@@ -244,32 +344,57 @@ void UserManageDialog::OnUserModify()
 
 void UserManageDialog::initData(void)
 {
+	m_listctrl.DeleteAllItems();
+	MYSQL mysql; //数据库连接句柄
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+	//设置数据库编码格式
+	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
+	//密码加字符串""
+	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
+	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
+		AfxMessageBox("数据库连接失败");
+		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
+		MessageBox(e);  
+		//return;
+	}
+
 	CString select_sql;
-	AccessResult res;
+	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
+	//select_sql="select * from user_info where user_state=1";
 	select_sql="select * from user_info";
-	if(SUCCEEDED(accessConnect.executeSQL(select_sql.GetString(), res))) //检测查询成功
+	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
+	if(ress==0) //检测查询成功
 	{
-		if(res.empty()) //查询结果为空
+		res = mysql_store_result(&mysql);
+		int resnum=mysql_num_rows(res);
+		if(resnum==0) //查询结果为空
 		{
 			AfxMessageBox("现在还没有用户数据！");
 		}
 		else
 		{
-			m_listctrl.DeleteAllItems();
-			for (size_t i = 0; i < res.size(); i++)
+			//while((row=mysql_fetch_row(res)))
+			CString strindex;
+			for(int i=0;i<resnum;i++)
 			{
-				m_listctrl.InsertItem(i, std::to_string(i).c_str());//增加一行
-				m_listctrl.SetItemText(i, 1, res[i]["user_number"].c_str());//在第一行上设置第二列的内容
-				m_listctrl.SetItemText(i, 2, res[i]["user_type"].c_str());
-				m_listctrl.SetItemText(i, 3, res[i]["user_name"].c_str());
-				if (res[i]["user_state"] == "1")
-					m_listctrl.SetItemText(i, 4, "正常");
+				row=mysql_fetch_row(res);
+				strindex.Format("%d",i);
+				m_listctrl.InsertItem(i,strindex);//增加一行
+				m_listctrl.SetItemText(i,1,row[0]);//在第一行上设置第二列的内容
+				m_listctrl.SetItemText(i,2,row[2]);
+				m_listctrl.SetItemText(i,3,row[3]);
+				CString str=row[11];
+				if(str=="1")
+					m_listctrl.SetItemText(i,4,"正常");
 				else
-					m_listctrl.SetItemText(i, 4, "禁用");
-			}
+					m_listctrl.SetItemText(i,4,"禁用");
+			}		
 		}
 
 	}
+	mysql_close(&mysql);
 	UpdateData(FALSE);
 }
 

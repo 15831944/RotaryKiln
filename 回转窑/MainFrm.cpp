@@ -68,7 +68,7 @@ CMainFrame::CMainFrame()
 	// TODO: 在此添加成员初始化代码
 	m_theralsetdialog=NULL;
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2008);
-	//system("net start mysql");
+	system("net start mysql");
 }
 
 CMainFrame::~CMainFrame()

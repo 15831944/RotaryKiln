@@ -109,10 +109,6 @@
     <None Include="res\多边形.ico">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="MachineRegistrationClient.dll">
-      <Filter>头文件</Filter>
-    </None>
-    <None Include="application.cfg" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="回转窑.h">
@@ -316,21 +312,6 @@
     <ClInclude Include="HistoryCurve.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="MachineRegistrationClient.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="MachineRegisterDialog.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="SQLConnect.hpp">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Config.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CCopyDialog.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="回转窑.cpp">
@@ -483,15 +464,6 @@
     <ClCompile Include="HistoryCurve.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="MachineRegisterDialog.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Config.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CCopyDialog.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="回转窑.rc">
@@ -501,9 +473,6 @@
   <ItemGroup>
     <Library Include="..\thermalcamera\YoseenSDK\YoseenSDK.lib">
       <Filter>ThermalCamera</Filter>
-    </Library>
-    <Library Include="MachineRegistrationClient.lib">
-      <Filter>头文件</Filter>
     </Library>
   </ItemGroup>
 </Project>

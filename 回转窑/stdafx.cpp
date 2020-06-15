@@ -6,6 +6,3 @@
 #include "stdafx.h"
 
 
-AccessConnection accessConnect;
-
-int MachineKey = 0;

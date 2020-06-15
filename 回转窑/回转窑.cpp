@@ -1,6 +1,7 @@
 
 // 回转窑.cpp : 定义应用程序的类行为。
 //
+
 #include "stdafx.h"
 #include "afxwinappex.h"
 #include "afxdialogex.h"
@@ -13,12 +14,11 @@
 #include "ImageProcessing.hpp"
 #include "../thermalcamera/YoseenSDK/ThermalCamera.hpp"
 #include "Afxsock.h"
+//mysql必须包含网络相关头文件  
+#include "winsock.h"  
+//mysql头文件自然要包含    
+#include "mysql.h"
 #include "easylogging++.h"
-
-#include "Config.h"
-
-// 注册
-#include "MachineRegisterDialog.h"
 
 
 _INITIALIZE_EASYLOGGINGPP
@@ -82,12 +82,45 @@ END_MESSAGE_MAP()
 
 int GetLineIndex()
 {
-	AccessResult res;
-	if (SUCCEEDED( accessConnect.executeSQL("select max(line_index) as max_index from region_temperature", res))
-		&& !res.empty())
-		return stoi(res[0]["max_index"]);
-	else
-		return 0;
+	MYSQL mysql; //数据库连接句柄
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+	//设置数据库编码格式
+	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
+	//密码加字符串""
+	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
+	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
+		AfxMessageBox("数据库连接失败");
+		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
+		AfxMessageBox(e);  
+		return -1;
+	}
+	CString select_sql_by_user;
+	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
+	//SELECT MAX(column_name) FROM table_name;
+	select_sql_by_user="select max(line_index) from region_temperature";
+	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql_by_user);
+	BOOL logon_flag=false;
+	if(ress==0) //检测查询成功
+	{
+		res = mysql_store_result(&mysql);
+		if(mysql_num_rows(res)==0) //查询结果为空
+		{
+			return 0;
+		}
+		else
+		{
+			row=mysql_fetch_row(res);
+			CString r=row[0];
+			mysql_free_result(res);
+			mysql_close(&mysql);
+			return atoi(r);
+		}
+
+	}
+	mysql_free_result(res);
+	mysql_close(&mysql);
 	return -1;
 }
 
@@ -115,14 +148,28 @@ bool WriteTemp(AreaVessel& areavessel)
 	
 	if(-1==LineIndex) return false;
 	LineIndex++;
+	//写入数据库
+	MYSQL mysql; //数据库连接句柄
+	mysql_init(&mysql);
+	//设置数据库编码格式
+	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
+	//密码加字符串""
+	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
+	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
+		AfxMessageBox("数据库连接失败");
+		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
+		AfxMessageBox(e);  
+		return false;
+	}
 
 	CString sql_command;
+	int ress;
 
 	for(int i=0;i<areavessel.defaultAreaNum;i++)
 	{
 		sql_command.Format("insert into region_temperature (line_index,region_index,region_temp) values(%d,%d,%0.2f)",LineIndex,atoi(areavessel.areaVector[i].Id),areavessel.areaVector[i].MaxTemp);
-		
-		if (FAILED(accessConnect.executeSQL(sql_command.GetString())))
+		ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
+		if(ress)
 		{
 			AfxMessageBox("写入温度数据失败!");
 			return false;
@@ -142,6 +189,8 @@ bool WriteTemp(AreaVessel& areavessel)
 		outfile<<sendData<<endl;
 		outfile.close();
 	}
+
+	mysql_close(&mysql);
 	return true;
 }
 
@@ -175,23 +224,44 @@ C回转窑App theApp;
  //CWinThread  * pVideoThread; 
 int ConnectSign(CSocket& mysocket)
 {
-	//获取信号地址、端口
-
-	CString IP,Port;
-	AccessResult res;
-	accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res);
-	if (!res.empty())
-	{
-		IP = res[0]["para0"].c_str();
-		Port = res[0]["para1"].c_str();
+	//new初始化数据要和数据库连接
+	int index_sum;
+	MYSQL mysql; //数据库连接句柄
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+	//设置数据库编码格式
+	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
+	//密码加字符串""
+	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
+	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
+		AfxMessageBox("数据库连接失败");
+		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
+		AfxMessageBox(e);  
+		LOG(ERROR)<< "login:"+e;
+		return FALSE;
 	}
+
+	//获取信号地址、端口
+	CString IP,Port;
+	CString select_sql="select * from sys_para where para_name='signalequipment'";
+	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
+	if(ress==0) //检测查询成功
+	{
+		res = mysql_store_result(&mysql);
+		int resnum=mysql_num_rows(res);
+		row=mysql_fetch_row(res);
+		IP=row[2];
+		Port=row[3];
+	}
+	mysql_close(&mysql);
 	if (!mysocket.Create()) //创建套接字
 	{
 		AfxMessageBox("套接字创建失败!");
 		LOG(ERROR)<< "套接字创建失败";
 		return 0;
 	}
-	if (!mysocket.Connect(IP, atoi(Port))) //连接服务器
+	if (!mysocket.Connect(IP,atoi(Port))) //连接服务器
 	{
 		AfxMessageBox("连接服务器失败!");
 		LOG(ERROR)<< "连接服务器失败";
@@ -360,6 +430,9 @@ DWORD WINAPI   ThreadVideoProc(LPVOID lpParameter)
 					{
 						Mat mat_for_save=cv::Mat(all_splicing_mat.rows,all_splicing_mat.cols,CV_8UC3);
 						Mat mat_for_show=cv::Mat(all_splicing_mat.rows,all_splicing_mat.cols,CV_8UC3);
+						uchar *p_show,*p_save;
+						float *pf;
+						int j3;
 						double max,min;
 						minMaxIdx(all_splicing_mat,&min,&max);
 						cv::Mat grayImage=cv::Mat(all_splicing_mat.rows,all_splicing_mat.cols,CV_8UC1);
@@ -555,7 +628,6 @@ BOOL C回转窑App::InitInstance()
 
 	CWinAppEx::InitInstance();
 
-	
 
 	// 初始化 OLE 库
 	if (!AfxOleInit())
@@ -580,23 +652,7 @@ BOOL C回转窑App::InitInstance()
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
 	LoadStdProfileSettings(4);  // 加载标准 INI 文件选项(包括 MRU)
-	
-	MachineKey = VerifyMachineDialog();
-	if (MachineKey == -1)
-	{
-		MessageBox(nullptr, "注册码格式错误", "验证失败", MB_OK);
-		return FALSE;
-	}
-	else if (MachineKey == -2)
-	{
-		MessageBox(nullptr, "注册库禁止在虚拟机上运行", "验证失败", MB_OK);
-		return FALSE;
-	}
-	else if (MachineKey == 0)
-	{
-		MessageBox(nullptr, "注册码错误", "验证失败", MB_OK);
-		return FALSE;
-	}
+
 
 	InitContextMenuManager();
 
@@ -620,55 +676,22 @@ BOOL C回转窑App::InitInstance()
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
 
-	// 打开数据库
-	Config cfg;
-	std::string dbFile;
-	try
-	{
-		cfg.ReadFile("application.cfg");
-		dbFile = cfg.Read<std::string>("DatabasePath", "RotaryKiln.accdb");
-	}
-	catch (...)
-	{
-		dbFile = "RotaryKiln.accdb";
-	}
-	cfg.Add("DatabasePath", dbFile);
-	cfg.SaveFile("application.cfg");
-
-	if (FAILED(accessConnect.openDatabase(dbFile.c_str())))
-	{
-		AfxMessageBox(("数据库连接失败:" + accessConnect.getLastError()).c_str());
-		LOG(ERROR) << "login:" + accessConnect.getLastError();
-	}
 
 	// 分析标准 shell 命令、DDE、打开文件操作的命令行
 	CCommandLineInfo cmdInfo;
-	ParseCommandLine(cmdInfo);	
+	ParseCommandLine(cmdInfo);
 
-	 //调度在命令行中指定的命令。如果
-	 //用 /RegServer、/Register、/Unregserver 或 /Unregister 启动应用程序，则返回 FALSE。
-	try
-	{
-		if (!ProcessShellCommand(cmdInfo))
-			return FALSE;
-	}
-	catch (...)
-	{
-		AfxMessageBox("发生异常！");
+
+
+	// 调度在命令行中指定的命令。如果
+	// 用 /RegServer、/Register、/Unregserver 或 /Unregister 启动应用程序，则返回 FALSE。
+	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
-	}
 
 	// 唯一的一个窗口已初始化，因此显示它并对其进行更新
-	try
-	{
-		m_pMainWnd->SetWindowText("回转窑");
-		m_pMainWnd->ShowWindow(SW_SHOW);
-		m_pMainWnd->UpdateWindow();
-	}
-	catch (...)
-	{
-		AfxMessageBox("发生异常！");
-	}
+	m_pMainWnd->SetWindowText("回转窑");  
+	m_pMainWnd->ShowWindow(SW_SHOW);
+	m_pMainWnd->UpdateWindow();
 	// 仅当具有后缀时才调用 DragAcceptFiles
 	//  在 SDI 应用程序中，这应在 ProcessShellCommand 之后发生
 	//初始化日志
@@ -687,64 +710,106 @@ BOOL C回转窑App::InitInstance()
 	CMainFrame *pFrame=(CMainFrame*)AfxGetApp()->m_pMainWnd;//要求包含MainFrm.h头文件
 	pFrame->m_wndStatusBar.SetPaneText(0,"用户名："+userNumber);
 
-	int index_sum = 0;
-	AccessResult res;
-	if (FAILED( accessConnect.executeSQL("select * from region_info where region_state=1", res) ))
-	{
-		AfxMessageBox("执行SQL语句出错！");
-		LOG(WARNING) << "执行SQL语句出错";
+	//test
+	//pFrame->GetMenu()->GetSubMenu(1)->EnableMenuItem(2,MF_BYPOSITION|MF_DISABLED|MF_GRAYED); 
+
+	//test end
+
+	//new初始化数据要和数据库连接
+	int index_sum;
+	MYSQL mysql; //数据库连接句柄
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+	//设置数据库编码格式
+	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
+	//密码加字符串""
+	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
+	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
+		AfxMessageBox("数据库连接失败");
+		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
+		AfxMessageBox(e);  
+		LOG(ERROR)<< "login:"+e;
+		return FALSE;
 	}
-	if (res.empty())
+	//从数据库读取默认区域
+	CString select_sql;
+	select_sql="select * from region_info where region_state=1";
+	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
+	if(ress==0) //检测查询成功
 	{
-		AfxMessageBox("现在还没有区域数据！");
-		LOG(WARNING) << "没有区域数据";
-	}
-	else
-	{
-		for (auto& record : res)
+		res = mysql_store_result(&mysql);
+		int resnum=mysql_num_rows(res);
+		if(resnum==0) //查询结果为空
 		{
-			AreaTempInfo tempareateminfo{
-				record["region_index"].c_str(),
-				record["region_name"].c_str(),
-				RectRgn,
-				stoi(record["region_left"]),
-				stoi(record["region_top"]),
-				stoi(record["region_right"]),
-				stoi(record["region_bottom"]),
-				stof(record["region_alarm1"]),
-				stof(record["region_alarm2"]),
-				stof(record["region_alarm3"])
-			};
-			tempareateminfo.SetEmissivity(stof(record["region_emissivity"]));
-			tempareateminfo.MaxTemp = 0.0;
-			areavessel.AddArea(tempareateminfo);
-			areavessel.defaultAreaNum++;
+			AfxMessageBox("现在还没有区域数据！");
+			LOG(WARNING)<<"没有区域数据";
+		}
+		else
+		{
+			for(int i=0;i<resnum;i++)
+			{
+				row=mysql_fetch_row(res);
+				AreaTempInfo tempareateminfo=AreaTempInfo(row[0],row[1],RectRgn,atoi(row[2]),atoi(row[4]),atoi(row[3]),atoi(row[5]),atof(row[10]),atof(row[11]),atof(row[12]));
+				tempareateminfo.SetEmissivity(atof(row[6]));
+				tempareateminfo.MaxTemp=0.0;
+				areavessel.AddArea(tempareateminfo);
+			    areavessel.defaultAreaNum++;
+			}		
 		}
 	}
-
 	//从文件读取自定义区域
 	areavessel.ReadRegion();
-	if (FAILED( accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res))
-		|| res.empty())
-	{
-		AfxMessageBox("现在还没有设置拼接数，请先设置！");
-		LOG(WARNING) << "没有设置拼接数";
-	}
-	else
-	{
-		index_sum = stoi(res[0]["para3"]);
-	}
-	accessConnect.executeSQL("select * from sys_para where para_name='splicingregion' and para_index<" 
-		+ std::to_string(index_sum) + " order by para_index", res);
 
+	select_sql="select * from sys_para where para_name='signalequipment'";
+	ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
+	if(ress==0) //检测查询成功
+	{
+		res = mysql_store_result(&mysql);
+		int resnum=mysql_num_rows(res);
+		if(resnum==0) //查询结果为空
+		{
+			AfxMessageBox("现在还没有设置拼接数，请先设置！");
+			LOG(WARNING)<<"没有设置拼接数";
+		}
+		else
+		{
+			row=mysql_fetch_row(res);
+			index_sum=atoi(row[5]);
 
-	for (size_t index = 0; index < res.size(); index++)
-		piecesplicing.push_back(PIECESPLICING(index, stoi(res[index]["para0"]), stoi(res[index]["para1"])));
+		}
+
+	}
+	select_sql.Format("select * from sys_para where para_name='splicingregion' and para_index<%d order by para_index",index_sum);
+	ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
+	if(ress==0) //检测查询成功
+	{
+		res = mysql_store_result(&mysql);
+		int resnum=mysql_num_rows(res);
+		CString indexstr;
+		for(int index=0;index<resnum;index++)
+		{
+			row=mysql_fetch_row(res);
+			piecesplicing.push_back(PIECESPLICING(index,atoi(row[2]),atoi(row[3])));
+		}	
+	}
 
 	//获取热像仪地址、用户名、密码
-	accessConnect.executeSQL("select * from sys_para where para_name='thermalequipment'", res);
-	if (!res.empty())
-		strcpy(loginInfo.CameraAddr, res[0]["para1"].c_str());
+	select_sql="select * from sys_para where para_name='thermalequipment'";
+	ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
+	if(ress==0) //检测查询成功
+	{
+		res = mysql_store_result(&mysql);
+		int resnum=mysql_num_rows(res);
+		CString indexstr;
+		row=mysql_fetch_row(res);
+		indexstr=row[3];
+		strcpy(loginInfo.CameraAddr,indexstr.GetBuffer());
+	}
+	mysql_close(&mysql);
+
+
+
 	
 
 	//获取热像仪数据并显示
@@ -788,33 +853,30 @@ BOOL C回转窑App::InitInstance()
 	//创建第一个线程ThreadProc,相对优先级THREAD_PRIORITY_IDLE面对任何等级调整为1    
 	AfxBeginThread((AFX_THREADPROC)ThreadVideoProc, (LPVOID)&alldialog_p,THREAD_PRIORITY_IDLE);
 
-	////注册
-	//std::string strKey="2551b7a69845407894c8aa642189d8a1";//明码：中国江苏南京工程学院
-
-	//typedef void (*lpCall)(char*);
-	////创建dll句柄  
-	//HINSTANCE hDll;  
-	////装载dll  
-	//hDll = LoadLibrary(_T("dialog.dll"));  
-	//if(NULL==hDll)
-	//{  
-	//	AfxMessageBox(_T("DLL加载失败！"));  
-	//}  
-	////检索指定DLL中的输出库函数地址  
-	//lpCall Check_Register=(lpCall)GetProcAddress(hDll,"Check_Register");  
-	//lpCall GetRegisterKey=(lpCall)GetProcAddress(hDll,"GetRegisterKey");  
-	//if(NULL==Check_Register)  
-	//{  
-	//	AfxMessageBox(_T("DLL内部函数调用失败！"));  
-	//}  
-	////创建DLL对话框  
-	//HINSTANCE exe_hInstance = GetModuleHandle(NULL);
-	//AfxSetResourceHandle(hDll); //切换状态
-	//Check_Register((char*)strKey.c_str());
-	//AfxSetResourceHandle(exe_hInstance); //恢复状态
-	//FreeLibrary(hDll);
-
-
+	//注册
+	std::string strKey="2551b7a69845407894c8aa642189d8a1";//明码：中国江苏南京工程学院
+	typedef void (*lpCall)(char*);
+	//创建dll句柄  
+	HINSTANCE hDll;  
+	//装载dll  
+	hDll = LoadLibrary(_T("dialog.dll"));  
+	if(NULL==hDll)
+	{  
+		AfxMessageBox(_T("DLL加载失败！"));  
+	}  
+	//检索指定DLL中的输出库函数地址  
+	lpCall Check_Register=(lpCall)GetProcAddress(hDll,"Check_Register");  
+	lpCall GetRegisterKey=(lpCall)GetProcAddress(hDll,"GetRegisterKey");  
+	if(NULL==Check_Register)  
+	{  
+		AfxMessageBox(_T("DLL内部函数调用失败！"));  
+	}  
+	//创建DLL对话框  
+	HINSTANCE exe_hInstance = GetModuleHandle(NULL);
+	AfxSetResourceHandle(hDll); //切换状态
+	Check_Register((char*)strKey.c_str());
+	AfxSetResourceHandle(exe_hInstance); //恢复状态
+	FreeLibrary(hDll);
 	return TRUE;
 }
 

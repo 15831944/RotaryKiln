@@ -9,9 +9,11 @@
 
 #define MD5STR "南京工程学院计算工程学院王杰"
 
-#include "SQLConnect.hpp"
+//mysql必须包含网络相关头文件  
+#include "winsock.h"  
+//mysql头文件自然要包含    
+#include "mysql.h"
 #include "easylogging++.h"
-#include "CCopyDialog.h"
 
 
 
@@ -32,7 +34,7 @@ CLogon::CLogon(CWnd* pParent /*=NULL*/)
 	GetLocalTime(&st);
 	strDateTime.Format("%4d-%2d-%2d %2d:%2d:%2d",st.wYear,st.wMonth,st.wDay,st.wHour,st.wMinute,st.wSecond);
 	MD5 md5;
-	strDateTime = strDateTime + MD5STR;// +std::to_string(MachineKey).c_str();
+	strDateTime=strDateTime+MD5STR;
 	md5.update(strDateTime.GetBuffer());
 	administrator_passwd=md5.toString().c_str();
 }
@@ -74,17 +76,48 @@ void CLogon::OnBnClickedCheckAutologon()
 		autologon_flag=FALSE;
 }
 
+void mysql_real_cstring(CString &str)
+{
+	std::string strSql=str.GetBuffer();
+	std::string strDest;
+	size_t iSrcSize = strSql.size();
+	
+	for (size_t i = 0; i < iSrcSize; i++) {
+		char ch = strSql[i];
+		switch (ch)
+		{
+		case '\0':
+			break;
+		case '\n':
+			break;
+		case '\r':
+			break;
+		case '\'':
+			break;
+		case '"':
+			break;
+		case '\\':
+			break;
+		case '%':
+			break;
+		case '_':
+			break;
+		case ' ':
+			break;
+		default:
+			strDest.append(1, ch);
+			break;
+		}
+	}
+	str=strDest.c_str();
+	return;
+}
 void CLogon::OnBnClickedButtonLogon()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(true);
 	m_comboxUser.GetWindowText(user_number);
-
-	MD5 md5;
-	user_passwd = user_number + m_password + MD5STR + std::to_string(MachineKey).c_str();
-	md5.update(user_passwd.GetBuffer());
-	user_passwd = md5.toString().c_str();//toString()函数获得加密字符串，c_str();函数重新转换成CString
-
+	mysql_real_cstring(user_number);
 	if(user_number=="administrator"&&m_password==administrator_passwd)
 	{	
 		userNumber=user_number;
@@ -93,38 +126,79 @@ void CLogon::OnBnClickedButtonLogon()
 		EndDialog(LOGON_TRUE);
 		return;
 	}
-
+	MYSQL mysql; //数据库连接句柄
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+	//设置数据库编码格式
+	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
+	//密码加字符串""
+	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
+	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
+		AfxMessageBox("数据库连接失败");
+		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
+		LOG(ERROR)   << "login:"+e;
+		MessageBox(e);  
+		return;
+	}
 	if(user_number.IsEmpty()||m_password.IsEmpty())
 	{
 		MessageBox(_T("用户名或密码不能为空!"),_T("用户登录信息"));
 		return;
 	}
-
-	AccessResult res;	
+	MD5 md5;
+	user_passwd=m_password+MD5STR;
+	md5.update(user_passwd.GetBuffer());
+	user_passwd=md5.toString().c_str();//toString()函数获得加密字符串，c_str();函数重新转换成CString
+	
 	CString select_sql_by_user;
+	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
 	select_sql_by_user.Format("select * from user_info where user_number= \'%s\'",user_number);
-	accessConnect.executeSQL(select_sql_by_user.GetString(), res);
+	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql_by_user);
 	BOOL logon_flag=false;
-	if (res.empty())//查询结果为空
+	if(ress==0) //检测查询成功
 	{
-		AfxMessageBox("用户不存在");
-	}
-	else
-	{
-		if (user_passwd == res[0]["user_passwd"].c_str())
+		res = mysql_store_result(&mysql);
+		if(mysql_num_rows(res)==0) //查询结果为空
 		{
-			userNumber = user_number;
-			userPermission = res[0]["user_permission"].c_str();
-			logon_flag = true;
-			AfxMessageBox("登录成功!");
-			LOG(INFO) << userNumber + "登录";
+			AfxMessageBox("用户不存在");
 		}
 		else
 		{
-			AfxMessageBox("密码错误!");
-			LOG(ERROR) << userNumber + "登录密码错误";
+
+			row=mysql_fetch_row(res);
+			CString str;
+			for(int i=0;i<11;i++)
+				str+=row[i];
+			md5.reset();
+			md5.update(str.GetBuffer());
+			str=md5.toString().c_str();
+			if(str!=row[12])
+			{
+				AfxMessageBox("数据校验错误，你的用户数据可能被篡改!");
+				LOG(WARNING)<< userNumber+"用户数据可能被篡改";
+			}
+			else
+			{
+				if(user_passwd==row[1])
+				{					
+					userNumber=user_number;
+					userPermission=row[6];
+					logon_flag=true;
+					mysql_free_result(res);
+					AfxMessageBox("登录成功!");
+				    LOG(INFO) << userNumber+"登录";
+				}
+				else
+				{
+					AfxMessageBox("密码错误!");
+					LOG(ERROR)   << userNumber+"登录密码错误";
+				}
+		    }
 		}
+
 	}
+	mysql_close(&mysql);
 	if (logon_flag)
 		EndDialog(LOGON_TRUE);
 	return;	
@@ -159,17 +233,16 @@ BOOL CLogon::PreTranslateMessage(MSG* pMsg)
 				GetLocalTime(&st);
 				strDateTime.Format("%4d-%2d-%2d %2d:%2d:%2d",st.wYear,st.wMonth,st.wDay,st.wHour,st.wMinute,st.wSecond);
 				MD5 md5;
-				strDateTime = strDateTime + MD5STR;// +std::to_string(MachineKey).c_str();
+				strDateTime=strDateTime+MD5STR;
 				md5.update(strDateTime.GetBuffer());
 				strDateTime=md5.toString().c_str();//toString()函数获得加密字符串，c_str();函数重新转换成CString
-				administrator_passwd = strDateTime + MD5STR;// +std::to_string(MachineKey).c_str();
+				administrator_passwd=strDateTime+MD5STR;
 				md5.reset();
 				md5.update(administrator_passwd.GetBuffer());
 				administrator_passwd=md5.toString().c_str();
 				m_comboxUser.SetWindowText("administrator");
 				UpdateData(false);
-				ShowInfoDialog(strDateTime);
-				//AfxMessageBox(strDateTime);
+				AfxMessageBox(strDateTime);
 				return true;
 			}
 			break;

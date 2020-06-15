@@ -8,7 +8,10 @@
 
 #define MD5STR "南京工程学院计算工程学院王杰"
 
-#include "SQLConnect.hpp"
+//mysql必须包含网络相关头文件  
+#include "winsock.h"  
+//mysql头文件自然要包含    
+#include "mysql.h"
 
 
 extern ATL::CImage m_image;
@@ -108,28 +111,51 @@ BOOL CRegionSetDialog::OnInitDialog()
 	m_listctrl.InsertColumn(nIndex++, "发射率", LVCFMT_CENTER, rect.Width()/7);
 	m_left=m_right=m_top=m_bottom="0";
 
-	AccessResult res;
-	if (SUCCEEDED(accessConnect.executeSQL("select * from region_info where region_state=1", res))) //检测查询成功
+	MYSQL mysql; //数据库连接句柄
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+	//设置数据库编码格式
+	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
+	//密码加字符串""
+	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
+	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
+		AfxMessageBox("数据库连接失败");
+		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
+		MessageBox(e);  
+		//return;
+	}
+	
+	CString select_sql;
+	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
+	select_sql="select * from region_info where region_state=1";
+	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql);
+	if(ress==0) //检测查询成功
 	{
-		if(res.empty()) //查询结果为空
+		res = mysql_store_result(&mysql);
+		int resnum=mysql_num_rows(res);
+		if(resnum==0) //查询结果为空
 		{
 			AfxMessageBox("现在还没有区域数据！");
 		}
 		else
 		{
-			for (size_t i = 0; i < res.size(); i++)
+			//while((row=mysql_fetch_row(res)))
+			for(int i=0;i<resnum;i++)
 			{
-				m_listctrl.InsertItem(i, res[i]["region_index"].c_str());//增加一行
-				m_listctrl.SetItemText(i, 1, res[i]["region_name"].c_str());//在第一行上设置第二列的内容
-				m_listctrl.SetItemText(i, 2, res[i]["region_left"].c_str());
-				m_listctrl.SetItemText(i, 3, res[i]["region_right"].c_str());
-				m_listctrl.SetItemText(i, 4, res[i]["region_top"].c_str());
-				m_listctrl.SetItemText(i, 5, res[i]["region_bottom"].c_str());
-				m_listctrl.SetItemText(i, 6, res[i]["region_emissivity"].c_str());
-			}	
+				row=mysql_fetch_row(res);
+				m_listctrl.InsertItem(i,row[0]);//增加一行
+				m_listctrl.SetItemText(i,1,row[1]);//在第一行上设置第二列的内容
+				m_listctrl.SetItemText(i,2,row[2]);
+				m_listctrl.SetItemText(i,3,row[3]);
+				m_listctrl.SetItemText(i,4,row[4]);
+				m_listctrl.SetItemText(i,5,row[5]);
+				m_listctrl.SetItemText(i,6,row[6]);
+			}		
 		}
 
 	}
+	mysql_close(&mysql);
 	UpdateData(FALSE);
 	SetTimer(1,100,NULL);
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -328,19 +354,38 @@ void CRegionSetDialog::OnOK()
 
 
 void CRegionSetDialog::OnBnClickedButton4()
-{	
+{
+	// TODO: 在此添加控件通知处理程序代码
+	MYSQL mysql; //数据库连接句柄
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+	//设置数据库编码格式
+	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
+	//密码加字符串""
+	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
+	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
+		AfxMessageBox("数据库连接失败");
+		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
+		MessageBox(e);  
+		return;
+	}
+	
 	CString sql_command;
 	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
 	sql_command="update region_info set region_state=0 where region_state=1";
-	accessConnect.executeSQL(sql_command.GetString());
+	int ress;
+	ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
 	for(int i=0;i<m_listctrl.GetItemCount();i++)
 	{
 		sql_command.Format("insert into region_info (region_index,region_name,region_left,region_right,region_top,region_bottom,region_emissivity)  values(%s,\'%s\',%s,%s,%s,%s,%s)",m_listctrl.GetItemText(i, 0),m_listctrl.GetItemText(i, 1),m_listctrl.GetItemText(i, 2),m_listctrl.GetItemText(i, 3),m_listctrl.GetItemText(i,4),m_listctrl.GetItemText(i,5),m_listctrl.GetItemText(i,6));
-		if (FAILED(accessConnect.executeSQL(sql_command.GetString()) ))
+		ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
+		if(ress)
 		{
 			AfxMessageBox("保存失败！");
 			return;
 		}
     }
+	mysql_close(&mysql);
 	AfxMessageBox("保存成功！");
 }
