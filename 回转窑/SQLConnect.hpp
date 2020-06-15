@@ -192,13 +192,12 @@ public:
                 + ", ErrorCode:" + std::to_string(e.Error())
                 + ", Source:" + _com_util::ConvertBSTRToString(e.Source())
                 + ", Description:" + _com_util::ConvertBSTRToString(e.Description()) + "]";
-            bool safeCmd{ e.Error() == 0x800A0E78 && sqlCmd.find("select") == std::string::npos };
-            logger.log(safeCmd ? LogLevel::Warning : LogLevel::Error, " SQL:", sqlCmd, " Failure."
+            logger.log(LogLevel::Error, " SQL:", sqlCmd, " Failure."
                 , "ErrorCode: ", std::hex, std::setiosflags(std::ios::uppercase), e.Error(), std::dec
                 , ", Message:", e.ErrorMessage()
                 , ", Source:", _com_util::ConvertBSTRToString(e.Source())
                 , ", Description:", _com_util::ConvertBSTRToString(e.Description()));
-            return safeCmd ? 0 : e.Error();
+            return e.Error();
         }
         catch (...)
         {

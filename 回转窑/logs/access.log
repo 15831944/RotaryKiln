@@ -1,1 +1,73 @@
 2020-6-15 15:27:11  [INFO]  Open RotaryKiln.accdb
+2020-6-15 15:30:51  [INFO]  Open RotaryKiln.accdb
+2020-6-15 15:30:52  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-15 15:30:52  [INFO]  Record:5 Field:17
+2020-6-15 15:30:57  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-15 15:30:57  [INFO]  Record:1 Field:12
+2020-6-15 15:30:57  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-15 15:30:57  [INFO]  Record:5 Field:17
+2020-6-15 15:30:57  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-15 15:30:57  [INFO]  Record:1 Field:8
+2020-6-15 15:30:57  [INFO]  SQL:select * from sys_para where para_name='splicingregion' and para_index<5 order by para_index Success.
+2020-6-15 15:30:57  [INFO]  Record:5 Field:8
+2020-6-15 15:30:57  [INFO]  SQL:select * from sys_para where para_name='thermalequipment' Success.
+2020-6-15 15:30:57  [INFO]  Record:1 Field:8
+2020-6-15 15:30:57  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-15 15:30:57  [INFO]  Record:1 Field:8
+2020-6-15 15:31:04  [INFO]  SQL:select * from user_info Success.
+2020-6-15 15:31:04  [INFO]  Record:3 Field:12
+2020-6-15 15:31:06  [INFO]  SQL:select * from user_info where user_number= 'chenj' Success.
+2020-6-15 15:31:06  [INFO]  Record:1 Field:12
+2020-6-15 15:31:07  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-15 15:31:07  [INFO]  Record:1 Field:12
+2020-6-15 15:31:10  [INFO]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='b6f89e263929c3a62ce5697b99f49878',user_type='管理员',user_name='chenjun' where  user_number='chenj' Success.
+2020-6-15 15:31:12  [INFO]  SQL:select * from user_info Success.
+2020-6-15 15:31:12  [INFO]  Record:3 Field:12
+2020-6-15 15:31:15  [INFO]  SQL:select * from user_info where user_number= 'abc' Success.
+2020-6-15 15:31:15  [INFO]  Record:1 Field:12
+2020-6-15 15:31:16  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-15 15:31:16  [INFO]  Record:1 Field:12
+2020-6-15 15:31:24  [INFO]  SQL:update user_info set user_permission='ABCDEFGHIJ',user_passwd='408bffc86406b1c9304c3517de50ca1a',user_type='普通人员',user_name='cab' where  user_number='abc' Success.
+2020-6-15 15:31:26  [INFO]  SQL:select * from user_info Success.
+2020-6-15 15:31:26  [INFO]  Record:3 Field:12
+2020-6-15 15:32:03  [INFO]  SQL:select * from user_info Success.
+2020-6-15 15:32:03  [INFO]  Record:3 Field:12
+2020-6-15 15:32:09  [INFO]  SQL:delete  from user_info where  user_number='abc' Success.
+2020-6-15 15:32:10  [INFO]  SQL:select * from user_info Success.
+2020-6-15 15:32:10  [INFO]  Record:2 Field:12
+2020-6-15 15:34:14  [INFO]  Open RotaryKiln.accdb
+2020-6-15 15:34:14  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-15 15:34:14  [INFO]  Record:5 Field:17
+2020-6-15 15:34:18  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-15 15:34:18  [INFO]  Record:1 Field:12
+2020-6-15 15:34:18  [INFO]  SQL:select * from region_info where region_state=1 Success.
+2020-6-15 15:34:18  [INFO]  Record:5 Field:17
+2020-6-15 15:34:18  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-15 15:34:18  [INFO]  Record:1 Field:8
+2020-6-15 15:34:18  [INFO]  SQL:select * from sys_para where para_name='splicingregion' and para_index<5 order by para_index Success.
+2020-6-15 15:34:18  [INFO]  Record:5 Field:8
+2020-6-15 15:34:18  [INFO]  SQL:select * from sys_para where para_name='thermalequipment' Success.
+2020-6-15 15:34:18  [INFO]  Record:1 Field:8
+2020-6-15 15:34:18  [INFO]  SQL:select * from sys_para where para_name='signalequipment' Success.
+2020-6-15 15:34:18  [INFO]  Record:1 Field:8
+2020-6-15 15:34:24  [INFO]  SQL:select * from user_info Success.
+2020-6-15 15:34:24  [INFO]  Record:2 Field:12
+2020-6-15 15:34:26  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-15 15:34:26  [INFO]  Record:1 Field:12
+2020-6-15 15:34:33  [INFO]  SQL:insert into user_info (user_permission,user_passwd,user_type,user_name,user_number,add_user_number) values('DEF','9aa0a5f4ec7d0fb0dfee7ad2726392e7','管理员','aaa','aaa','admin') Success.
+2020-6-15 15:34:35  [ERROR]  SQL:insert into user_info (user_permission,user_passwd,user_type,user_name,user_number,add_user_number) values('DEF','9aa0a5f4ec7d0fb0dfee7ad2726392e7','管理员','aaa','aaa','admin') Failure.ErrorCode: 80004005, Message:未指定的错误, Source:Microsoft Access Database Engine, Description:由于将在索引、 主关键字、或关系中创建重复的值，请求对表的改变没有成功。改变该字段中的或包含重复数据的字段中的数据，删除索引或重新定义索引以允许重复的值并再试一次。
+2020-6-15 15:34:42  [ERROR]  SQL:insert into user_info (user_permission,user_passwd,user_type,user_name,user_number,add_user_number) values('DEF','9aa0a5f4ec7d0fb0dfee7ad2726392e7','管理员','aaa','aaa','admin') Failure.ErrorCode: 80004005, Message:未指定的错误, Source:Microsoft Access Database Engine, Description:由于将在索引、 主关键字、或关系中创建重复的值，请求对表的改变没有成功。改变该字段中的或包含重复数据的字段中的数据，删除索引或重新定义索引以允许重复的值并再试一次。
+2020-6-15 15:34:47  [INFO]  SQL:select * from user_info Success.
+2020-6-15 15:34:47  [INFO]  Record:3 Field:12
+2020-6-15 15:34:52  [INFO]  SQL:select * from user_info where user_number= 'aaa' Success.
+2020-6-15 15:34:52  [INFO]  Record:1 Field:12
+2020-6-15 15:34:53  [INFO]  SQL:select * from user_info where user_number= 'admin' Success.
+2020-6-15 15:34:53  [INFO]  Record:1 Field:12
+2020-6-15 15:34:54  [INFO]  SQL:update user_info set user_permission='DEF',user_type='管理员',user_name='aaa' where  user_number='aaa' Success.
+2020-6-15 15:34:55  [INFO]  SQL:select * from user_info Success.
+2020-6-15 15:34:55  [INFO]  Record:3 Field:12
+2020-6-15 15:35:21  [INFO]  SQL:update sys_para set para0='23',para1='0.0.0.0', para2='86' ,  para3='555' , para4='555' where para_name='thermalequipment' Success.
+2020-6-15 15:35:29  [INFO]  SQL:select * from region_info where region_state=1 order by region_index Success.
+2020-6-15 15:35:29  [INFO]  Record:5 Field:17
+2020-6-15 15:35:31  [INFO]  SQL:select * from region_temperature where line_time>='2020-06-15' and line_time<='2020-06-15' order by line_index Success.
+2020-6-15 15:35:31  [INFO]  Record:0 Field:0
