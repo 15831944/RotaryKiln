@@ -196,6 +196,7 @@
     <ClInclude Include="ShowPictureDialog.h" />
     <ClInclude Include="SplicingDialog.h" />
     <ClInclude Include="SplicingSetDialog.h" />
+    <ClInclude Include="SQLConnect.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ThermalDialog.h" />

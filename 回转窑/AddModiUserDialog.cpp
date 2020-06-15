@@ -1,24 +1,21 @@
-// AddModiUserDialog.cpp : ÊµÏÖÎÄ¼ş
+ï»¿// AddModiUserDialog.cpp : å®ç°æ–‡ä»¶
 //
 
 #include "stdafx.h"
-#include "»Ø×ªÒ¤.h"
+#include "å›è½¬çª‘.h"
 #include "AddModiUserDialog.h"
 #include "afxdialogex.h"
 #include "md5.h"
-//mysql±ØĞë°üº¬ÍøÂçÏà¹ØÍ·ÎÄ¼ş  
-#include "winsock.h"  
-//mysqlÍ·ÎÄ¼ş×ÔÈ»Òª°üº¬    
-#include "mysql.h"
 #include "easylogging++.h"
+#include "SQLConnect.hpp"
 
 
-#define MD5STR "ÄÏ¾©¹¤³ÌÑ§Ôº¼ÆËã¹¤³ÌÑ§ÔºÍõ½Ü"
+#define MD5STR "å—äº¬å·¥ç¨‹å­¦é™¢è®¡ç®—å·¥ç¨‹å­¦é™¢ç‹æ°"
 
 
 extern CString userNumber;
 
-// AddModiUserDialog ¶Ô»°¿ò
+// AddModiUserDialog å¯¹è¯æ¡†
 
 IMPLEMENT_DYNAMIC(AddModiUserDialog, CDialogEx)
 
@@ -74,118 +71,63 @@ BEGIN_MESSAGE_MAP(AddModiUserDialog, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// AddModiUserDialog ÏûÏ¢´¦Àí³ÌĞò
+// AddModiUserDialog æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 
 BOOL AddModiUserDialog::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// TODO:  ÔÚ´ËÌí¼Ó¶îÍâµÄ³õÊ¼»¯
-	m_usertype.InsertString(0,"¹ÜÀíÔ±");
-	m_usertype.InsertString(1,"²Ù×÷Ô±");
-	m_usertype.InsertString(2,"ÆÕÍ¨ÈËÔ±");
+	// TODO:  åœ¨æ­¤æ·»åŠ é¢å¤–çš„åˆå§‹åŒ–
+	AccessResult res;
+	m_usertype.InsertString(0,"ç®¡ç†å‘˜");
+	m_usertype.InsertString(1,"æ“ä½œå‘˜");
+	m_usertype.InsertString(2,"æ™®é€šäººå‘˜");
 	if(usernumber=="")
 	{
-		SetWindowText(_T("Ìí¼ÓÓÃ»§"));
-		SetDlgItemText(IDC_BUTTON1, _T("Ìí¼Ó"));
+		SetWindowText(_T("æ·»åŠ ç”¨æˆ·"));
+		SetDlgItemText(IDC_BUTTON1, _T("æ·»åŠ "));
 	}
 	else
 	{
-		//¶ÁÈ¡Êı¾İ¿â
-		MYSQL mysql; //Êı¾İ¿âÁ¬½Ó¾ä±ú
-		MYSQL_RES *res;
-		MYSQL_ROW row;
-		mysql_init(&mysql);
-		//ÉèÖÃÊı¾İ¿â±àÂë¸ñÊ½
-		//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
-		//ÃÜÂë¼Ó×Ö·û´®""
-		if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
-		{//mydbÎªÄãËù´´½¨µÄÊı¾İ¿â£¬3306Îª¶Ë¿ÚºÅ£¬rootÊÇÓÃ»§Ãû,123456ÊÇÃÜÂë
-			AfxMessageBox("Êı¾İ¿âÁ¬½ÓÊ§°Ü");
-			CString e=mysql_error(&mysql);//ĞèÒª½«ÏîÄ¿ÊôĞÔÖĞ×Ö·û¼¯ĞŞ¸ÄÎª¡°Ê¹ÓÃ¶à×Ö½Ú×Ö·û¼¯¡±»ò¡°Î´ÉèÖÃ¡±  
-			MessageBox(e);  
-			return FALSE;
-		}
 		CString select_sql_by_user;
 		//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
-		select_sql_by_user.Format("select * from user_info where user_number= \'%s\'",usernumber);
-		int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql_by_user);
-		if(ress==0) //¼ì²â²éÑ¯³É¹¦
+		select_sql_by_user.Format("select * from user_info where user_number= \'%s\'", usernumber);
+		if (SUCCEEDED(accessConnect.executeSQL(select_sql_by_user.GetString(), res)))//æ£€æµ‹æŸ¥è¯¢æˆåŠŸ
 		{
-			res = mysql_store_result(&mysql);
-			if(mysql_num_rows(res)==0) //²éÑ¯½á¹ûÎª¿Õ
+			if (res.empty()) //æŸ¥è¯¢ç»“æœä¸ºç©º
 			{
-				AfxMessageBox("ÓÃ»§²»´æÔÚ");
+				AfxMessageBox("ç”¨æˆ·ä¸å­˜åœ¨");
 			}
 			else
 			{
-				MD5 md5;
-				row=mysql_fetch_row(res);
-				CString str;
-				for(int i=0;i<11;i++)
-					str+=row[i];
-				md5.reset();
-				md5.update(str.GetBuffer());
-				str=md5.toString().c_str();
-				if(str!=row[12])
+				m_usernumber = usernumber;
+				m_usertypevalue = res[0]["user_type"].c_str();
+				m_username = res[0]["user_name"].c_str();
+				CString strqx = res[0]["user_permission"].c_str();
+				for (int i = 0; i < QXNUM; i++)
 				{
-					AfxMessageBox("Êı¾İĞ£Ñé´íÎó£¬ÄãµÄÓÃ»§Êı¾İ¿ÉÄÜ±»´Û¸Ä!");
-					EndDialog(0);
+					if (strqx.Find(65 + i) > -1)
+						m_check[i] = true;
 				}
-				else
-				{
-					{					
-						m_usernumber=usernumber;
-						m_usertypevalue=row[2];
-						m_username=row[3];
-						CString strqx=row[6];
-						for(int i=0;i<QXNUM;i++)
-						{
-                           if(strqx.Find (65+i)>-1)
-							   m_check[i]=true;
-						}
-						m_usercontrol.SetReadOnly(TRUE);
-						mysql_free_result(res);
-						UpdateData(FALSE);
-						AfxMessageBox("ÃÜÂëÎª¿Õ½«²»ĞŞ¸ÄÃÜÂë£¡");
-					}
-				}
+				m_usercontrol.SetReadOnly(TRUE);
+				UpdateData(FALSE);
+				AfxMessageBox("å¯†ç ä¸ºç©ºå°†ä¸ä¿®æ”¹å¯†ç ï¼");
 			}
-
 		}
-		mysql_close(&mysql);
-	}
-	//¶ÁÈ¡Êı¾İ¿â
-	MYSQL mysql; //Êı¾İ¿âÁ¬½Ó¾ä±ú
-	MYSQL_RES *res;
-	MYSQL_ROW row;
-	mysql_init(&mysql);
-	//ÉèÖÃÊı¾İ¿â±àÂë¸ñÊ½
-	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
-	//ÃÜÂë¼Ó×Ö·û´®""
-	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
-	{//mydbÎªÄãËù´´½¨µÄÊı¾İ¿â£¬3306Îª¶Ë¿ÚºÅ£¬rootÊÇÓÃ»§Ãû,123456ÊÇÃÜÂë
-		AfxMessageBox("Êı¾İ¿âÁ¬½ÓÊ§°Ü");
-		CString e=mysql_error(&mysql);//ĞèÒª½«ÏîÄ¿ÊôĞÔÖĞ×Ö·û¼¯ĞŞ¸ÄÎª¡°Ê¹ÓÃ¶à×Ö½Ú×Ö·û¼¯¡±»ò¡°Î´ÉèÖÃ¡±  
-		MessageBox(e);  
-		return FALSE;
 	}
 	CString select_sql_by_user;
 	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
 	select_sql_by_user.Format("select * from user_info where user_number= \'%s\'",userNumber);
-	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql_by_user);
-	if(ress==0) //¼ì²â²éÑ¯³É¹¦
+	if (SUCCEEDED(accessConnect.executeSQL(select_sql_by_user.GetString(), res))) //æ£€æµ‹æŸ¥è¯¢æˆåŠŸ
 	{
-		res = mysql_store_result(&mysql);
-		if(mysql_num_rows(res)==0) //²éÑ¯½á¹ûÎª¿Õ
+		if(res.empty()) //æŸ¥è¯¢ç»“æœä¸ºç©º
 		{
-			AfxMessageBox("ÓÃ»§²»´æÔÚ");
+			AfxMessageBox("ç”¨æˆ·ä¸å­˜åœ¨");
 		}
 		else
 		{	
-			row=mysql_fetch_row(res);
-			CString strqx=row[6];
+			CString strqx = res[0]["user_permission"].c_str();
 			for(int i=0;i<QXNUM;i++)
 			{
 				if(strqx.Find (65+i)==-1)
@@ -193,21 +135,19 @@ BOOL AddModiUserDialog::OnInitDialog()
 			}
 			if(m_check[3])
 				m_checkcontrol[3].EnableWindow(FALSE);
-			mysql_free_result(res);
 			UpdateData(FALSE);		
 		}
 
 	}
-	mysql_close(&mysql);
 	return TRUE;  // return TRUE unless you set the focus to a control
-	// Òì³£: OCX ÊôĞÔÒ³Ó¦·µ»Ø FALSE
+	// å¼‚å¸¸: OCX å±æ€§é¡µåº”è¿”å› FALSE
 }
 
 
 void AddModiUserDialog::OnBnClickedButton1()
 {
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
-	//»ñÈ¡ÓÃ»§È¨ÏŞ
+	// TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
+	//è·å–ç”¨æˆ·æƒé™
 	UpdateData(TRUE);
 	CString strqx="";
 	for(int i=0;i<QXNUM;i++)
@@ -218,27 +158,12 @@ void AddModiUserDialog::OnBnClickedButton1()
 		strqx=strqx+strcheck;
 	}
 	MD5 md5;
+	//CString user_passwd = m_usernumber + m_userpwd + MD5STR + std::to_string(MachineKey).c_str();
 	CString user_passwd=m_userpwd+MD5STR;
 	md5.update(user_passwd.GetBuffer());
 	user_passwd=md5.toString().c_str();
-	//Ğ´ÈëÊı¾İ¿â
-	MYSQL mysql; //Êı¾İ¿âÁ¬½Ó¾ä±ú
-	MYSQL_RES *res;
-	MYSQL_ROW row;
-	mysql_init(&mysql);
-	//ÉèÖÃÊı¾İ¿â±àÂë¸ñÊ½
-	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
-	//ÃÜÂë¼Ó×Ö·û´®""
-	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
-	{//mydbÎªÄãËù´´½¨µÄÊı¾İ¿â£¬3306Îª¶Ë¿ÚºÅ£¬rootÊÇÓÃ»§Ãû,123456ÊÇÃÜÂë
-		AfxMessageBox("Êı¾İ¿âÁ¬½ÓÊ§°Ü");
-		CString e=mysql_error(&mysql);//ĞèÒª½«ÏîÄ¿ÊôĞÔÖĞ×Ö·û¼¯ĞŞ¸ÄÎª¡°Ê¹ÓÃ¶à×Ö½Ú×Ö·û¼¯¡±»ò¡°Î´ÉèÖÃ¡±  
-		MessageBox(e);  
-		return;
-	}
 
 	CString sql_command;
-	int ress;
 	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
 	if(usernumber=="")
 	{
@@ -246,15 +171,14 @@ void AddModiUserDialog::OnBnClickedButton1()
 		//sql_command.Format("insert into user_info (user_permission,user_passwd,user_type,user_name,add_datetime) values(\'%s\',\'%s\',\'%s\',\'%s\',current_timestamp)",strqx,user_passwd,m_usertypevalue,m_username);
 		if(m_usernumber=="")
 		{
-			AfxMessageBox("ÓÃ»§Ãû²»ÄÜÎª¿Õ!");
+			AfxMessageBox("ç”¨æˆ·åä¸èƒ½ä¸ºç©º!");
 			return;
 		}
 		sql_command.Format("insert into user_info (user_permission,user_passwd,user_type,user_name,user_number,add_user_number) values(\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')",strqx,user_passwd,m_usertypevalue,m_username,m_usernumber,userNumber);
-		ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
-		if(ress)
+		if (FAILED(accessConnect.executeSQL(sql_command.GetString())))
 		{
-			AfxMessageBox("²Ù×÷Ê§°Ü£¬¿ÉÄÜÓÃ»§Ãû³åÍ»!");
-			LOG(ERROR)<< "Ìí¼ÓÓÃ»§Ê§°Ü";
+			AfxMessageBox(("æ“ä½œå¤±è´¥ï¼š" + accessConnect.getLastError()).c_str());
+			LOG(ERROR)<< "æ·»åŠ ç”¨æˆ·å¤±è´¥";
 		    return;
 		}
 	}
@@ -264,52 +188,14 @@ void AddModiUserDialog::OnBnClickedButton1()
 			sql_command.Format("update user_info set user_permission=\'%s\',user_type=\'%s\',user_name=\'%s\' where  user_number=\'%s\'",strqx,m_usertypevalue,m_username,m_usernumber);
 		else
 			sql_command.Format("update user_info set user_permission=\'%s\',user_passwd=\'%s\',user_type=\'%s\',user_name=\'%s\' where  user_number=\'%s\'",strqx,user_passwd,m_usertypevalue,m_username,m_usernumber);
-		ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
-		if(ress)
+		if (FAILED(accessConnect.executeSQL(sql_command.GetString())))
 		{
-			AfxMessageBox("²Ù×÷Ê§°Ü!");
-			LOG(ERROR)<< "ĞŞ¸ÄÓÃ»§Ê§°Ü";
+			AfxMessageBox(("æ“ä½œå¤±è´¥ï¼š" + accessConnect.getLastError()).c_str());
+			LOG(ERROR)<< "ä¿®æ”¹ç”¨æˆ·å¤±è´¥";
 			return;
 		}
 		
 	}
-	sql_command.Format("select * from user_info where user_number= \'%s\'",m_usernumber);
-	ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
-	if(ress)
-	{
-		AfxMessageBox("²Ù×÷Ê§°Ü!");
-		return;
-	}
-	CString strveri="";
-	if(ress==0) //¼ì²â²éÑ¯³É¹¦
-	{
-		res = mysql_store_result(&mysql);
-		if(mysql_num_rows(res)==0) //²éÑ¯½á¹ûÎª¿Õ
-		{
-			AfxMessageBox("ÓÃ»§²»´æÔÚ");
-			return;
-		}
-		else
-		{
-
-			row=mysql_fetch_row(res);
-			for(int i=0;i<11;i++)
-				strveri+=row[i];
-			md5.reset();
-			md5.update(strveri.GetBuffer());
-			strveri=md5.toString().c_str();
-		}
-		mysql_free_result(res);
-	}
-
-	sql_command.Format("update user_info set verification=\'%s\' where  user_number=\'%s\'",strveri,m_usernumber);
-	ress=mysql_query(&mysql,(char*)(LPCSTR)sql_command);
-	if(ress)
-	{
-		AfxMessageBox("²Ù×÷Ê§°Ü!");
-		return;
-	}
-	mysql_close(&mysql);
-	AfxMessageBox("²Ù×÷³É¹¦!");
-	LOG(INFO)<< "ÓÃ»§²Ù×÷³É¹¦";
+	AfxMessageBox("æ“ä½œæˆåŠŸ!");
+	LOG(INFO)<< "ç”¨æˆ·æ“ä½œæˆåŠŸ";
 }

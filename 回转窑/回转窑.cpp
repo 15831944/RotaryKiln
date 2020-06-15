@@ -14,11 +14,10 @@
 #include "ImageProcessing.hpp"
 #include "../thermalcamera/YoseenSDK/ThermalCamera.hpp"
 #include "Afxsock.h"
-//mysql必须包含网络相关头文件  
-#include "winsock.h"  
-//mysql头文件自然要包含    
-#include "mysql.h"
-#include "easylogging++.h"
+
+#include "SQLConnect.hpp"
+#include "Config.h"
+#include "MachineRegisterDialog.h"
 
 
 _INITIALIZE_EASYLOGGINGPP
@@ -82,45 +81,12 @@ END_MESSAGE_MAP()
 
 int GetLineIndex()
 {
-	MYSQL mysql; //数据库连接句柄
-	MYSQL_RES *res;
-	MYSQL_ROW row;
-	mysql_init(&mysql);
-	//设置数据库编码格式
-	//	mysql_options(&mysql, MYSQL_SET_CHARSET_NAME, "gbk");
-	//密码加字符串""
-	if(!mysql_real_connect(&mysql,"localhost","root","123456","mydb",3306,NULL,0))
-	{//mydb为你所创建的数据库，3306为端口号，root是用户名,123456是密码
-		AfxMessageBox("数据库连接失败");
-		CString e=mysql_error(&mysql);//需要将项目属性中字符集修改为“使用多字节字符集”或“未设置”  
-		AfxMessageBox(e);  
-		return -1;
-	}
-	CString select_sql_by_user;
-	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
-	//SELECT MAX(column_name) FROM table_name;
-	select_sql_by_user="select max(line_index) from region_temperature";
-	int ress=mysql_query(&mysql,(char*)(LPCSTR)select_sql_by_user);
-	BOOL logon_flag=false;
-	if(ress==0) //检测查询成功
-	{
-		res = mysql_store_result(&mysql);
-		if(mysql_num_rows(res)==0) //查询结果为空
-		{
-			return 0;
-		}
-		else
-		{
-			row=mysql_fetch_row(res);
-			CString r=row[0];
-			mysql_free_result(res);
-			mysql_close(&mysql);
-			return atoi(r);
-		}
-
-	}
-	mysql_free_result(res);
-	mysql_close(&mysql);
+	AccessResult res;
+	if (SUCCEEDED(accessConnect.executeSQL("select max(line_index) as max_index from region_temperature", res))
+		&& !res.empty())
+		return stoi(res[0]["max_index"]);
+	else
+		return 0;
 	return -1;
 }
 
@@ -849,6 +815,7 @@ BOOL C回转窑App::InitInstance()
 		m_listctrl->SetItemText(i,3,areaVector[i].Name); 
 	}
 	
+#ifndef _DEBUG
 	
 	//创建第一个线程ThreadProc,相对优先级THREAD_PRIORITY_IDLE面对任何等级调整为1    
 	AfxBeginThread((AFX_THREADPROC)ThreadVideoProc, (LPVOID)&alldialog_p,THREAD_PRIORITY_IDLE);
@@ -877,6 +844,7 @@ BOOL C回转窑App::InitInstance()
 	Check_Register((char*)strKey.c_str());
 	AfxSetResourceHandle(exe_hInstance); //恢复状态
 	FreeLibrary(hDll);
+#endif
 	return TRUE;
 }
 

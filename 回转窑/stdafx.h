@@ -38,11 +38,11 @@
 #include <afxcontrolbars.h>     // 功能区和控件条的 MFC 支持
 
 
-
-
-
-
-
+// Access 支持
+#import "C:\Program Files\Common Files\System\ADO\msado15.dll"  no_namespace  rename ("EOF", "adoEOF")  
+#include "SQLConnect.hpp"
+extern int MachineKey;
+extern AccessConnection accessConnect;
 
 
 #ifdef _UNICODE

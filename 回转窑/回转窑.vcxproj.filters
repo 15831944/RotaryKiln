@@ -312,6 +312,9 @@
     <ClInclude Include="HistoryCurve.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="SQLConnect.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="回转窑.cpp">
