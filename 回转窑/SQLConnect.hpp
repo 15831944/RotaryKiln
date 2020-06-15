@@ -171,7 +171,7 @@ public:
         {
             //m_pRecordset->Valid();
             auto ret = m_pRecordset->Open(sqlCmd.c_str(), m_pConnection.GetInterfacePtr(), adOpenStatic, adLockReadOnly, adCmdText);
-            logger.log(LogLevel::Error, " SQL:", sqlCmd, " Success.");
+            logger.log(LogLevel::Info, " SQL:", sqlCmd, " Success.");
             m_pRecordset->Close(); 
             return ret;
         }
@@ -188,7 +188,7 @@ public:
             + ", ErrorCode:" + std::to_string(e.Error())
             + ", Source:" + _com_util::ConvertBSTRToString(e.Source())
             + ", Description:" + _com_util::ConvertBSTRToString(e.Description()) + "]";
-        bool safeCmd{ e.Error() == 0x800A0E78 && sqlCmd.find_first_of("select") == std::string::npos };
+        bool safeCmd{ e.Error() == 0x800A0E78 && sqlCmd.find("select") == std::string::npos };
         logger.log(safeCmd ? LogLevel::Warning : LogLevel::Error, " SQL:", sqlCmd, " Failure."
             , "ErrorCode: ", std::hex, std::setiosflags(std::ios::uppercase), e.Error()
             , ", Message:", e.ErrorMessage()
@@ -201,8 +201,14 @@ public:
     {
         return lastError;
     }
+
+    void setLogger(std::string file)
+    {
+        logger.open(file);
+    }
+
 private:
-    thatboy::logger::FileLogger logger{ "Access.log" };
+    thatboy::logger::FileLogger logger;
     std::string lastError;
     static bool ifInitialize;
 

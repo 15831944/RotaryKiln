@@ -626,6 +626,7 @@ BOOL C回转窑App::InitInstance()
 	try
 	{
 		cfg.ReadFile("application.cfg");
+		accessConnect.setLogger(cfg.Read<std::string>("AccessLog", "access.log"));
 		dbFile = cfg.Read<std::string>("DatabasePath", "RotaryKiln.accdb");
 	}
 	catch (...)
@@ -647,28 +648,14 @@ BOOL C回转窑App::InitInstance()
 
 	 //调度在命令行中指定的命令。如果
 	 //用 /RegServer、/Register、/Unregserver 或 /Unregister 启动应用程序，则返回 FALSE。
-	try
-	{
-		if (!ProcessShellCommand(cmdInfo))
-			return FALSE;
-	}
-	catch (...)
-	{
-		AfxMessageBox("发生异常！");
+	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
-	}
+
 
 	// 唯一的一个窗口已初始化，因此显示它并对其进行更新
-	try
-	{
-		m_pMainWnd->SetWindowText("回转窑");
-		m_pMainWnd->ShowWindow(SW_SHOW);
-		m_pMainWnd->UpdateWindow();
-	}
-	catch (...)
-	{
-		AfxMessageBox("发生异常！");
-	}
+	m_pMainWnd->SetWindowText("回转窑");
+	m_pMainWnd->ShowWindow(SW_SHOW);
+	m_pMainWnd->UpdateWindow();
 	// 仅当具有后缀时才调用 DragAcceptFiles
 	//  在 SDI 应用程序中，这应在 ProcessShellCommand 之后发生
 	//初始化日志
