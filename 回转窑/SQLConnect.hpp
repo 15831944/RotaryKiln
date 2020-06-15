@@ -188,12 +188,13 @@ public:
             + ", ErrorCode:" + std::to_string(e.Error())
             + ", Source:" + _com_util::ConvertBSTRToString(e.Source())
             + ", Description:" + _com_util::ConvertBSTRToString(e.Description()) + "]";
-        logger.log(e.Error() == 0x800A0E78 ? LogLevel::Warning : LogLevel::Error, " SQL:", sqlCmd, " Failure."
+        bool safeCmd{ e.Error() == 0x800A0E78 && sqlCmd.find_first_of("select") == std::string::npos };
+        logger.log(safeCmd ? LogLevel::Warning : LogLevel::Error, " SQL:", sqlCmd, " Failure."
             , "ErrorCode: ", std::hex, std::setiosflags(std::ios::uppercase), e.Error()
             , ", Message:", e.ErrorMessage()
             , ", Source:", _com_util::ConvertBSTRToString(e.Source())
             , ", Description:", _com_util::ConvertBSTRToString(e.Description()));
-        return e.Error() == 0x800A0E78 ? 0 : e.Error();
+        return safeCmd ? 0 : e.Error();
     }
 
     const std::string& getLastError()const
@@ -201,7 +202,7 @@ public:
         return lastError;
     }
 private:
-    thatboy::logger::FileLogger logger{ "AccessLogger.txt" };
+    thatboy::logger::FileLogger logger{ "Access.log" };
     std::string lastError;
     static bool ifInitialize;
 
