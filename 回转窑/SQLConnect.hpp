@@ -75,12 +75,15 @@ public:
     }
     ~AccessConnection()
     {
-        if (m_pConnection->GetState() != adStateClosed)
+        if (m_pRecordset->GetState() == adStateOpen)
+        {
+            m_pRecordset->Close();
+        }
+        if (m_pConnection->GetState() == adStateOpen)
         {
             m_pConnection->Close();
         }
         m_pConnection.Release();
-        m_pRecordset.Release();
     }
 
     /// <summary>
@@ -90,7 +93,7 @@ public:
     /// <param name="userId">用户</param>
     /// <param name="passwd">密码</param>
     /// <returns>成功>0</returns>
-    HRESULT openDatabase(LPCSTR dbFile, LPCSTR userId = "", LPCSTR passwd = "")
+    HRESULT openDatabase(LPCSTR dbFile/*, LPCSTR userId = "", LPCSTR passwd = ""*/)
     {
         lastError = "";
         try
@@ -99,7 +102,7 @@ public:
             std::string connectString = "Data Source=";
             connectString += dbFile;
 
-            logger.log(LogLevel::Info, " Open ", dbFile, ", userId=", std::string(userId).empty() ? "null" : userId);
+            logger.log(LogLevel::Info, " Open ", dbFile/*, ", userId=", std::string(userId).empty() ? "null" : userId*/);
             return m_pConnection->Open(connectString.c_str(), "", "", adModeUnknown);
         }
         catch (_com_error& e)
@@ -107,7 +110,7 @@ public:
             lastError = std::string("[ErrorMessage:") + e.ErrorMessage()
                 + std::string(", Source:") + _com_util::ConvertBSTRToString(e.Source())
                 + std::string(", Description:") + _com_util::ConvertBSTRToString(e.Description()) + "]";
-            logger.log(LogLevel::Error, " Open ", dbFile, ", userId=", userId, ", ", lastError);
+            logger.log(LogLevel::Error, " Open ", dbFile /*,", userId=", userId, ", "*/, lastError);
             return e.Error();
         }
     }
@@ -117,13 +120,13 @@ public:
     /// </summary>
     /// <param name="sqlCmd"></param>
     /// <returns>成功>0</returns>
-    HRESULT executeSQL(LPCSTR sqlCmd, AccessResult& res)
+    HRESULT select(const std::string& sqlCmd, AccessResult& res)
     {
         lastError = "";
         try
         {
             res.clear();
-            auto ret{ m_pRecordset->Open(sqlCmd, m_pConnection.GetInterfacePtr(), adOpenStatic, adLockReadOnly, adCmdText) };
+            auto ret{ m_pRecordset->Open(sqlCmd.c_str(), m_pConnection.GetInterfacePtr(), adOpenDynamic, adLockOptimistic, adCmdText) };
             if (!m_pRecordset->BOF)
             {
                 // 添加字段
@@ -154,47 +157,53 @@ public:
         {
             return handleError(sqlCmd, e);
         }
-        logger.log(LogLevel::Error, " SQL:", sqlCmd, " Unknow error.");
-        return -2;
+        catch (...)
+        {
+            logger.log(LogLevel::Fatal, " SQL:", sqlCmd, " Unknow error.");
+        }
     }
 
-
-    HRESULT executeSQL(const std::string& sqlCmd, AccessResult& res)
-    {
-        return executeSQL(sqlCmd.c_str(), res);
-    }
-
-    HRESULT executeSQL(const std::string& sqlCmd)
+    HRESULT execute(const std::string& sqlCmd)
     {
         lastError = "";
         try
         {
-            //m_pRecordset->Valid();
-            auto ret = m_pRecordset->Open(sqlCmd.c_str(), m_pConnection.GetInterfacePtr(), adOpenStatic, adLockReadOnly, adCmdText);
+            auto ret = m_pConnection->Execute(sqlCmd.c_str(), NULL, adCmdText);
             logger.log(LogLevel::Info, " SQL:", sqlCmd, " Success.");
-            m_pRecordset->Close(); 
             return ret;
         }
         catch (_com_error& e)
         {
             return handleError(sqlCmd, e);
         }
+        catch (...)
+        {
+            logger.log(LogLevel::Fatal, " SQL:", sqlCmd, " Unknow error.");
+        }
     }
 
     HRESULT handleError(const std::string& sqlCmd, _com_error& e)
     {
-        lastError = std::string("[")
-            + "ErrorMessage:" + e.ErrorMessage()
-            + ", ErrorCode:" + std::to_string(e.Error())
-            + ", Source:" + _com_util::ConvertBSTRToString(e.Source())
-            + ", Description:" + _com_util::ConvertBSTRToString(e.Description()) + "]";
-        bool safeCmd{ e.Error() == 0x800A0E78 && sqlCmd.find("select") == std::string::npos };
-        logger.log(safeCmd ? LogLevel::Warning : LogLevel::Error, " SQL:", sqlCmd, " Failure."
-            , "ErrorCode: ", std::hex, std::setiosflags(std::ios::uppercase), e.Error()
-            , ", Message:", e.ErrorMessage()
-            , ", Source:", _com_util::ConvertBSTRToString(e.Source())
-            , ", Description:", _com_util::ConvertBSTRToString(e.Description()));
-        return safeCmd ? 0 : e.Error();
+        try
+        {
+
+            lastError = std::string("[")
+                + "ErrorMessage:" + e.ErrorMessage()
+                + ", ErrorCode:" + std::to_string(e.Error())
+                + ", Source:" + _com_util::ConvertBSTRToString(e.Source())
+                + ", Description:" + _com_util::ConvertBSTRToString(e.Description()) + "]";
+            bool safeCmd{ e.Error() == 0x800A0E78 && sqlCmd.find("select") == std::string::npos };
+            logger.log(safeCmd ? LogLevel::Warning : LogLevel::Error, " SQL:", sqlCmd, " Failure."
+                , "ErrorCode: ", std::hex, std::setiosflags(std::ios::uppercase), e.Error(), std::dec
+                , ", Message:", e.ErrorMessage()
+                , ", Source:", _com_util::ConvertBSTRToString(e.Source())
+                , ", Description:", _com_util::ConvertBSTRToString(e.Description()));
+            return safeCmd ? 0 : e.Error();
+        }
+        catch (...)
+        {
+            logger.log(LogLevel::Fatal, " SQL:", sqlCmd, " Unknow error.");
+        }
     }
 
     const std::string& getLastError()const

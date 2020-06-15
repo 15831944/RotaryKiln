@@ -99,7 +99,7 @@ BOOL CCurveDialog::OnInitDialog()
 	//new初始化数据要和数据库连接
 	CString select_sql;
 	AccessResult res;
-	if (SUCCEEDED(accessConnect.executeSQL("select * from region_info where region_state=1", res)))//检测查询成功
+	if (SUCCEEDED(accessConnect.select("select * from region_info where region_state=1", res)))//检测查询成功
 	{
 		if(res.empty()) //查询结果为空
 		{

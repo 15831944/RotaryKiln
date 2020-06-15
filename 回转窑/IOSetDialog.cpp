@@ -54,7 +54,7 @@ BOOL CIOSetDialog::OnInitDialog()
 
 	AccessResult res;
 	
-	if(SUCCEEDED(accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res))) //检测查询成功
+	if(SUCCEEDED(accessConnect.select("select * from sys_para where para_name='signalequipment'", res))) //检测查询成功
 	{
 		if (res.empty()) //查询结果为空
 		{
@@ -112,13 +112,13 @@ void CIOSetDialog::OnBnClickedButton1()
 void CIOSetDialog::OnBnClickedButton2()
 {
 	CString sql_command;
-	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
-	//select_sql="select * from sys_para where para_name='signalequipment'";
+	//select_sql_by_user.Format("execute user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
+	//select_sql="execute * from sys_para where para_name='signalequipment'";
     UpdateData(TRUE);
 	unsigned  char   *pIP; 
 	CString  strIP; 
 	pIP  =   (unsigned   char*)&m_ip; 
 	strIP.Format("%u.%u.%u.%u",*(pIP+3),   *(pIP+2),  *(pIP+1),   *pIP);
 	sql_command.Format("update sys_para set para0=\'%s\', para1=\'%s\' ,  para2=\'%s\' , para3=\'%s\' where para_name='signalequipment'",strIP,m_port,m_passwd,m_splicingnumber);
-	accessConnect.executeSQL(sql_command.GetString());
+	accessConnect.execute(sql_command.GetString());
 }

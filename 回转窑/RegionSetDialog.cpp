@@ -109,7 +109,7 @@ BOOL CRegionSetDialog::OnInitDialog()
 	m_left=m_right=m_top=m_bottom="0";
 
 	AccessResult res;
-	if (SUCCEEDED(accessConnect.executeSQL("select * from region_info where region_state=1", res))) //检测查询成功
+	if (SUCCEEDED(accessConnect.select("select * from region_info where region_state=1", res))) //检测查询成功
 	{
 		if(res.empty()) //查询结果为空
 		{
@@ -330,13 +330,13 @@ void CRegionSetDialog::OnOK()
 void CRegionSetDialog::OnBnClickedButton4()
 {	
 	CString sql_command;
-	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
+	//select_sql_by_user.Format("execute user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
 	sql_command="update region_info set region_state=0 where region_state=1";
-	accessConnect.executeSQL(sql_command.GetString());
+	accessConnect.execute(sql_command.GetString());
 	for(int i=0;i<m_listctrl.GetItemCount();i++)
 	{
 		sql_command.Format("insert into region_info (region_index,region_name,region_left,region_right,region_top,region_bottom,region_emissivity)  values(%s,\'%s\',%s,%s,%s,%s,%s)",m_listctrl.GetItemText(i, 0),m_listctrl.GetItemText(i, 1),m_listctrl.GetItemText(i, 2),m_listctrl.GetItemText(i, 3),m_listctrl.GetItemText(i,4),m_listctrl.GetItemText(i,5),m_listctrl.GetItemText(i,6));
-		if (FAILED(accessConnect.executeSQL(sql_command.GetString()) ))
+		if (FAILED(accessConnect.execute(sql_command.GetString()) ))
 		{
 			AfxMessageBox("保存失败！");
 			return;

@@ -60,14 +60,14 @@ END_MESSAGE_MAP()
 void CSplicingSetDialog::OnBnClickedButtonSave()
 {
 	CString sql_command;
-	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
-	//select_sql="select * from sys_para where para_name='signalequipment'";
+	//select_sql_by_user.Format("execute user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
+	//select_sql="execute * from sys_para where para_name='signalequipment'";
 	UpdateData(TRUE);
 	
 	for(int i=0;i<m_listctrl.GetItemCount();i++)
 	{
 		sql_command.Format("update sys_para set para0=\'%s\', para1=\'%s\' where para_name='splicingregion'",m_listctrl.GetItemText(i,1),m_listctrl.GetItemText(i,2));
-		accessConnect.executeSQL(sql_command.GetString());
+		accessConnect.execute(sql_command.GetString());
 	}
 }
 
@@ -119,7 +119,7 @@ BOOL CSplicingSetDialog::OnInitDialog()
 	
 	AccessResult res;
 	
-	if(SUCCEEDED( accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res))) //检测查询成功
+	if(SUCCEEDED( accessConnect.select("select * from sys_para where para_name='signalequipment'", res))) //检测查询成功
 	{
 		if(res.empty()) //查询结果为空
 		{
@@ -133,7 +133,7 @@ BOOL CSplicingSetDialog::OnInitDialog()
 	}
 	CString select_sql;
 	select_sql.Format("select * from sys_para where para_name='splicingregion' and para_index<%d",index_sum);
-	if (SUCCEEDED( accessConnect.executeSQL(select_sql.GetString(), res)))//检测查询成功
+	if (SUCCEEDED( accessConnect.select(select_sql.GetString(), res)))//检测查询成功
 	{
 		for (size_t index = 0; index < res.size(); index++)
 		{

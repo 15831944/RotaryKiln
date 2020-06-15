@@ -103,7 +103,7 @@ void CLogon::OnBnClickedButtonLogon()
 	AccessResult res;	
 	CString select_sql_by_user;
 	select_sql_by_user.Format("select * from user_info where user_number= \'%s\'",user_number);
-	accessConnect.executeSQL(select_sql_by_user.GetString(), res);
+	accessConnect.select(select_sql_by_user.GetString(), res);
 	BOOL logon_flag=false;
 	if (res.empty())//查询结果为空
 	{

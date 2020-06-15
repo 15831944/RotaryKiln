@@ -317,7 +317,7 @@ BOOL ShowPictureDialog::OnInitDialog()
 	int index_sum;
 
 	AccessResult res;
-	if (SUCCEEDED(accessConnect.executeSQL("select * from region_info where region_state=1 order by region_index", res))) //检测查询成功
+	if (SUCCEEDED(accessConnect.select("select * from region_info where region_state=1 order by region_index", res))) //检测查询成功
 	{
 		if (res.empty()) //查询结果为空
 		{
@@ -336,7 +336,7 @@ BOOL ShowPictureDialog::OnInitDialog()
 		}
 	}
 
-	if( SUCCEEDED( accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res) )) //检测查询成功
+	if( SUCCEEDED( accessConnect.select("select * from sys_para where para_name='signalequipment'", res) )) //检测查询成功
 	{
 		if(res.empty()) //查询结果为空
 		{
@@ -350,7 +350,7 @@ BOOL ShowPictureDialog::OnInitDialog()
 	}
 	CString select_sql;
 	select_sql.Format("select * from sys_para where para_name='splicingregion' and para_index<%d order by para_index", index_sum);
-	if (SUCCEEDED(accessConnect.executeSQL(select_sql.GetString(), res))) //检测查询成功
+	if (SUCCEEDED(accessConnect.select(select_sql.GetString(), res))) //检测查询成功
 	{
 		for (auto& record : res)
 			SplicingRows.push_back(stoi(record["para1"]) - stoi(record["para0"]));

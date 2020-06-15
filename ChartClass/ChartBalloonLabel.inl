@@ -103,7 +103,7 @@ void CChartBalloonLabel<PointType>::Draw(CDC* pDC, unsigned uPointIndex)
 	pDC->MoveTo(screenPt);
 	pDC->LineTo(screenPt.x,screenPt.y-20);
 
-	// Create and select a new pen for the border
+	// Create and execute a new pen for the border
 	newPen.DeleteObject();
 	newPen.CreatePen(PS_SOLID, 1, m_colBorder);
 	pDC->SelectObject(&newPen);

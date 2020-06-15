@@ -122,7 +122,7 @@ void UserManageDialog::OnUserDrop()
 	
 	CString sql_command;	
 	sql_command.Format("delete  from user_info where  user_number=\'%s\'",strusername);
-	if(FAILED(accessConnect.executeSQL(sql_command.GetString())))
+	if(FAILED(accessConnect.execute(sql_command.GetString())))
 	{
 		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
 		return;
@@ -149,14 +149,14 @@ void UserManageDialog::OnUserDisable()
 
 	CString sql_command;
 	sql_command.Format("update user_info set user_state=0 where  user_number=\'%s\'", strusername);
-	if (FAILED(accessConnect.executeSQL(sql_command.GetString())))
+	if (FAILED(accessConnect.execute(sql_command.GetString())))
 	{
 		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
 		return;
 	}
 	AccessResult res;
 	sql_command.Format("select * from user_info where user_number= \'%s\'", strusername);
-	if (FAILED(accessConnect.executeSQL(sql_command.GetString(), res)))
+	if (FAILED(accessConnect.select(sql_command.GetString(), res)))
 	{
 		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
 		return;
@@ -189,7 +189,7 @@ void UserManageDialog::OnUserEnable()
 
 	CString sql_command;
 	sql_command.Format("update user_info set user_state=1 where  user_number=\'%s\'", strusername);
-	if (FAILED(accessConnect.executeSQL(sql_command.GetString())))
+	if (FAILED(accessConnect.execute(sql_command.GetString())))
 	{
 		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
 		return;
@@ -197,7 +197,7 @@ void UserManageDialog::OnUserEnable()
 
 	AccessResult res;
 	sql_command.Format("select * from user_info where user_number= \'%s\'", strusername);
-	if (FAILED(accessConnect.executeSQL(sql_command.GetString(), res)))
+	if (FAILED(accessConnect.select(sql_command.GetString(), res)))
 	{
 		AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
 		return;
@@ -247,7 +247,7 @@ void UserManageDialog::initData(void)
 	CString select_sql;
 	AccessResult res;
 	select_sql="select * from user_info";
-	if(SUCCEEDED(accessConnect.executeSQL(select_sql.GetString(), res))) //检测查询成功
+	if(SUCCEEDED(accessConnect.select(select_sql.GetString(), res))) //检测查询成功
 	{
 		if(res.empty()) //查询结果为空
 		{

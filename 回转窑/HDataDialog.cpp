@@ -62,7 +62,7 @@ BOOL HDataDialog::OnInitDialog()
 	m_listctrl.InsertColumn(nIndex++, "时间", LVCFMT_CENTER, 150); 
 
 	AccessResult res;
-	if (SUCCEEDED(accessConnect.executeSQL("select * from region_info where region_state=1 order by region_index", res))) //检测查询成功
+	if (SUCCEEDED(accessConnect.select("select * from region_info where region_state=1 order by region_index", res))) //检测查询成功
 	{
 		if (res.empty()) //查询结果为空
 		{
@@ -97,10 +97,10 @@ void HDataDialog::OnBnClickedButton1()
 	 //m_listctrl.LockWindowUpdate();
 	CString select_sql;
 	select_sql.Format("select * from region_temperature where line_time>=\'%s\' and line_time<=\'%s\' order by line_index",m_startime.Format("%Y-%m-%d"),m_endtime.Format("%Y-%m-%d"));
-	//select_sql.Format("select * from region_temperature where line_time>=\'%s\' and line_time<=\'%s\'",m_startime.Format("%Y-%m-%d"),m_endtime.Format("%Y-%m-%d"));
+	//select_sql.Format("execute * from region_temperature where line_time>=\'%s\' and line_time<=\'%s\'",m_startime.Format("%Y-%m-%d"),m_endtime.Format("%Y-%m-%d"));
 
 	AccessResult res;
-	if (SUCCEEDED(accessConnect.executeSQL(select_sql.GetString(), res))) //检测查询成功
+	if (SUCCEEDED(accessConnect.select(select_sql.GetString(), res))) //检测查询成功
 	{
 		if (res.empty()) //查询结果为空
 		{

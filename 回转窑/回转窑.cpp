@@ -83,7 +83,7 @@ END_MESSAGE_MAP()
 int GetLineIndex()
 {
 	AccessResult res;
-	if (SUCCEEDED( accessConnect.executeSQL("select max(line_index) as max_index from region_temperature", res))
+	if (SUCCEEDED( accessConnect.select("select max(line_index) as max_index from region_temperature", res))
 		&& !res.empty())
 		return stoi(res[0]["max_index"]);
 	else
@@ -122,7 +122,7 @@ bool WriteTemp(AreaVessel& areavessel)
 	{
 		sql_command.Format("insert into region_temperature (line_index,region_index,region_temp) values(%d,%d,%0.2f)",LineIndex,atoi(areavessel.areaVector[i].Id),areavessel.areaVector[i].MaxTemp);
 		
-		if (FAILED(accessConnect.executeSQL(sql_command.GetString())))
+		if (FAILED(accessConnect.execute(sql_command.GetString())))
 		{
 			AfxMessageBox("写入温度数据失败!");
 			return false;
@@ -179,7 +179,7 @@ int ConnectSign(CSocket& mysocket)
 
 	CString IP,Port;
 	AccessResult res;
-	accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res);
+	accessConnect.select("select * from sys_para where para_name='signalequipment'", res);
 	if (!res.empty())
 	{
 		IP = res[0]["para0"].c_str();
@@ -676,7 +676,7 @@ BOOL C回转窑App::InitInstance()
 
 	int index_sum = 0;
 	AccessResult res;
-	if (FAILED( accessConnect.executeSQL("select * from region_info where region_state=1", res) ))
+	if (FAILED( accessConnect.select("select * from region_info where region_state=1", res) ))
 	{
 		AfxMessageBox("执行SQL语句出错！");
 		LOG(WARNING) << "执行SQL语句出错";
@@ -711,7 +711,7 @@ BOOL C回转窑App::InitInstance()
 
 	//从文件读取自定义区域
 	areavessel.ReadRegion();
-	if (FAILED( accessConnect.executeSQL("select * from sys_para where para_name='signalequipment'", res))
+	if (FAILED( accessConnect.select("select * from sys_para where para_name='signalequipment'", res))
 		|| res.empty())
 	{
 		AfxMessageBox("现在还没有设置拼接数，请先设置！");
@@ -721,7 +721,7 @@ BOOL C回转窑App::InitInstance()
 	{
 		index_sum = stoi(res[0]["para3"]);
 	}
-	accessConnect.executeSQL("select * from sys_para where para_name='splicingregion' and para_index<" 
+	accessConnect.select("select * from sys_para where para_name='splicingregion' and para_index<" 
 		+ std::to_string(index_sum) + " order by para_index", res);
 
 
@@ -729,7 +729,7 @@ BOOL C回转窑App::InitInstance()
 		piecesplicing.push_back(PIECESPLICING(index, stoi(res[index]["para0"]), stoi(res[index]["para1"])));
 
 	//获取热像仪地址、用户名、密码
-	accessConnect.executeSQL("select * from sys_para where para_name='thermalequipment'", res);
+	accessConnect.select("select * from sys_para where para_name='thermalequipment'", res);
 	if (!res.empty())
 		strcpy(loginInfo.CameraAddr, res[0]["para1"].c_str());
 	

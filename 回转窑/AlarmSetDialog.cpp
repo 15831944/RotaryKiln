@@ -54,9 +54,9 @@ void CAlarmSetDialog::OnBnClickedOk()
 	alarmSetVersion++;
 
 	CString sql_command;
-	//select_sql_by_user.Format("select user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
+	//select_sql_by_user.Format("execute user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
 	sql_command.Format("update region_info set region_alarm1=%f,region_alarm2=%f,region_alarm3=%f where  region_state=1 and region_index=%d",v_alarmTH1[RegionIndex],v_alarmTH2[RegionIndex],v_alarmTH3[RegionIndex],RegionIndex);
-	accessConnect.executeSQL(sql_command.GetString());
+	accessConnect.execute(sql_command.GetString());
 	CDialogEx::OnOK();
 }
 
