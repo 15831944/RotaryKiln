@@ -7,8 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "回转窑", "回转窑\回�
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AccessTest", "AccessTest\AccessTest.vcxproj", "{81577E8C-D2CC-433E-B964-3865B83D1DED}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Old回转窑", "Old\回转窑\Old回转窑.vcxproj", "{3BCB7B50-74E6-4CF6-A0A2-59BB51040C05}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,12 +29,6 @@ Global
 		{81577E8C-D2CC-433E-B964-3865B83D1DED}.Release|Win32.Build.0 = Release|Win32
 		{81577E8C-D2CC-433E-B964-3865B83D1DED}.Release|x64.ActiveCfg = Release|x64
 		{81577E8C-D2CC-433E-B964-3865B83D1DED}.Release|x64.Build.0 = Release|x64
-		{3BCB7B50-74E6-4CF6-A0A2-59BB51040C05}.Debug|Win32.ActiveCfg = Debug|Win32
-		{3BCB7B50-74E6-4CF6-A0A2-59BB51040C05}.Debug|Win32.Build.0 = Debug|Win32
-		{3BCB7B50-74E6-4CF6-A0A2-59BB51040C05}.Debug|x64.ActiveCfg = Debug|Win32
-		{3BCB7B50-74E6-4CF6-A0A2-59BB51040C05}.Release|Win32.ActiveCfg = Release|Win32
-		{3BCB7B50-74E6-4CF6-A0A2-59BB51040C05}.Release|Win32.Build.0 = Release|Win32
-		{3BCB7B50-74E6-4CF6-A0A2-59BB51040C05}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
