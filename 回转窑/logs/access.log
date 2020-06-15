@@ -71,3 +71,9 @@
 2020-6-15 15:35:29  [INFO]  Record:5 Field:17
 2020-6-15 15:35:31  [INFO]  SQL:select * from region_temperature where line_time>='2020-06-15' and line_time<='2020-06-15' order by line_index Success.
 2020-6-15 15:35:31  [INFO]  Record:0 Field:0
+2020-6-15 16:03:34  [INFO]  Open RotaryKiln.accdb
+2020-6-15 16:38:39  [INFO]  Open RotaryKiln.accdb
+2020-6-15 16:38:56  [INFO]  Open RotaryKiln.accdb
+2020-6-15 16:39:17  [INFO]  Open RotaryKiln.accdb
+2020-6-15 16:43:52  [INFO]  Open RotaryKiln.accdb
+2020-6-15 16:53:33  [INFO]  Open RotaryKiln.accdb

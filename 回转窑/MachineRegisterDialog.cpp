@@ -55,6 +55,11 @@ void MachineRegisterDialog::OnBnClickedOk()
 	GetDlgItemText(IDC_REGCODE, regCode);
 	regKeyValue = VerifyMachine(envirent, regCode.GetString());
 	Config cfg;
+	try {
+		cfg.ReadFile("application.cfg");
+	}
+	catch (Config::File_not_found e)
+	{}
 	cfg.Add("MachineId", QueryMachineId());
 	cfg.Add("RegistrationCode", regCode.GetString());
 	cfg.SaveFile("application.cfg");

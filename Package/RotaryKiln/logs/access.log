@@ -1,0 +1,3 @@
+2020-6-15 16:06:28  [INFO]  Open RotaryKiln.accdb
+2020-6-15 16:06:29  [ERROR]  Open RotaryKiln.accdb[ErrorMessage:未指定的错误, Source:Microsoft Access Database Engine, Description:找不到文件 'E:\Visual Studio Application\回转窑\Package\RotaryKiln.accdb'。]
+2020-6-15 16:06:34  [ERROR]  SQL:select * from region_info where region_state=1 Failure.ErrorCode: 800A0E7D, Message:Unknown error 0x800A0E7D, Source:ADODB.Recordset, Description:连接无法用于执行此操作。在此上下文中它可能已被关闭或无效。

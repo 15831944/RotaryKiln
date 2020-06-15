@@ -626,17 +626,18 @@ BOOL C回转窑App::InitInstance()
 	try
 	{
 		cfg.ReadFile("application.cfg");
-		accessConnect.setLogger(cfg.Read<std::string>("AccessLog", "access.log"));
-		dbFile = cfg.Read<std::string>("DatabasePath", "RotaryKiln.accdb");
+		accessConnect.setLogger(cfg.Read<std::string>("AccessLog", "logs/access.log"));
+		dbFile = cfg.Read<std::string>("DatabasePath", "db/RotaryKiln.accdb");
 	}
-	catch (...)
+	catch (Config::File_not_found e)
 	{
-		dbFile = "RotaryKiln.accdb";
+		dbFile = "db/RotaryKiln.accdb";
+		cfg.Add("AccessLog", "logs/access.log");
+		cfg.Add("DatabasePath", dbFile);
 	}
-	cfg.Add("DatabasePath", dbFile);
 	cfg.SaveFile("application.cfg");
 
-	if (FAILED(accessConnect.openDatabase(dbFile.c_str())))
+	if (FAILED(accessConnect.open(dbFile.c_str())))
 	{
 		AfxMessageBox(("数据库连接失败:" + accessConnect.getLastError()).c_str());
 		LOG(ERROR) << "login:" + accessConnect.getLastError();
@@ -808,6 +809,8 @@ BOOL C回转窑App::InitInstance()
 int C回转窑App::ExitInstance()
 {
 	//TODO: 处理可能已添加的附加资源
+	accessConnect.close();
+	accessConnect.release();
 	AfxOleTerm(FALSE);
 	return CWinAppEx::ExitInstance();
 }

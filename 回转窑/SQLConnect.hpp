@@ -67,13 +67,38 @@ protected:
     _ConnectionPtr m_pConnection;
     _RecordsetPtr m_pRecordset;
 
+    bool isValid = false;
 public:
+
     AccessConnection()
     {
-        m_pConnection.CreateInstance(__uuidof(Connection));
-        m_pRecordset.CreateInstance(__uuidof(Recordset));
+        create();
     }
     ~AccessConnection()
+    {
+        release();
+    }            
+
+    void create()
+    {
+        if (!isValid)
+        {
+            m_pConnection.CreateInstance(__uuidof(Connection));
+            m_pRecordset.CreateInstance(__uuidof(Recordset));
+            isValid = true;
+        }
+    }
+    void release()
+    {
+        if (!isValid)
+        {
+            m_pRecordset.Release();
+            m_pConnection.Release();
+            isValid = false;
+        }
+    }
+
+    void close()
     {
         if (m_pRecordset->GetState() == adStateOpen)
         {
@@ -83,7 +108,6 @@ public:
         {
             m_pConnection->Close();
         }
-        m_pConnection.Release();
     }
 
     /// <summary>
@@ -93,7 +117,7 @@ public:
     /// <param name="userId">用户</param>
     /// <param name="passwd">密码</param>
     /// <returns>成功>0</returns>
-    HRESULT openDatabase(LPCSTR dbFile/*, LPCSTR userId = "", LPCSTR passwd = ""*/)
+    HRESULT open(LPCSTR dbFile/*, LPCSTR userId = "", LPCSTR passwd = ""*/)
     {
         lastError = "";
         try
@@ -148,8 +172,8 @@ public:
                     m_pRecordset->MoveNext();
                 }
             }
-            logger.log(LogLevel::Info, " SQL:", sqlCmd, " Success.");
-            logger.log(LogLevel::Info, " Record:", res.size(), " Field:", res.fieldMap.size());
+            //logger.log(LogLevel::Info, " SQL:", sqlCmd, " Success.");
+            //logger.log(LogLevel::Info, " Record:", res.size(), " Field:", res.fieldMap.size());
             m_pRecordset->Close();
             return ret;
         }
@@ -169,7 +193,7 @@ public:
         try
         {
             auto ret = m_pConnection->Execute(sqlCmd.c_str(), NULL, adCmdText);
-            logger.log(LogLevel::Info, " SQL:", sqlCmd, " Success.");
+            //logger.log(LogLevel::Info, " SQL:", sqlCmd, " Success.");
             return ret;
         }
         catch (_com_error& e)
