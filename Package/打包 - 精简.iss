@@ -36,18 +36,24 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\RotaryKiln.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\api-ms-win-core-libraryloader-l1-2-0.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\dailyrecord.conf"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\MachineRegistrationClient.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\mfc140.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\msvcp120.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\msvcp140.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\msvcp140d.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\msvcr100.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\msvcr120.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\opcdata"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\opencv_core2411.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\opencv_highgui2411.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\opencv_imgproc2411.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\pthreadGC2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\region.dat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\vcruntime140d.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\YoseenFfmpeg.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\YoseenSDK.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\region.dat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\opcdata"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\dailyrecord.conf"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\db"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs    
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\db\RotaryKiln.accdb"; DestDir: "{app}\db"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; 注意: 不要在任何共享系统文件上使用“Flags: ignoreversion”
