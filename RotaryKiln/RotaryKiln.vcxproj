@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A9D83BA3-192D-43FE-BA4C-45FFD60168F1}</ProjectGuid>
-    <RootNamespace>回转窑</RootNamespace>
+    <RootNamespace>RotaryKiln</RootNamespace>
     <Keyword>MFCProj</Keyword>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
