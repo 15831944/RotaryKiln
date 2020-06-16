@@ -102,10 +102,13 @@ public:
 	/// </summary>
 	void create()
 	{
+		if (!bCoInitialized)
+			;
+			//throw "Not CoInitialize";
 		if (!isValid)
 		{
-			m_pConnection.CreateInstance(__uuidof(Connection));
-			m_pRecordset.CreateInstance(__uuidof(Recordset));
+			auto a = m_pConnection.CreateInstance(__uuidof(Connection));
+			auto b = m_pRecordset.CreateInstance(__uuidof(Recordset));
 			isValid = true;
 		}
 	}
@@ -150,12 +153,15 @@ public:
 		lastError = "";
 		try
 		{
+			// MS Access Database njsx
 			m_pConnection->Provider = "Microsoft.ACE.OLEDB.12.0";
 			std::string connectString = "Data Source=";
+			//std::string connectString = "ODBC;DSN=MS Access Database njsx;DBQ=";
+			//std::string connectString = "ODBC;DRIVER={Microsoft Access Driver (*.mdb, *.access)};DBQ=";
 			connectString += dbFile;
 
 			logger.log(LogLevel::Info, " Open ", dbFile);
-			return m_pConnection->Open(connectString.c_str(), "", "", adModeUnknown);
+			return  m_pConnection->Open(connectString.c_str(), "", "", adModeUnknown);
 		}
 		catch (_com_error& e)
 		{
@@ -178,7 +184,7 @@ public:
 		try
 		{
 			res.clear();
-			auto ret{ m_pRecordset->Open(sqlCmd.c_str(), m_pConnection.GetInterfacePtr(), adOpenDynamic, adLockOptimistic, adCmdText) };
+			auto ret{ m_pRecordset->Open(_bstr_t(sqlCmd.c_str()), m_pConnection.GetInterfacePtr(), adOpenDynamic, adLockOptimistic, adCmdText) };
 			if (!m_pRecordset->BOF)
 			{
 				// 添加字段
@@ -291,6 +297,7 @@ private:
 	thatboy::logger::FileLogger logger;
 	std::string lastError;
 
+	static bool bCoInitialized;
 	/// <summary>
 	/// 全局自动初始化
 	/// </summary>
@@ -299,7 +306,7 @@ private:
 		_AutoInitialize()
 		{
 #ifndef __AFX_H__
-			CoInitialize(nullptr)；
+			bCoInitialized = (CoInitialize(nullptr) == S_OK);
 #else
 			// MFC 在此初始化或者手动初始化
 			// AfxOleInit();
@@ -309,10 +316,12 @@ private:
 		{
 #ifndef __AFX_H__
 			CoUninitialize();
+			bCoInitialized = false;
 #endif
 		}
 		};
 	static _AutoInitialize _;
 };
+bool AccessConnection::bCoInitialized{ false };
 AccessConnection::_AutoInitialize AccessConnection::_;
 #endif

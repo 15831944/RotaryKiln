@@ -627,6 +627,7 @@ BOOL C回转窑App::InitInstance()
 	{
 		AfxMessageBox(("数据库连接失败:" + accessConnect.getLastError()).c_str());
 		LOG(ERROR) << "login:" + accessConnect.getLastError();
+		return FALSE;
 	}
 
 	// 分析标准 shell 命令、DDE、打开文件操作的命令行

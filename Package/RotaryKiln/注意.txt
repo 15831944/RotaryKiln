@@ -1,0 +1,9 @@
+﻿==========================================================
+如果系统未安装Office，请执行Engine_install.bat;
+如果系统安装了64位Office，请执行Engine_install_passive.bat;
+如果系统安装了32位Office，则不需要安装额外驱动.
+==========================================================
+If Office is not installed on the system, execute Engine_install.bat;
+If 64-bit Office is installed on the system, execute Engine_install_passive.bat;
+If 32-bit Office is installed on the system, no additional drivers need to be installed.
+==========================================================

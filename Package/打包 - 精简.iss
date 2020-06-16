@@ -25,7 +25,8 @@ OutputBaseFilename=RotaryKilnSetup
 SetupIconFile=E:\Visual Studio Application\回转窑\Package\RotaryKiln\Setup.ico
 Compression=lzma
 SolidCompression=yes
-PrivilegesRequired=admin
+PrivilegesRequired=admin      
+InfoAfterFile=E:\Visual Studio Application\回转窑\Package\RotaryKiln\注意.txt
 
 [Languages]
 Name: "chinesesimp"; MessagesFile: "compiler:Default.isl"
@@ -35,7 +36,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\RotaryKiln.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\api-ms-win-core-libraryloader-l1-2-0.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\api-ms-win-core-libraryloader-l1-2-0.dll"; DestDir: "{app}"; Flags: ignoreversion       
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\api-ms-win-crt-runtime-l1-1-0.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\MachineRegistrationClient.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\mfc140.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\msvcp120.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -48,12 +50,18 @@ Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\opencv_highgui24
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\opencv_imgproc2411.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\pthreadGC2.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\vcruntime140d.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\vcruntime140d.dll"; DestDir: "{app}"; Flags: ignoreversion   
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\YoseenFfmpeg.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\YoseenSDK.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\oledb32.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\sqloledb.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\region.dat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\opcdata"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\dailyrecord.conf"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\vc_redist.x86.exe"; DestDir: "{app}"; Flags: ignoreversion    
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\AccessDatabaseEngine 2010.exe"; DestDir: "{app}"; Flags: ignoreversion 
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\Engine_install.bat"; DestDir: "{app}"; Flags: ignoreversion 
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\Engine_install_passive.bat"; DestDir: "{app}"; Flags: ignoreversion 
+Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\注意.txt"; DestDir: "{app}"; Flags: ignoreversion     
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\db"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs    
 Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\db\RotaryKiln.accdb"; DestDir: "{app}\db"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; 注意: 不要在任何共享系统文件上使用“Flags: ignoreversion”
@@ -63,6 +71,8 @@ Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 Name: "{userdesktop}\{#MyAppName}";Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"
 
-[Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
+[Run]          
+Filename: "{app}\vc_redist.x86.exe";
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait skipifsilent postinstall
 
