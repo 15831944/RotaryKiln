@@ -415,11 +415,11 @@ void CMainFrame::OnClose()
 void CMainFrame::ThermalSet()
 {
 	// TODO: 在此添加命令处理程序代码
-	if (-1 == userPermission.Find('B'))
-	{
-		AfxMessageBox("你的权限不够，请切换用户！");
-		return;
-	}
+	//if (-1 == userPermission.Find('B'))
+	//{
+	//	AfxMessageBox("你的权限不够，请切换用户！");
+	//	return;
+	//}
 	if (m_image.IsNull())
 	{
 		AfxMessageBox("你还没有连接热像仪！");
@@ -440,6 +440,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 
 void CMainFrame::OnChangeUser()
 {
+	return;
 	// TODO: 在此添加命令处理程序代码
 	CLogon mylogon;
 	int nRet = mylogon.DoModal();
@@ -453,11 +454,11 @@ void CMainFrame::On32776()
 {
 	// TODO: 在此添加命令处理程序代码
 	//设置热像仪信息
-	if (-1 == userPermission.Find('A'))
-	{
-		AfxMessageBox("你的权限不够，请切换用户！");
-		return;
-	}
+	//if (-1 == userPermission.Find('A'))
+	//{
+	//	AfxMessageBox("你的权限不够，请切换用户！");
+	//	return;
+	//}
 	AddThermalDialog addthermaldialog;
 	addthermaldialog.DoModal();
 	return;
@@ -467,11 +468,11 @@ void CMainFrame::On32776()
 void CMainFrame::On32775()
 {
 	// TODO: 在此添加命令处理程序代码
-	if (-1 == userPermission.Find('D'))
-	{
-		AfxMessageBox("你的权限不够，请切换用户！");
-		return;
-	}
+	//if (-1 == userPermission.Find('D'))
+	//{
+	//	AfxMessageBox("你的权限不够，请切换用户！");
+	//	return;
+	//}
 	UserManageDialog usermangedialog;
 	usermangedialog.DoModal();
 	return;
@@ -481,11 +482,11 @@ void CMainFrame::On32775()
 void CMainFrame::On32780()
 {
 	// TODO: 在此添加命令处理程序代码
-	if (-1 == userPermission.Find('H'))
-	{
-		AfxMessageBox("你的权限不够，请切换用户！");
-		return;
-	}
+	//if (-1 == userPermission.Find('H'))
+	//{
+	//	AfxMessageBox("你的权限不够，请切换用户！");
+	//	return;
+	//}
 	HDataDialog hdatadialog;
 	hdatadialog.DoModal();
 	return;
@@ -495,11 +496,11 @@ void CMainFrame::On32780()
 void CMainFrame::On32781()
 {
 	// TODO: 在此添加命令处理程序代码
-	if (-1 == userPermission.Find('I'))
-	{
-		AfxMessageBox("你的权限不够，请切换用户！");
-		return;
-	}
+	//if (-1 == userPermission.Find('I'))
+	//{
+	//	AfxMessageBox("你的权限不够，请切换用户！");
+	//	return;
+	//}
 	RecordDialog recorddialog;
 	recorddialog.DoModal();
 	return;
@@ -508,11 +509,11 @@ void CMainFrame::On32781()
 void CMainFrame::OnEditPaste()
 {
 	// TODO: 在此添加命令处理程序代码
-	if (-1 == userPermission.Find('J'))
-	{
-		AfxMessageBox("你的权限不够，请切换用户！");
-		return;
-	}
+	//if (-1 == userPermission.Find('J'))
+	//{
+	//	AfxMessageBox("你的权限不够，请切换用户！");
+	//	return;
+	//}
 	ShowPictureDialog showpicturedialog;
 	showpicturedialog.DoModal();
 	return;

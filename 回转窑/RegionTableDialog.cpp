@@ -133,11 +133,11 @@ void CRegionTableDialog::AlarmSetFUN()
 	//CAlarmSetDialog *alarmsetdlg = new CAlarmSetDialog;
 	//alarmsetdlg->Create(IDD_DIALOG_REGIONALARM_SET,this);
 	//alarmsetdlg->ShowWindow(SW_SHOW)
-	if (-1 == userPermission.Find('C'))
-	{
-		AfxMessageBox("你的权限不够，请切换用户！");
-		return;
-	}
+	//if (-1 == userPermission.Find('C'))
+	//{
+	//	AfxMessageBox("你的权限不够，请切换用户！");
+	//	return;
+	//}
 	CString str;
 	str.Format("%0.1f", m_alarmsetdialog.v_alarmTH1[m_alarmsetdialog.RegionIndex]);
 	m_alarmsetdialog.m_alarmTH1 = str;

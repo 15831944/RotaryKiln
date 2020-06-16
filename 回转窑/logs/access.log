@@ -77,3 +77,11 @@
 2020-6-15 16:39:17  [INFO]  Open RotaryKiln.accdb
 2020-6-15 16:43:52  [INFO]  Open RotaryKiln.accdb
 2020-6-15 16:53:33  [INFO]  Open RotaryKiln.accdb
+2020-6-16 10:52:45  [INFO]  Open RotaryKiln.accdb
+2020-6-16 10:52:59  [ERROR]  SQL:update sys_para set para0='',para1='0.0.0.0', para2='' ,  para3='' , para4='' where para_name='thermalequipment' Failure.ErrorCode: 80004005, Message:未指定的错误, Source:Microsoft Access Database Engine, Description:字段 'sys_para.para0' 不能是零长度的字符串。
+2020-6-16 10:53:00  [ERROR]  SQL:update sys_para set para0='',para1='0.0.0.0', para2='' ,  para3='' , para4='' where para_name='thermalequipment' Failure.ErrorCode: 80004005, Message:未指定的错误, Source:Microsoft Access Database Engine, Description:字段 'sys_para.para0' 不能是零长度的字符串。
+2020-6-16 10:55:05  [INFO]  Open RotaryKiln.accdb
+2020-6-16 11:01:40  [INFO]  Open RotaryKiln.accdb
+2020-6-16 11:02:02  [ERROR]  SQL:update sys_para set para0='niho',para1='0.0.0.0', para2='' ,  para3='' , para4='' where para_name='thermalequipment' Failure.ErrorCode: 80004005, Message:未指定的错误, Source:Microsoft Access Database Engine, Description:字段 'sys_para.para2' 不能是零长度的字符串。
+2020-6-16 11:07:59  [INFO]  Open RotaryKiln.accdb
+2020-6-16 11:08:29  [INFO]  Open RotaryKiln.accdb

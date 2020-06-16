@@ -24,8 +24,8 @@ _INITIALIZE_EASYLOGGINGPP
 #define new DEBUG_NEW
 #endif
 
-CString userNumber;
-CString userPermission;
+CString userNumber = "admin";
+CString userPermission = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 YoseenLoginInfo loginInfo;
 typedef struct
 {
@@ -652,10 +652,10 @@ BOOL C回转窑App::InitInstance()
 
 	//登陆对话框
 	LOG(WARNING) << "没有区域数据";
-	CLogon mylogon;
-	int nRet = mylogon.DoModal();
-	if (nRet != LOGON_TRUE)
-		return FALSE;
+	//CLogon mylogon;
+	//int nRet = mylogon.DoModal();
+	//if (nRet != LOGON_TRUE)
+	//	return FALSE;
 
 	CMainFrame* pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;//要求包含MainFrm.h头文件
 	pFrame->m_wndStatusBar.SetPaneText(0, "用户名：" + userNumber);

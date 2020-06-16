@@ -106,11 +106,11 @@ void UserManageDialog::OnUserDrop()
 		AfxMessageBox("你没有选择用户！");
 		return;
 	}
-	if (-1 == userPermission.Find('F'))
-	{
-		AfxMessageBox("你的权限不够，请切换用户！");
-		return;
-	}
+	//if (-1 == userPermission.Find('F'))
+	//{
+	//	AfxMessageBox("你的权限不够，请切换用户！");
+	//	return;
+	//}
 	if (2 == AfxMessageBox(_T("您确定要删除用户吗？"), MB_OKCANCEL | MB_ICONQUESTION, 0))
 		return;
 
@@ -135,11 +135,11 @@ void UserManageDialog::OnUserDisable()
 		AfxMessageBox("你没有选择用户！");
 		return;
 	}
-	if (-1 == userPermission.Find('E'))
-	{
-		AfxMessageBox("你的权限不够，请切换用户！");
-		return;
-	}
+	//if (-1 == userPermission.Find('E'))
+	//{
+	//	AfxMessageBox("你的权限不够，请切换用户！");
+	//	return;
+	//}
 
 	CString sql_command;
 	sql_command.Format("update user_info set user_state=0 where  user_number=\'%s\'", strusername.GetString());
@@ -175,11 +175,11 @@ void UserManageDialog::OnUserEnable()
 		AfxMessageBox("你没有选择用户！");
 		return;
 	}
-	if (-1 == userPermission.Find('G'))
-	{
-		AfxMessageBox("你的权限不够，请切换用户！");
-		return;
-	}
+	//if (-1 == userPermission.Find('G'))
+	//{
+	//	AfxMessageBox("你的权限不够，请切换用户！");
+	//	return;
+	//}
 
 	CString sql_command;
 	sql_command.Format("update user_info set user_state=1 where  user_number=\'%s\'", strusername.GetString());
