@@ -77,7 +77,4 @@ extern "C" {
 #endif
 #endif
 
-
 #endif // !_REGISTRATION_CODE_H_
-
-

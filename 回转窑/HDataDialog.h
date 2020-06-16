@@ -13,7 +13,7 @@ public:
 	HDataDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~HDataDialog();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_DIALOG_HISDATA };
 
 protected:

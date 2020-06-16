@@ -21,7 +21,6 @@ CIOSetDialog::CIOSetDialog(CWnd* pParent /*=NULL*/)
 	, m_passwd(_T(""))
 	, m_splicingnumber(_T(""))
 {
-
 }
 
 CIOSetDialog::~CIOSetDialog()
@@ -38,23 +37,20 @@ void CIOSetDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_SPLICINGNUMBER, m_splicingnumber);
 }
 
-
 BEGIN_MESSAGE_MAP(CIOSetDialog, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CIOSetDialog::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CIOSetDialog::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
-
 // CIOSetDialog 消息处理程序
-
 
 BOOL CIOSetDialog::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
 	AccessResult res;
-	
-	if(SUCCEEDED(accessConnect.select("select * from sys_para where para_name='signalequipment'", res))) //检测查询成功
+
+	if (SUCCEEDED(accessConnect.select("select * from sys_para where para_name='signalequipment'", res))) //检测查询成功
 	{
 		if (res.empty()) //查询结果为空
 		{
@@ -70,16 +66,14 @@ BOOL CIOSetDialog::OnInitDialog()
 				m_splicingnumber = record["para3"].c_str();
 			}
 		}
-
 	}
 
-    m_spin.SetRange32(0,20);
+	m_spin.SetRange32(0, 20);
 	m_spin.SetBase(atoi(m_splicingnumber));
 	UpdateData(FALSE);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
-
 
 void CIOSetDialog::OnBnClickedButton1()
 {
@@ -88,37 +82,36 @@ void CIOSetDialog::OnBnClickedButton1()
 	if (!mysocket.Create()) //创建套接字
 	{
 		AfxMessageBox("套接字创建失败!");
-		LOG(ERROR)<< "套接字创建失败";
+		LOG(ERROR) << "套接字创建失败";
 		return;
 	}
 	UpdateData(TRUE);
-	unsigned  char   *pIP; 
-	CString  strIP; 
-	pIP  =   (unsigned   char*)&m_ip; 
-	strIP.Format("%u.%u.%u.%u",*(pIP+3),   *(pIP+2),  *(pIP+1),   *pIP);
-	if (!mysocket.Connect(strIP,atoi(m_port))) //连接服务器
+	unsigned  char* pIP;
+	CString  strIP;
+	pIP = (unsigned   char*)&m_ip;
+	strIP.Format("%u.%u.%u.%u", *(pIP + 3), *(pIP + 2), *(pIP + 1), *pIP);
+	if (!mysocket.Connect(strIP, atoi(m_port))) //连接服务器
 	{
 		AfxMessageBox("连接信号服务器失败!");
-		LOG(ERROR)<< "连接信号服务器失败";
+		LOG(ERROR) << "连接信号服务器失败";
 	}
 	else
 	{
 		AfxMessageBox("连接信号服务器成功!");
-		LOG(ERROR)<< "连接信号服务器成功";
+		LOG(ERROR) << "连接信号服务器成功";
 	}
 }
-
 
 void CIOSetDialog::OnBnClickedButton2()
 {
 	CString sql_command;
 	//select_sql_by_user.Format("execute user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
 	//select_sql="execute * from sys_para where para_name='signalequipment'";
-    UpdateData(TRUE);
-	unsigned  char   *pIP; 
-	CString  strIP; 
-	pIP  =   (unsigned   char*)&m_ip; 
-	strIP.Format("%u.%u.%u.%u",*(pIP+3),   *(pIP+2),  *(pIP+1),   *pIP);
-	sql_command.Format("update sys_para set para0=\'%s\', para1=\'%s\' ,  para2=\'%s\' , para3=\'%s\' where para_name='signalequipment'",strIP,m_port,m_passwd,m_splicingnumber);
+	UpdateData(TRUE);
+	unsigned  char* pIP;
+	CString  strIP;
+	pIP = (unsigned   char*)&m_ip;
+	strIP.Format("%u.%u.%u.%u", *(pIP + 3), *(pIP + 2), *(pIP + 1), *pIP);
+	sql_command.Format("update sys_para set para0=\'%s\', para1=\'%s\' ,  para2=\'%s\' , para3=\'%s\' where para_name='signalequipment'", strIP, m_port, m_passwd, m_splicingnumber);
 	accessConnect.execute(sql_command.GetString());
 }

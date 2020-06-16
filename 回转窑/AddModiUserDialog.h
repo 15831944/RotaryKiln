@@ -13,7 +13,7 @@ public:
 	AddModiUserDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~AddModiUserDialog();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_ADDMODIFY_USER };
 
 protected:

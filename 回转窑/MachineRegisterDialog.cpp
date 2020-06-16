@@ -8,7 +8,6 @@
 #include "MachineRegistrationClient.h"
 #include "Config.h"
 
-
 // MachineRegisterDialog 对话框
 
 IMPLEMENT_DYNAMIC(MachineRegisterDialog, CDialogEx)
@@ -27,14 +26,11 @@ void MachineRegisterDialog::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 }
 
-
 BEGIN_MESSAGE_MAP(MachineRegisterDialog, CDialogEx)
 	ON_BN_CLICKED(IDOK, &MachineRegisterDialog::OnBnClickedOk)
 END_MESSAGE_MAP()
 
-
 // MachineRegisterDialog 消息处理程序
-
 
 BOOL MachineRegisterDialog::OnInitDialog()
 {
@@ -47,7 +43,6 @@ BOOL MachineRegisterDialog::OnInitDialog()
 				  // 异常: OCX 属性页应返回 FALSE
 }
 
-
 void MachineRegisterDialog::OnBnClickedOk()
 {
 	const char envirent[] = "huizhuanyao";
@@ -59,7 +54,8 @@ void MachineRegisterDialog::OnBnClickedOk()
 		cfg.ReadFile("application.cfg");
 	}
 	catch (Config::File_not_found e)
-	{}
+	{
+	}
 	cfg.Add("MachineId", QueryMachineId());
 	cfg.Add("RegistrationCode", regCode.GetString());
 	cfg.SaveFile("application.cfg");
@@ -68,7 +64,7 @@ void MachineRegisterDialog::OnBnClickedOk()
 
 int VerifyMachineDialog()
 {
-	try 
+	try
 	{
 		const char envirent[] = "huizhuanyao";
 		Config cfg("application.cfg");

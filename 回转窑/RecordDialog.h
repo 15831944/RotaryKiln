@@ -1,7 +1,6 @@
 #pragma once
 #include "afxwin.h"
 
-
 // RecordDialog 对话框
 
 class RecordDialog : public CDialogEx
@@ -12,7 +11,7 @@ public:
 	RecordDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~RecordDialog();
 	void ReadData(CString filename);
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_DIALOG_RECORD };
 
 protected:

@@ -26,17 +26,15 @@ private:
 	COLORREF     m_BackColor;         //背景色
 	COLORREF     m_LockForeColor;     //锁定按钮的文字颜色
 	CRect        m_ButRect;           //按钮尺寸
-	CFont*       p_Font;              //字体
+	CFont* p_Font;              //字体
 
-	void   DrawButton(CDC *pDC);      //画正常的按钮
+	void   DrawButton(CDC* pDC);      //画正常的按钮
 // 接口函数
 public:
 	void SetText(CString str);
 	void SetForeColor(COLORREF color);       //设置文本颜色
 	void SetBkColor(COLORREF color);         //设置背景颜色
-	void SetTextFont(int FontHight,LPCTSTR FontName);    //设置字体 
+	void SetTextFont(int FontHight, LPCTSTR FontName);    //设置字体
 //	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 //	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 };
-
-

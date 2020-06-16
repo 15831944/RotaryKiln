@@ -7,10 +7,10 @@
  *
  *
  *	This code may be used for any non-commercial and commercial purposes in a compiled form.
- *	The code may be redistributed as long as it remains unmodified and providing that the 
- *	author name and this disclaimer remain intact. The sources can be modified WITH the author 
+ *	The code may be redistributed as long as it remains unmodified and providing that the
+ *	author name and this disclaimer remain intact. The sources can be modified WITH the author
  *	consent only.
- *	
+ *
  *	This code is provided without any garanties. I cannot be held responsible for the damage or
  *	the loss of time it causes. Use it at your own risks
  *
@@ -36,10 +36,10 @@ class CChartCtrl;
 //! This class is responsible for the titles displayed on the control.
 /**
 	Several lines can be displayed in the title, each one possibly with
-	its own font. It is retrieved by calling the GetTitle() function 
-	from the CChartCtrl class. 
+	its own font. It is retrieved by calling the GetTitle() function
+	from the CChartCtrl class.
 **/
-class CChartTitle  
+class CChartTitle
 {
 	friend CChartCtrl;
 
@@ -77,7 +77,7 @@ public:
 			The font point size.
 		@param strFaceName
 			The font face name ("Times New Roman", "Arial", ...)
-	**/	
+	**/
 	void SetLineFont(int iLineIndex, int iPointSize, const TChartString& strFaceName);
 	//! Sets the font for a specific line.
 	/**
@@ -93,10 +93,10 @@ public:
 	//! Shows/hides the title.
 	void SetVisible(bool bVisible) { m_bIsVisible = bVisible; }
 	//! Returns true if the title is visible.
-	bool IsVisible()  const         { return m_bIsVisible; }
+	bool IsVisible()  const { return m_bIsVisible; }
 
 	//! Returns the text color.
-	COLORREF GetColor() const			   { return m_TextColor; }
+	COLORREF GetColor() const { return m_TextColor; }
 	//! Sets the text color.
 	void SetColor(COLORREF NewColor);
 
@@ -110,11 +110,11 @@ private:
 	virtual ~CChartTitle();
 
 	//! Sets the rectangle in which to display the title.
-	void SetTitleRect(const CRect& newRect)  { m_TitleRect = newRect; }
+	void SetTitleRect(const CRect& newRect) { m_TitleRect = newRect; }
 	//! Returns the size of the title lines.
 	CSize GetSize(CDC* pDC);
 	//! Draw the title.
-	void Draw(CDC *pDC);
+	void Draw(CDC* pDC);
 
 	//! The parent charting control.
 	CChartCtrl* m_pParentCtrl;

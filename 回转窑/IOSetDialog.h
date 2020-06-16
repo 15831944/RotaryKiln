@@ -2,7 +2,6 @@
 #include "afxwin.h"
 #include "afxcmn.h"
 
-
 // CIOSetDialog 对话框
 
 class CIOSetDialog : public CDialogEx
@@ -13,7 +12,7 @@ public:
 	CIOSetDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CIOSetDialog();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_SET_THERMAL_IOPARAM };
 
 protected:

@@ -1,7 +1,6 @@
 #pragma once
 #include "afxcmn.h"
 
-
 // UserManageDialog 对话框
 
 class UserManageDialog : public CDialogEx
@@ -12,7 +11,7 @@ public:
 	UserManageDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~UserManageDialog();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_USER_MANAGE };
 
 protected:
@@ -22,7 +21,7 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 	CListCtrl m_listctrl;
-	afx_msg void OnRclickList1(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnRclickList1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnUserDrop();
 	afx_msg void OnUserAppend();
 	afx_msg void OnUserModify();

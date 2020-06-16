@@ -1,4 +1,3 @@
-
 // MainFrm.cpp : CMainFrame 类的实现
 //
 
@@ -11,7 +10,6 @@
 #include "HDataDialog.h"
 #include "RecordDialog.h"
 #include "ShowPictureDialog.h"
-
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -66,7 +64,7 @@ static UINT indicators[] =
 CMainFrame::CMainFrame()
 {
 	// TODO: 在此添加成员初始化代码
-	m_theralsetdialog=NULL;
+	m_theralsetdialog = NULL;
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2008);
 	//system("net start mysql");
 }
@@ -120,7 +118,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("未能创建状态栏\n");
 		return -1;      // 未能创建
 	}
-	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
+	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
 
 	// TODO: 如果您不希望工具栏和菜单栏可停靠，请删除这五行
 	m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
@@ -128,7 +126,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndMenuBar);
 	DockPane(&m_wndToolBar);
-
 
 	// 启用 Visual Studio 2005 样式停靠窗口行为
 	CDockingManager::SetDockingMode(DT_SMART);
@@ -175,7 +172,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CMFCToolBar::SetBasicCommands(lstBasicCommands);
 
-
 	// 创建停靠窗口
 	if (!CreateDockingWindows())
 	{
@@ -183,29 +179,28 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 	}
 
-	SetTimer(1,1000,NULL);
+	SetTimer(1, 1000, NULL);
 
-	CMenu* pMenu=GetSystemMenu(false);
-	UINT nID=pMenu->GetMenuItemID(pMenu->GetMenuItemCount()-1);
-	pMenu->EnableMenuItem(nID,MF_DISABLED);
+	CMenu* pMenu = GetSystemMenu(false);
+	UINT nID = pMenu->GetMenuItemID(pMenu->GetMenuItemCount() - 1);
+	pMenu->EnableMenuItem(nID, MF_DISABLED);
 	return 0;
 }
 
 BOOL CMainFrame::CreateDockingWindows()
 {
-
 	// 创建热像仪停靠视图
-	if (!m_dockabledlgthermal.Create(_T("热像仪视图"), this, CRect(0,0,200,200), TRUE, IDD_VIEW_THERMAL, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
+	if (!m_dockabledlgthermal.Create(_T("热像仪视图"), this, CRect(0, 0, 200, 200), TRUE, IDD_VIEW_THERMAL, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
 	{
 		TRACE0("未能创建窗口\n");
 		return FALSE; // 未能创建
 	}
-	m_dockabledlgthermal.SetMinSize(CSize(1000,800));//设置窗口最小大小
+	m_dockabledlgthermal.SetMinSize(CSize(1000, 800));//设置窗口最小大小
 	m_dockabledlgthermal.EnableDocking(CBRS_ALIGN_LEFT);
 	DockPane(&m_dockabledlgthermal);
 
 	// 创建拼接停靠视图
-	if (!m_dockabledlgsplicing.Create(_T("拼接视图"), this, CRect(0,0,200,200), TRUE, IDD_VIEW_SPLICING, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
+	if (!m_dockabledlgsplicing.Create(_T("拼接视图"), this, CRect(0, 0, 200, 200), TRUE, IDD_VIEW_SPLICING, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
 	{
 		TRACE0("未能创建窗口\n");
 		return FALSE; // 未能创建
@@ -215,7 +210,7 @@ BOOL CMainFrame::CreateDockingWindows()
 	DockPane(&m_dockabledlgsplicing);
 
 	// 创建分区域表格视图
-	if (!m_dockabledlgregiontable.Create(_T("分区域表格视图"), this, CRect(0,0,200,200), TRUE, IDD_VIEW_REGIONTABLE, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
+	if (!m_dockabledlgregiontable.Create(_T("分区域表格视图"), this, CRect(0, 0, 200, 200), TRUE, IDD_VIEW_REGIONTABLE, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
 	{
 		TRACE0("未能创建窗口\n");
 		return FALSE; // 未能创建
@@ -224,12 +219,12 @@ BOOL CMainFrame::CreateDockingWindows()
 	m_dockabledlgregiontable.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_dockabledlgregiontable);
 	// 创建横剖面曲线视图
-	if (!m_dockabledlgcurve.Create(_T("横剖面曲线视图"), this, CRect(0,0,200,200), TRUE, IDD_VIEW_CURVE, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
+	if (!m_dockabledlgcurve.Create(_T("横剖面曲线视图"), this, CRect(0, 0, 200, 200), TRUE, IDD_VIEW_CURVE, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
 	{
 		TRACE0("未能创建窗口\n");
 		return FALSE; // 未能创建
 	}
-	m_dockabledlgcurve.SetMinSize(CSize(600,400));//设置窗口最小大小
+	m_dockabledlgcurve.SetMinSize(CSize(600, 400));//设置窗口最小大小
 	m_dockabledlgcurve.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_dockabledlgcurve);
 
@@ -254,7 +249,7 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if( !CFrameWndEx::PreCreateWindow(cs) )
+	if (!CFrameWndEx::PreCreateWindow(cs))
 		return FALSE;
 	// TODO: 在此处通过修改
 	//  CREATESTRUCT cs 来修改窗口类或样式
@@ -276,7 +271,6 @@ void CMainFrame::Dump(CDumpContext& dc) const
 }
 #endif //_DEBUG
 
-
 // CMainFrame 消息处理程序
 
 void CMainFrame::OnViewCustomize()
@@ -286,9 +280,9 @@ void CMainFrame::OnViewCustomize()
 	pDlgCust->Create();
 }
 
-LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp,LPARAM lp)
+LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp)
 {
-	LRESULT lres = CFrameWndEx::OnToolbarCreateNew(wp,lp);
+	LRESULT lres = CFrameWndEx::OnToolbarCreateNew(wp, lp);
 	if (lres == 0)
 	{
 		return 0;
@@ -381,7 +375,7 @@ void CMainFrame::OnUpdateApplicationLook(CCmdUI* pCmdUI)
 	pCmdUI->SetRadio(theApp.m_nAppLook == pCmdUI->m_nID);
 }
 
-BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext) 
+BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext)
 {
 	// 基类将执行真正的工作
 
@@ -390,14 +384,13 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 		return FALSE;
 	}
 
-
 	// 为所有用户工具栏启用自定义按钮
 	BOOL bNameValid;
 	CString strCustomize;
 	bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
 	ASSERT(bNameValid);
 
-	for (int i = 0; i < iMaxUserToolbars; i ++)
+	for (int i = 0; i < iMaxUserToolbars; i++)
 	{
 		CMFCToolBar* pUserToolbar = GetUserToolBarByIndex(i);
 		if (pUserToolbar != NULL)
@@ -409,12 +402,10 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	return TRUE;
 }
 
-
-
 void CMainFrame::OnClose()
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
-	HermalShowFlag=false;
+	HermalShowFlag = false;
 	Sleep(1000);
 	//CloseHandle(pVideoThread);
 	CFrameWndEx::OnClose();
@@ -424,39 +415,37 @@ void CMainFrame::OnClose()
 void CMainFrame::ThermalSet()
 {
 	// TODO: 在此添加命令处理程序代码
-	if(-1==userPermission.Find('B'))
+	if (-1 == userPermission.Find('B'))
 	{
 		AfxMessageBox("你的权限不够，请切换用户！");
 		return;
 	}
-	if(m_image.IsNull())
+	if (m_image.IsNull())
 	{
 		AfxMessageBox("你还没有连接热像仪！");
 		return;
 	}
-	m_theralsetdialog=new CThermalSetDialog;
-	m_theralsetdialog->Create(IDD_SET_THERMAL,this);
+	m_theralsetdialog = new CThermalSetDialog;
+	m_theralsetdialog->Create(IDD_SET_THERMAL, this);
 	m_theralsetdialog->ShowWindow(SW_SHOW);
 }
-
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
-	CMainFrame *pFrame=(CMainFrame*)AfxGetApp()->m_pMainWnd;//要求包含MainFrm.h头文件
-	pFrame->m_wndStatusBar.SetPaneText(0,"用户名："+userNumber);
+	CMainFrame* pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;//要求包含MainFrm.h头文件
+	pFrame->m_wndStatusBar.SetPaneText(0, "用户名：" + userNumber);
 	CFrameWndEx::OnTimer(nIDEvent);
 }
-
 
 void CMainFrame::OnChangeUser()
 {
 	// TODO: 在此添加命令处理程序代码
 	CLogon mylogon;
-	int nRet = mylogon.DoModal(); 
+	int nRet = mylogon.DoModal();
 	//if ( nRet == LOGON_FALSE)
-	
-	return ;
+
+	return;
 }
 
 //设置热像仪信息
@@ -464,7 +453,7 @@ void CMainFrame::On32776()
 {
 	// TODO: 在此添加命令处理程序代码
 	//设置热像仪信息
-	if(-1==userPermission.Find('A'))
+	if (-1 == userPermission.Find('A'))
 	{
 		AfxMessageBox("你的权限不够，请切换用户！");
 		return;
@@ -478,7 +467,7 @@ void CMainFrame::On32776()
 void CMainFrame::On32775()
 {
 	// TODO: 在此添加命令处理程序代码
-	if(-1==userPermission.Find('D'))
+	if (-1 == userPermission.Find('D'))
 	{
 		AfxMessageBox("你的权限不够，请切换用户！");
 		return;
@@ -492,7 +481,7 @@ void CMainFrame::On32775()
 void CMainFrame::On32780()
 {
 	// TODO: 在此添加命令处理程序代码
-	if(-1==userPermission.Find('H'))
+	if (-1 == userPermission.Find('H'))
 	{
 		AfxMessageBox("你的权限不够，请切换用户！");
 		return;
@@ -506,7 +495,7 @@ void CMainFrame::On32780()
 void CMainFrame::On32781()
 {
 	// TODO: 在此添加命令处理程序代码
-	if(-1==userPermission.Find('I'))
+	if (-1 == userPermission.Find('I'))
 	{
 		AfxMessageBox("你的权限不够，请切换用户！");
 		return;
@@ -516,11 +505,10 @@ void CMainFrame::On32781()
 	return;
 }
 
-
 void CMainFrame::OnEditPaste()
 {
 	// TODO: 在此添加命令处理程序代码
-	if(-1==userPermission.Find('J'))
+	if (-1 == userPermission.Find('J'))
 	{
 		AfxMessageBox("你的权限不够，请切换用户！");
 		return;
@@ -530,72 +518,66 @@ void CMainFrame::OnEditPaste()
 	return;
 }
 
-
 void CMainFrame::On32795()
 {
 	// TODO: 在此添加命令处理程序代码
-	if(!HermalShowFlag)
+	if (!HermalShowFlag)
 	{
-		::SendMessage(AfxGetMainWnd()->m_hWnd,WM_CLOSE,0,0);//最常用
+		::SendMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);//最常用
 	}
-	HermalShowFlag=false;
+	HermalShowFlag = false;
 }
-
 
 void CMainFrame::OnMenu32796()
 {
 	// TODO: 在此添加命令处理程序代码
-	if(!HermalShowFlag)
+	if (!HermalShowFlag)
 	{
 		char buf[256];
-		::GetModuleFileName(NULL,buf,sizeof(buf));
+		::GetModuleFileName(NULL, buf, sizeof(buf));
 		CString strPath = buf;
 		WinExec(strPath, SW_SHOW);//启动strPath路径下的执行文件
-		::SendMessage(AfxGetMainWnd()->m_hWnd,WM_CLOSE,0,0);//最常用
+		::SendMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);//最常用
 	}
-	HermalShowFlag=false;
-	ReStartFlag=true;
-	
+	HermalShowFlag = false;
+	ReStartFlag = true;
 }
-
 
 void CMainFrame::OnPictureSc()
 {
 	// TODO: 在此添加命令处理程序代码
 	CString strPath;
-	strPath="热像仪抓图";
+	strPath = "热像仪抓图";
 	if (!PathFileExists(strPath))
 	{
 		//不存在
-		system("md "+strPath);
+		system("md " + strPath);
 	}
-	ShellExecute(NULL,"open",strPath, NULL, NULL, SW_SHOWNORMAL); 
+	ShellExecute(NULL, "open", strPath, NULL, NULL, SW_SHOWNORMAL);
 }
-
 
 void CMainFrame::OnPictureAl()
 {
 	// TODO: 在此添加命令处理程序代码
 	CString strPath;
-	strPath="热像仪报警";
+	strPath = "热像仪报警";
 	if (!PathFileExists(strPath))
 	{
 		//不存在
-		system("md "+strPath);
+		system("md " + strPath);
 	}
-	ShellExecute(NULL,"open",strPath, NULL, NULL, SW_SHOWNORMAL); 
+	ShellExecute(NULL, "open", strPath, NULL, NULL, SW_SHOWNORMAL);
 }
-
 
 void CMainFrame::OnHelp()
 {
 	// TODO: 在此添加命令处理程序代码
 	CString strPathFile;
-	strPathFile="回转窑.chm";
+	strPathFile = "回转窑.chm";
 	if (!PathFileExists(strPathFile))
 	{
 		//不存在
 		AfxMessageBox("帮助文档没有安装");
 	}
-	ShellExecute(NULL,"open",strPathFile, NULL, NULL, SW_SHOWNORMAL); 
+	ShellExecute(NULL, "open", strPathFile, NULL, NULL, SW_SHOWNORMAL);
 }

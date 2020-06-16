@@ -7,10 +7,10 @@
  *
  *
  *	This code may be used for any non-commercial and commercial purposes in a compiled form.
- *	The code may be redistributed as long as it remains unmodified and providing that the 
- *	author name and this disclaimer remain intact. The sources can be modified WITH the author 
+ *	The code may be redistributed as long as it remains unmodified and providing that the
+ *	author name and this disclaimer remain intact. The sources can be modified WITH the author
  *	consent only.
- *	
+ *
  *	This code is provided without any garanties. I cannot be held responsible for the damage or
  *	the loss of time it causes. Use it at your own risks
  *
@@ -38,11 +38,10 @@
 
 class CChartLegend;
 
-
 //! Base class for all series of the control
 /**
-	This class inherits from CChartSeries and introduces the concept of 
-	points through the template parameter. 
+	This class inherits from CChartSeries and introduces the concept of
+	points through the template parameter.
 
 	This class is much more than a simple base class. It already store
 	all the data points and provide utility functions to manipulate them.
@@ -88,7 +87,7 @@ public:
 	void ClearSerie();
 
 	//! Returns the number of points in the series.
-	unsigned GetPointsCount() const  { return m_vPoints.GetPointsCount(); }
+	unsigned GetPointsCount() const { return m_vPoints.GetPointsCount(); }
 
 	//! Retrieves the minimum and maxium Y values of the series.
 	/**
@@ -171,9 +170,9 @@ public:
 	//! Specifies how the points should be ordered in the series.
 	/**
 		This specifies if the points should be ordered on their X values,
-		on their Y values or not ordered (kept in order they are added to 
+		on their Y values or not ordered (kept in order they are added to
 		the control). Ordering can improve performances a lot but makes it
-		impossible to draw some specific curves (for instance, drawing an 
+		impossible to draw some specific curves (for instance, drawing an
 		ellipse is only possible if no ordering is set).
 	**/
 	virtual void SetSeriesOrdering(PointsOrdering newOrdering);
@@ -208,13 +207,13 @@ protected:
 	bool GetVisiblePoints(unsigned& uFirst, unsigned& uLast) const;
 
 	//! Called by the control to check if an event occured on the series.
-	bool OnMouseEvent(CChartMouseListener::MouseEvent mouseEvent, 
-					const CPoint& screenPoint);
+	bool OnMouseEvent(CChartMouseListener::MouseEvent mouseEvent,
+		const CPoint& screenPoint);
 
 	//! The helper class containing all the data points.
 	CChartPointsArray<T> m_vPoints;
 	//! Index of the last point drawn
-	unsigned m_uLastDrawnPoint;		
+	unsigned m_uLastDrawnPoint;
 
 private:
 	//! Draws the labels of the series.
@@ -228,4 +227,3 @@ private:
 };
 
 #include "ChartSerieBase.inl"
-

@@ -2,7 +2,6 @@
 #include "afxwin.h"
 #include "Global.h"
 
-
 // CLogon 对话框
 
 class CLogon : public CDialogEx
@@ -13,7 +12,7 @@ public:
 	CLogon(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CLogon();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_LOGON };
 
 protected:

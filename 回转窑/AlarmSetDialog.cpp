@@ -8,7 +8,6 @@
 
 #include "SQLConnect.hpp"
 
-
 extern int alarmSetVersion;
 // CAlarmSetDialog 对话框
 
@@ -20,7 +19,6 @@ CAlarmSetDialog::CAlarmSetDialog(CWnd* pParent /*=NULL*/)
 	, m_alarmTH2(_T(""))
 	, m_alarmTH3(_T(""))
 {
-
 }
 
 CAlarmSetDialog::~CAlarmSetDialog()
@@ -35,31 +33,27 @@ void CAlarmSetDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_ALARM3, m_alarmTH3);
 }
 
-
 BEGIN_MESSAGE_MAP(CAlarmSetDialog, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CAlarmSetDialog::OnBnClickedOk)
 END_MESSAGE_MAP()
 
-
 // CAlarmSetDialog 消息处理程序
-
 
 void CAlarmSetDialog::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(1);
-	v_alarmTH1[RegionIndex]=atof(m_alarmTH1);
-	v_alarmTH2[RegionIndex]=atof(m_alarmTH2);
-	v_alarmTH3[RegionIndex]=atof(m_alarmTH3);
+	v_alarmTH1[RegionIndex] = atof(m_alarmTH1);
+	v_alarmTH2[RegionIndex] = atof(m_alarmTH2);
+	v_alarmTH3[RegionIndex] = atof(m_alarmTH3);
 	alarmSetVersion++;
 
 	CString sql_command;
 	//select_sql_by_user.Format("execute user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
-	sql_command.Format("update region_info set region_alarm1=%f,region_alarm2=%f,region_alarm3=%f where  region_state=1 and region_index=%d",v_alarmTH1[RegionIndex],v_alarmTH2[RegionIndex],v_alarmTH3[RegionIndex],RegionIndex);
+	sql_command.Format("update region_info set region_alarm1=%f,region_alarm2=%f,region_alarm3=%f where  region_state=1 and region_index=%d", v_alarmTH1[RegionIndex], v_alarmTH2[RegionIndex], v_alarmTH3[RegionIndex], RegionIndex);
 	accessConnect.execute(sql_command.GetString());
 	CDialogEx::OnOK();
 }
-
 
 BOOL CAlarmSetDialog::OnInitDialog()
 {

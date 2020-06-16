@@ -7,10 +7,10 @@
  *
  *
  *	This code may be used for any non-commercial and commercial purposes in a compiled form.
- *	The code may be redistributed as long as it remains unmodified and providing that the 
- *	author name and this disclaimer remain intact. The sources can be modified WITH the author 
+ *	The code may be redistributed as long as it remains unmodified and providing that the
+ *	author name and this disclaimer remain intact. The sources can be modified WITH the author
  *	consent only.
- *	
+ *
  *	This code is provided without any garanties. I cannot be held responsible for the damage or
  *	the loss of time it causes. Use it at your own risks
  *
@@ -22,8 +22,8 @@
 #include "ChartFont.h"
 
 CChartFont::CChartFont(const TChartString& strFaceName, int iPointSize)
-  : m_strFaceName(strFaceName), m_iPointSize(iPointSize), m_bItalic(false),
-    m_bBold(false), m_bUnderline(false), m_bVertical(false), m_Font(), m_bDirty(true), 
+	: m_strFaceName(strFaceName), m_iPointSize(iPointSize), m_bItalic(false),
+	m_bBold(false), m_bUnderline(false), m_bVertical(false), m_Font(), m_bDirty(true),
 	m_pOldFont(NULL)
 {
 }
@@ -33,9 +33,9 @@ CChartFont::CChartFont(const CChartFont& copy)
 	*this = copy;
 }
 
-CChartFont::CChartFont() 
-  : m_strFaceName(_T("Microsoft Sans Serif")), m_iPointSize(100), m_bItalic(false),
-    m_bBold(false), m_bUnderline(false), m_bVertical(false), m_Font(), m_bDirty(true), 
+CChartFont::CChartFont()
+	: m_strFaceName(_T("Microsoft Sans Serif")), m_iPointSize(100), m_bItalic(false),
+	m_bBold(false), m_bUnderline(false), m_bVertical(false), m_Font(), m_bDirty(true),
 	m_pOldFont(NULL)
 {
 }
@@ -53,8 +53,8 @@ CChartFont::~CChartFont()
 	if (m_bDirty)
 	{
 		LOGFONT lf;
-		memset(&lf, 0, sizeof(LOGFONT));       
-		lf.lfHeight = m_iPointSize;     
+		memset(&lf, 0, sizeof(LOGFONT));
+		lf.lfHeight = m_iPointSize;
 		_tcscpy_s(lf.lfFaceName,LF_FACESIZE-1 , m_strFaceName.c_str());
 		lf.lfItalic = m_bItalic;
 		lf.lfUnderline = m_bUnderline;
@@ -87,10 +87,10 @@ void CChartFont::SelectFont(CDC* pDC) const
 	if (m_bDirty)
 	{
 		LOGFONT lf;
-		memset(&lf, 0, sizeof(LOGFONT));       
-		lf.lfHeight = m_iPointSize;     
+		memset(&lf, 0, sizeof(LOGFONT));
+		lf.lfHeight = m_iPointSize;
 #ifdef _CRT_INSECURE_DEPRECATE
-		_tcscpy_s(lf.lfFaceName,LF_FACESIZE-1 , m_strFaceName.c_str());
+		_tcscpy_s(lf.lfFaceName, LF_FACESIZE - 1, m_strFaceName.c_str());
 #else
 		_tcscpy(lf.lfFaceName, m_strFaceName.c_str());
 #endif
@@ -122,11 +122,11 @@ void CChartFont::UnselectFont(CDC* pDC) const
 	m_pOldFont = NULL;
 }
 
-void CChartFont::SetFont(const TChartString& strFaceName, 
-						 int iPointSize,
-						 bool bItalic, 
-						 bool bBold, 
-						 bool bUnderline)
+void CChartFont::SetFont(const TChartString& strFaceName,
+	int iPointSize,
+	bool bItalic,
+	bool bBold,
+	bool bUnderline)
 {
 	m_strFaceName = strFaceName;
 	m_iPointSize = iPointSize;

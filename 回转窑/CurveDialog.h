@@ -13,13 +13,13 @@ class CCurveDialog : public CDialogEx
 
 public:
 	CChartCtrl m_ChartCtrl1;
-	CChartLineSerie *pLineSerieMax,*pLineSerieMin;
+	CChartLineSerie* pLineSerieMax, * pLineSerieMin;
 	//std::vector<CChartLineSerie*> RegionLine;
 	//vector<CChartLineSerie> pLineSerieRegion;
 	CCurveDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CCurveDialog();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_VIEW_CURVE };
 
 protected:

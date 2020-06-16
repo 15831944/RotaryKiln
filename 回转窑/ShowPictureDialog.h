@@ -4,7 +4,6 @@
 
 // ShowPictureDialog 对话框
 
-
 class ShowPictureDialog : public CDialogEx
 {
 	DECLARE_DYNAMIC(ShowPictureDialog)
@@ -13,7 +12,7 @@ public:
 	ShowPictureDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~ShowPictureDialog();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_DIALOG_HPICTURE };
 
 protected:
@@ -40,7 +39,7 @@ public:
 	std::vector<int> SplicingRows;
 	ATL::CImage m_image;
 	Mat picture_mat;
-	float min_global,max_global;
+	float min_global, max_global;
 	virtual BOOL OnInitDialog();
 	void ShowPicture();
 	afx_msg void OnBnClickedCheck1();

@@ -9,7 +9,7 @@
 #include "YoseenTypes.h"
 //#include "YoseenFile.h"
 
-extern "C"{
+extern "C" {
 	/*
 	建立SDK
 	@return 错误码
@@ -47,7 +47,6 @@ extern "C"{
 	@return 错误码
 	*/
 	SDK_API s32 Yoseen_SaveFrame(s32 userHandle, const char* fileName, s32 withTemp);
-
 
 	/*
 	保存单帧温度数据到内存, 用户提供frameFile, SDK填充frameFile的各个数据指针.

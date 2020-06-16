@@ -7,10 +7,10 @@
  *
  *
  *	This code may be used for any non-commercial and commercial purposes in a compiled form.
- *	The code may be redistributed as long as it remains unmodified and providing that the 
- *	author name and this disclaimer remain intact. The sources can be modified WITH the author 
+ *	The code may be redistributed as long as it remains unmodified and providing that the
+ *	author name and this disclaimer remain intact. The sources can be modified WITH the author
  *	consent only.
- *	
+ *
  *	This code is provided without any garanties. I cannot be held responsible for the damage or
  *	the loss of time it causes. Use it at your own risks
  *
@@ -19,7 +19,7 @@
  *
  */
 
-#ifndef _CHARTLABEL_H_ 
+#ifndef _CHARTLABEL_H_
 #define _CHARTLABEL_H_
 
 template <class PointType>
@@ -30,10 +30,10 @@ class CChartSerieBase;
 	This class is a template class with the template parameter being the point
 	type of the series to which the label is attached.
 
-	Using a CChartLabelProvider provides more flexibility in the way to 
-	supply text to the label. You can for instance embedd in the string some 
-	information about the point (XValue, YValue, index, ...). In that case, a 
-	single CChartLabelProvider object can be provided for all labels. Changing 
+	Using a CChartLabelProvider provides more flexibility in the way to
+	supply text to the label. You can for instance embedd in the string some
+	information about the point (XValue, YValue, index, ...). In that case, a
+	single CChartLabelProvider object can be provided for all labels. Changing
 	the displayed text of all labels becomes also easier: you only have to adapt
 	the string returned by this object and refresh the control and all labels will
 	be updated.
@@ -43,9 +43,9 @@ class CChartLabelProvider
 {
 public:
 	//! Constructor
-	CChartLabelProvider()  { }
+	CChartLabelProvider() { }
 	//! Destructor
-	virtual ~CChartLabelProvider()  { }
+	virtual ~CChartLabelProvider() { }
 
 	//! Method to override in order to provide the text of the label.
 	/**
@@ -56,12 +56,12 @@ public:
 		@return a string which will be the text displayed in the label.
 	**/
 	virtual TChartString GetText(CChartSerieBase<PointType>* pSerie,
-			unsigned PointIndex) = 0;
+		unsigned PointIndex) = 0;
 };
 
 //! Draws a label containing some text which is attached to a point of a series.
 /**
-	This is a base class which should be overriden for specific label types. 
+	This is a base class which should be overriden for specific label types.
 **/
 template <class PointType>
 class CChartLabel
@@ -112,7 +112,7 @@ protected:
 	CChartLabelProvider<PointType>* m_pLabelProvider;
 
 	//! The parent charting control.
-	CChartCtrl*  m_pParentCtrl;
+	CChartCtrl* m_pParentCtrl;
 	//! The parent series.
 	CChartSerieBase<PointType>* m_pParentSeries;
 };

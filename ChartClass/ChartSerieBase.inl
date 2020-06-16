@@ -7,10 +7,10 @@
  *
  *
  *	This code may be used for any non-commercial and commercial purposes in a compiled form.
- *	The code may be redistributed as long as it remains unmodified and providing that the 
- *	author name and this disclaimer remain intact. The sources can be modified WITH the author 
+ *	The code may be redistributed as long as it remains unmodified and providing that the
+ *	author name and this disclaimer remain intact. The sources can be modified WITH the author
  *	consent only.
- *	
+ *
  *	This code is provided without any garanties. I cannot be held responsible for the damage or
  *	the loss of time it causes. Use it at your own risks
  *
@@ -27,10 +27,9 @@
 #include "Math.h"
 #include <algorithm>
 
-
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
 
 template<class T>
 CChartSerieBase<T>::CChartSerieBase(CChartCtrl* pParent) : CChartSerie(pParent)
@@ -43,7 +42,7 @@ template<class T>
 CChartSerieBase<T>::~CChartSerieBase()
 {
 	TLabelMap::iterator iter = m_mapLabels.begin();
-	for (iter; iter!=m_mapLabels.end(); iter++)
+	for (iter; iter != m_mapLabels.end(); iter++)
 	{
 		delete iter->second;
 	}
@@ -54,7 +53,6 @@ void CChartSerieBase<T>::SetSeriesOrdering(PointsOrdering newOrdering)
 {
 	m_vPoints.SetOrdering(newOrdering);
 }
-
 
 template<class T>
 void CChartSerieBase<T>::AddPoint(const T& newPoint)
@@ -96,10 +94,10 @@ void CChartSerieBase<T>::RemovePointsFromBegin(unsigned Count)
 {
 	m_vPoints.RemovePointsFromBegin(Count);
 	// Remove all the labels associated with those points
-	for (unsigned i=0; i<=Count; i++)
+	for (unsigned i = 0; i <= Count; i++)
 	{
 		TLabelMap::iterator iter = m_mapLabels.find(i);
-		if (iter != m_mapLabels.end()) 
+		if (iter != m_mapLabels.end())
 		{
 			delete iter->second;
 			m_mapLabels.erase(iter);
@@ -117,10 +115,10 @@ void CChartSerieBase<T>::RemovePointsFromEnd(unsigned Count)
 	m_vPoints.RemovePointsFromEnd(Count);
 	// Remove all the labels associated with those points
 	unsigned uStart = uPtsCount - Count;
-	for (unsigned i=0; i<=Count; i++)
+	for (unsigned i = 0; i <= Count; i++)
 	{
 		TLabelMap::iterator iter = m_mapLabels.find(uStart + i);
-		if (iter != m_mapLabels.end()) 
+		if (iter != m_mapLabels.end())
 		{
 			delete iter->second;
 			m_mapLabels.erase(iter);
@@ -135,7 +133,7 @@ void CChartSerieBase<T>::ClearSerie()
 {
 	m_vPoints.Clear();
 	TLabelMap::iterator iter = m_mapLabels.begin();
-	for (iter; iter!=m_mapLabels.end(); iter++)
+	for (iter; iter != m_mapLabels.end(); iter++)
 	{
 		delete iter->second;
 	}
@@ -146,19 +144,19 @@ void CChartSerieBase<T>::ClearSerie()
 }
 
 template<class T>
-bool CChartSerieBase<T>::GetSerieXMinMax(double &Min, double &Max) const
-{
-	if (!IsVisible()) 
-		return false;
-	return m_vPoints.GetSerieXMinMax(Min, Max); 
-}
-
-template<class T>
-bool CChartSerieBase<T>::GetSerieYMinMax(double &Min, double &Max) const
+bool CChartSerieBase<T>::GetSerieXMinMax(double& Min, double& Max) const
 {
 	if (!IsVisible())
 		return false;
-	return m_vPoints.GetSerieYMinMax(Min, Max); 
+	return m_vPoints.GetSerieXMinMax(Min, Max);
+}
+
+template<class T>
+bool CChartSerieBase<T>::GetSerieYMinMax(double& Min, double& Max) const
+{
+	if (!IsVisible())
+		return false;
+	return m_vPoints.GetSerieYMinMax(Min, Max);
 }
 
 template<class T>
@@ -169,21 +167,21 @@ bool CChartSerieBase<T>::GetSerieXScreenMinMax(double& Min, double& Max)  const
 	if (m_vPoints.GetOrdering() != poYOrdering)
 		return false;
 
-	unsigned first=0, last=0;
+	unsigned first = 0, last = 0;
 	bool bRes = GetVisiblePoints(first, last);
 	if (!bRes)
 		return false;
 
 	Min = m_vPoints[first].GetXMin();
 	Max = m_vPoints[first].GetXMax();
-	for (unsigned i=first; i<last; i++)
+	for (unsigned i = first; i < last; i++)
 	{
 		if (m_vPoints[i].GetXMin() < Min)
 			Min = m_vPoints[i].GetXMin();
 		if (m_vPoints[i].GetXMax() > Max)
 			Max = m_vPoints[i].GetXMax();
 	}
-	return true; 
+	return true;
 }
 
 template<class T>
@@ -194,21 +192,21 @@ bool CChartSerieBase<T>::GetSerieYScreenMinMax(double& Min, double& Max)  const
 	if (m_vPoints.GetOrdering() != poXOrdering)
 		return false;
 
-	unsigned first=0, last=0;
+	unsigned first = 0, last = 0;
 	bool bRes = GetVisiblePoints(first, last);
 	if (!bRes)
 		return false;
 
 	Min = m_vPoints[first].GetYMin();
 	Max = m_vPoints[first].GetYMax();
-	for (unsigned i=first; i<last; i++)
+	for (unsigned i = first; i < last; i++)
 	{
 		if (m_vPoints[i].GetYMin() < Min)
 			Min = m_vPoints[i].GetYMin();
 		if (m_vPoints[i].GetYMax() > Max)
 			Max = m_vPoints[i].GetYMax();
 	}
-	return true; 
+	return true;
 }
 
 template<class T>
@@ -217,7 +215,7 @@ bool CChartSerieBase<T>::GetVisiblePoints(unsigned& uFirst, unsigned& uLast) con
 	if (m_vPoints.GetPointsCount() == 0)
 		return false;
 
-	double Min=0, Max=0;
+	double Min = 0, Max = 0;
 	bool bResult = false;
 	switch (m_vPoints.GetOrdering())
 	{
@@ -243,7 +241,7 @@ template<class T>
 CPoint CChartSerieBase<T>::GetPointScreenCoord(unsigned uPointIndex)
 {
 	unsigned uCount = m_vPoints.GetPointsCount();
-	ASSERT(uPointIndex<uCount);
+	ASSERT(uPointIndex < uCount);
 
 	T Point = m_vPoints[uPointIndex];
 	CPoint ScreenPoint;
@@ -252,10 +250,10 @@ CPoint CChartSerieBase<T>::GetPointScreenCoord(unsigned uPointIndex)
 }
 
 template<class T>
-CChartBalloonLabel<T>* CChartSerieBase<T>::CreateBalloonLabel(unsigned uPointIndex, 
-														   const TChartString& strLabelText)
+CChartBalloonLabel<T>* CChartSerieBase<T>::CreateBalloonLabel(unsigned uPointIndex,
+	const TChartString& strLabelText)
 {
-	ASSERT(uPointIndex<GetPointsCount());
+	ASSERT(uPointIndex < GetPointsCount());
 
 	CChartBalloonLabel<T>* pToReturn = new CChartBalloonLabel<T>(m_pParentCtrl, this);
 	pToReturn->SetLabelText(strLabelText);
@@ -277,9 +275,9 @@ void CChartSerieBase<T>::UnregisterMouseListener()
 
 template<class T>
 CChartBalloonLabel<T>* CChartSerieBase<T>::CreateBalloonLabel(unsigned uPointIndex,
-											 CChartLabelProvider<T>* pLabelProvider)
+	CChartLabelProvider<T>* pLabelProvider)
 {
-	ASSERT(uPointIndex<GetPointsCount());
+	ASSERT(uPointIndex < GetPointsCount());
 
 	CChartBalloonLabel<T>* pToReturn = new CChartBalloonLabel<T>(m_pParentCtrl, this);
 	pToReturn->SetLabelProvider(pLabelProvider);
@@ -290,7 +288,7 @@ CChartBalloonLabel<T>* CChartSerieBase<T>::CreateBalloonLabel(unsigned uPointInd
 template<class T>
 void CChartSerieBase<T>::AttachCustomLabel(unsigned uPointIndex, CChartLabel<T>* pLabel)
 {
-	ASSERT(uPointIndex<GetPointsCount());
+	ASSERT(uPointIndex < GetPointsCount());
 
 	TLabelMap::iterator iter = m_mapLabels.find(uPointIndex);
 	if (iter != m_mapLabels.end())
@@ -304,35 +302,35 @@ template<class T>
 void CChartSerieBase<T>::DrawLabels(CDC* pDC)
 {
 	TLabelMap::iterator iter = m_mapLabels.begin();
-	for (iter; iter!=m_mapLabels.end(); iter++)
+	for (iter; iter != m_mapLabels.end(); iter++)
 	{
-		iter->second->Draw(pDC,iter->first);
+		iter->second->Draw(pDC, iter->first);
 	}
 }
 
 template<class T>
-bool CChartSerieBase<T>::OnMouseEvent(CChartMouseListener::MouseEvent mouseEvent, 
-					const CPoint& screenPoint)
+bool CChartSerieBase<T>::OnMouseEvent(CChartMouseListener::MouseEvent mouseEvent,
+	const CPoint& screenPoint)
 {
 	bool bHandled = false;
 	if (m_pMouseListener == NULL)
 		return bHandled;
 
-	if ( (mouseEvent==CChartMouseListener::MouseMove) &&
-		  !NotifyMouseMoveEnabled())
+	if ((mouseEvent == CChartMouseListener::MouseMove) &&
+		!NotifyMouseMoveEnabled())
 	{
 		return bHandled;
 	}
-	if ( (mouseEvent!=CChartMouseListener::MouseMove) &&
-		  !NotifyMouseClickEnabled())
+	if ((mouseEvent != CChartMouseListener::MouseMove) &&
+		!NotifyMouseClickEnabled())
 	{
 		return bHandled;
 	}
 
 	unsigned uPtIndex = 0;
-	if (IsPointOnSerie(screenPoint,uPtIndex))
+	if (IsPointOnSerie(screenPoint, uPtIndex))
 	{
-		m_pMouseListener->OnMouseEventSeries(mouseEvent,screenPoint,this,uPtIndex);
+		m_pMouseListener->OnMouseEventSeries(mouseEvent, screenPoint, this, uPtIndex);
 		bHandled = true;
 	}
 

@@ -7,10 +7,10 @@
  *
  *
  *	This code may be used for any non-commercial and commercial purposes in a compiled form.
- *	The code may be redistributed as long as it remains unmodified and providing that the 
- *	author name and this disclaimer remain intact. The sources can be modified WITH the author 
+ *	The code may be redistributed as long as it remains unmodified and providing that the
+ *	author name and this disclaimer remain intact. The sources can be modified WITH the author
  *	consent only.
- *	
+ *
  *	This code is provided without any garanties. I cannot be held responsible for the damage or
  *	the loss of time it causes. Use it at your own risks
  *
@@ -23,21 +23,21 @@
 
 #include "PointsOrdering.h"
 
-//! Manages an array of points which supports fast resizing.
-/**
-	This class is used internally to store the data for all the points. The data
-	is stored in a C-style array. The internal buffer can grow dynamically depending
-	on the needs.
-	
-	The class is a template class with the template parameter being the type of 
-	the points to be stored. The points have to provide the following methods:
-	<ul><li>double GetXMin()</li>
-	<li>double GetX()</li>
-	<li>double GetXMax()</li>
-	<li>double GetYMin()</li>
-	<li>double GetY()</li>
-	<li>double GetYMax()</li></ul>
-**/
+ //! Manages an array of points which supports fast resizing.
+ /**
+	 This class is used internally to store the data for all the points. The data
+	 is stored in a C-style array. The internal buffer can grow dynamically depending
+	 on the needs.
+
+	 The class is a template class with the template parameter being the type of
+	 the points to be stored. The points have to provide the following methods:
+	 <ul><li>double GetXMin()</li>
+	 <li>double GetX()</li>
+	 <li>double GetXMax()</li>
+	 <li>double GetYMin()</li>
+	 <li>double GetY()</li>
+	 <li>double GetYMax()</li></ul>
+ **/
 template <class T>
 class CChartPointsArray
 {
@@ -52,9 +52,9 @@ public:
 	~CChartPointsArray();
 
 	//! Returns the number of points currently stored.
-	unsigned GetPointsCount() const   { return m_iCurrentPoints; }
+	unsigned GetPointsCount() const { return m_iCurrentPoints; }
 	//! Sets the size by which the internal buffer is increased when reallocation occurs
-	void SetResize(int iResize)  { m_iResize = iResize; }
+	void SetResize(int iResize) { m_iResize = iResize; }
 
 	//! Adds a new point in the array.
 	/**
@@ -100,14 +100,14 @@ public:
 	//! Specifies how the points should be ordered in the array.
 	/**
 		This specifies if the points should be ordered on their X values,
-		on their Y values or not ordered (kept in order they are added to 
+		on their Y values or not ordered (kept in order they are added to
 		the control). Ordering can improve performances a lot but makes it
-		impossible to draw some specific curves (for instance, drawing an 
+		impossible to draw some specific curves (for instance, drawing an
 		ellipse is only possible if no ordering is set).
 	**/
 	void SetOrdering(PointsOrdering newOrdering);
 	//! Retrieves the ordering of the points in the array.
-	PointsOrdering GetOrdering() const  { return m_Ordering; } 
+	PointsOrdering GetOrdering() const { return m_Ordering; }
 	//! Refreshes the point ordering.
 	void ReorderPoints();
 
@@ -123,14 +123,13 @@ public:
 			This parameter will store the index of the first visible point
 		@param uLastPt
 			This parameter will store the index of the last visible point
-		@return false if no points are in the array. 
+		@return false if no points are in the array.
 	**/
-	bool GetVisiblePoints(double dAxisMin, double dAxisMax, 
-						  unsigned& uFirstPt, unsigned& uLastPt) const;
-	
+	bool GetVisiblePoints(double dAxisMin, double dAxisMax,
+		unsigned& uFirstPt, unsigned& uLastPt) const;
 
 	//! Returns the internal buffer of the array
-	T* GetInternalBuffer() const	{ return m_pPoints; }
+	T* GetInternalBuffer() const { return m_pPoints; }
 
 private:
 	//! Caches the minimum X value.
@@ -157,9 +156,9 @@ private:
 
 	//! The array of points
 	T* m_pPoints;
-	//! The number of allocated points 
+	//! The number of allocated points
 	unsigned m_iMaxPoints;
-	//! The number of points currently used 
+	//! The number of points currently used
 	unsigned m_iCurrentPoints;
 	//! The size by which the array is incremented once it is full
 	unsigned m_iResize;

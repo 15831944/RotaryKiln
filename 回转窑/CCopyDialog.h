@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-
 // CCopyDialog 对话框
 
 class CCopyDialog : public CDialogEx
@@ -11,7 +10,7 @@ public:
 	CCopyDialog(CWnd* pParent = nullptr);   // 标准构造函数
 	virtual ~CCopyDialog();
 
-// 对话框数据
+	// 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_COPYDIALOG };
 #endif

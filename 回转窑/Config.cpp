@@ -32,7 +32,7 @@ Config::Config(const char* filename, std::string delimiter, std::string comment)
 {}
 
 Config::Config(string filename, string delimiter,
-			   string comment)
+	string comment)
 	: m_Delimiter(delimiter), m_Comment(comment)
 {
 	std::ifstream in(filename);
@@ -137,7 +137,7 @@ bool Config::FileExist(std::string filename)
 }
 
 void Config::ReadFile(string filename, string delimiter,
-					  string comment)
+	string comment)
 {
 	m_Delimiter = delimiter;
 	m_Comment = comment;

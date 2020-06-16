@@ -7,10 +7,10 @@
  *
  *
  *	This code may be used for any non-commercial and commercial purposes in a compiled form.
- *	The code may be redistributed as long as it remains unmodified and providing that the 
- *	author name and this disclaimer remain intact. The sources can be modified WITH the author 
+ *	The code may be redistributed as long as it remains unmodified and providing that the
+ *	author name and this disclaimer remain intact. The sources can be modified WITH the author
  *	consent only.
- *	
+ *
  *	This code is provided without any garanties. I cannot be held responsible for the damage or
  *	the loss of time it causes. Use it at your own risks
  *
@@ -24,13 +24,13 @@
 #include "ChartBalloonLabel.h"
 
 template<class PointType>
-CChartBalloonLabel<PointType>::CChartBalloonLabel(CChartCtrl* pParentCtrl, 
-												  CChartSerieBase<PointType>* pParentSeries)
-  : CChartLabel(pParentCtrl, pParentSeries), m_bRoundedRect(true)
+CChartBalloonLabel<PointType>::CChartBalloonLabel(CChartCtrl* pParentCtrl,
+	CChartSerieBase<PointType>* pParentSeries)
+	: CChartLabel(pParentCtrl, pParentSeries), m_bRoundedRect(true)
 {
-	m_colBackground = RGB(255,255,225);
-	m_colLine = RGB(255,255,255);
-	m_colBorder = RGB(0,0,0);
+	m_colBackground = RGB(255, 255, 225);
+	m_colLine = RGB(255, 255, 255);
+	m_colBorder = RGB(0, 0, 0);
 }
 
 template<class PointType>
@@ -39,30 +39,30 @@ CChartBalloonLabel<PointType>::~CChartBalloonLabel()
 }
 
 template<class PointType>
-void CChartBalloonLabel<PointType>::SetBackgroundColor(COLORREF colBackground)  
-{ 
-	m_colBackground = colBackground; 
+void CChartBalloonLabel<PointType>::SetBackgroundColor(COLORREF colBackground)
+{
+	m_colBackground = colBackground;
 	m_pParentCtrl->RefreshCtrl();
 }
 
 template<class PointType>
-void CChartBalloonLabel<PointType>::SetLineColor(COLORREF colArrow)			 
-{ 
-	m_colLine = colArrow; 
+void CChartBalloonLabel<PointType>::SetLineColor(COLORREF colArrow)
+{
+	m_colLine = colArrow;
 	m_pParentCtrl->RefreshCtrl();
 }
 
 template<class PointType>
-void CChartBalloonLabel<PointType>::SetBorderColor(COLORREF colBorder)			 
-{ 
-	m_colBorder = colBorder; 
+void CChartBalloonLabel<PointType>::SetBorderColor(COLORREF colBorder)
+{
+	m_colBorder = colBorder;
 	m_pParentCtrl->RefreshCtrl();
 }
 
 template<class PointType>
-void CChartBalloonLabel<PointType>::SetRoundedRect(bool bRounded)  
-{ 
-	m_bRoundedRect = bRounded; 
+void CChartBalloonLabel<PointType>::SetRoundedRect(bool bRounded)
+{
+	m_bRoundedRect = bRounded;
 	m_pParentCtrl->RefreshCtrl();
 }
 
@@ -101,7 +101,7 @@ void CChartBalloonLabel<PointType>::Draw(CDC* pDC, unsigned uPointIndex)
 
 	// Draw first the arrow
 	pDC->MoveTo(screenPt);
-	pDC->LineTo(screenPt.x,screenPt.y-20);
+	pDC->LineTo(screenPt.x, screenPt.y - 20);
 
 	// Create and execute a new pen for the border
 	newPen.DeleteObject();
@@ -113,21 +113,21 @@ void CChartBalloonLabel<PointType>::Draw(CDC* pDC, unsigned uPointIndex)
 	CBrush newBrush(m_colBackground);
 	CBrush* pOldBrush = pDC->SelectObject(&newBrush);
 
-	// Calculate the size of the 
+	// Calculate the size of the
 	CSize labelSize = pDC->GetTextExtent(m_strLabelText.c_str());
-	labelSize += CSize(10,10);
+	labelSize += CSize(10, 10);
 	int x = screenPt.x;
 	int y = screenPt.y;
-	CRect labelRect(CPoint(x-labelSize.cx/2,y-19-labelSize.cy),labelSize);
+	CRect labelRect(CPoint(x - labelSize.cx / 2, y - 19 - labelSize.cy), labelSize);
 
 	// Draw the rectangle
 	if (m_bRoundedRect)
-		pDC->RoundRect(labelRect,CPoint(10,10));
+		pDC->RoundRect(labelRect, CPoint(10, 10));
 	else
 		pDC->Rectangle(labelRect);
 
 	// Draw the text
-	pDC->TextOut(labelRect.left+5,labelRect.top+5,m_strLabelText.c_str());
+	pDC->TextOut(labelRect.left + 5, labelRect.top + 5, m_strLabelText.c_str());
 
 	// Clean the objects
 	pDC->SelectObject(pOldPen);

@@ -7,7 +7,6 @@
 #include "RegionTableDialog.h"
 #include "CurveDialog.h"
 
-
 //热像仪视图可停靠类
 class CDockableDlgThermal : public CDockablePane
 {
@@ -27,7 +26,7 @@ protected:
 };
 
 //拼接视图可停靠类
-class CDockableDlgSplicing: public CDockablePane
+class CDockableDlgSplicing : public CDockablePane
 {
 public:
 	CDockableDlgSplicing();
@@ -45,7 +44,7 @@ protected:
 };
 
 //分区域表格视图可停靠类
-class CDockableDlgRegionTable: public CDockablePane
+class CDockableDlgRegionTable : public CDockablePane
 {
 public:
 	CDockableDlgRegionTable();
@@ -63,7 +62,7 @@ protected:
 };
 
 //横剖面曲线视图可停靠类
-class CDockableDlgCurve: public CDockablePane
+class CDockableDlgCurve : public CDockablePane
 {
 public:
 	CDockableDlgCurve();

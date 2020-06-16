@@ -20,7 +20,6 @@ AddThermalDialog::AddThermalDialog(CWnd* pParent /*=NULL*/)
 	, m_psd(_T(""))
 	, m_thermalname(_T(""))
 {
-
 }
 
 AddThermalDialog::~AddThermalDialog()
@@ -37,14 +36,11 @@ void AddThermalDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT1, m_thermalname);
 }
 
-
 BEGIN_MESSAGE_MAP(AddThermalDialog, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &AddThermalDialog::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
-
 // AddThermalDialog 消息处理程序
-
 
 void AddThermalDialog::OnBnClickedButton1()
 {

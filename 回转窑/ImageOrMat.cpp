@@ -1,11 +1,9 @@
 ﻿#include "stdafx.h"
 #include "ImageOrMat.h"
 
-
 ImageOrMat::ImageOrMat()
 {
 }
-
 
 ImageOrMat::~ImageOrMat()
 {
@@ -17,7 +15,6 @@ void ImageOrMat::CImageToMat(ATL::CImage& cimage, Mat& mat)
 		return;
 	}
 
-
 	int nChannels = cimage.GetBPP() / 8;
 	if ((1 != nChannels) && (3 != nChannels))
 	{
@@ -25,7 +22,6 @@ void ImageOrMat::CImageToMat(ATL::CImage& cimage, Mat& mat)
 	}
 	int nWidth = cimage.GetWidth();
 	int nHeight = cimage.GetHeight();
-
 
 	//重建mat  
 	if (1 == nChannels)
@@ -37,14 +33,11 @@ void ImageOrMat::CImageToMat(ATL::CImage& cimage, Mat& mat)
 		mat.create(nHeight, nWidth, CV_8UC3);
 	}
 
-
 	//拷贝数据  
-
 
 	uchar* pucRow;//指向数据区的行指针  
 	uchar* pucImage = (uchar*)cimage.GetBits();//指向数据区的指针  
 	int nStep = cimage.GetPitch();//每行的字节数,注意这个返回值有正有负  
-
 
 	for (int nRow = 0; nRow < nHeight; nRow++)
 	{
@@ -53,13 +46,13 @@ void ImageOrMat::CImageToMat(ATL::CImage& cimage, Mat& mat)
 		{
 			if (1 == nChannels)
 			{
-				pucRow[nCol] = *(pucImage + nRow* nStep + nCol);
+				pucRow[nCol] = *(pucImage + nRow * nStep + nCol);
 			}
 			else if (3 == nChannels)
 			{
 				for (int nCha = 0; nCha < 3; nCha++)
 				{
-					pucRow[nCol * 3 + nCha] = *(pucImage + nRow*nStep + nCol * 3 + nCha);
+					pucRow[nCol * 3 + nCha] = *(pucImage + nRow * nStep + nCol * 3 + nCha);
 				}
 			}
 		}
@@ -72,7 +65,6 @@ void ImageOrMat::MatToCImage(Mat& mat, ATL::CImage& cimage)
 		return;
 	}
 
-
 	int nChannels = mat.channels();
 	if ((1 != nChannels) && (3 != nChannels))
 	{
@@ -81,18 +73,15 @@ void ImageOrMat::MatToCImage(Mat& mat, ATL::CImage& cimage)
 	int nWidth = mat.cols;
 	int nHeight = mat.rows;
 
-
 	//重建cimage  
 	cimage.Destroy();
 	cimage.Create(nWidth, nHeight, 8 * nChannels);
 
 	//拷贝数据  
 
-
 	uchar* pucRow;                                   //指向数据区的行指针  
 	uchar* pucImage = (uchar*)cimage.GetBits();    //指向数据区的指针  
 	int nStep = cimage.GetPitch();                  //每行的字节数,注意这个返回值有正有负  
-
 
 	if (1 == nChannels)								//对于单通道的图像需要初始化调色板  
 	{
@@ -116,13 +105,13 @@ void ImageOrMat::MatToCImage(Mat& mat, ATL::CImage& cimage)
 		{
 			if (1 == nChannels)
 			{
-				*(pucImage + nRow*nStep + nCol) = pucRow[nCol];
+				*(pucImage + nRow * nStep + nCol) = pucRow[nCol];
 			}
 			else if (3 == nChannels)
 			{
 				for (int nCha = 0; nCha < 3; nCha++)
 				{
-					*(pucImage + nRow*nStep + nCol * 3 + nCha) = pucRow[nCol * 3 + nCha];
+					*(pucImage + nRow * nStep + nCol * 3 + nCha) = pucRow[nCol * 3 + nCha];
 				}
 			}
 		}

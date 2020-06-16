@@ -1,6 +1,5 @@
 #pragma once
 
-
 // CSplicingDialog 对话框
 
 class CSplicingDialog : public CDialogEx
@@ -11,7 +10,7 @@ public:
 	CSplicingDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CSplicingDialog();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_VIEW_SPLICING };
 
 protected:

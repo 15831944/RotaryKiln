@@ -7,10 +7,10 @@
  *
  *
  *	This code may be used for any non-commercial and commercial purposes in a compiled form.
- *	The code may be redistributed as long as it remains unmodified and providing that the 
- *	author name and this disclaimer remain intact. The sources can be modified WITH the author 
+ *	The code may be redistributed as long as it remains unmodified and providing that the
+ *	author name and this disclaimer remain intact. The sources can be modified WITH the author
  *	consent only.
- *	
+ *
  *	This code is provided without any garanties. I cannot be held responsible for the damage or
  *	the loss of time it causes. Use it at your own risks
  *
@@ -24,10 +24,10 @@
 #include "ChartCtrl.h"
 
 CChartCrossHairCursor::CChartCrossHairCursor(CChartCtrl* pParent,
-											 CChartAxis* pHorizAxis, 
-											 CChartAxis* pVertAxis)
-  : CChartCursor(pParent), m_pHorizontalAxis(pHorizAxis), m_pVerticalAxis(pVertAxis),
-    m_lXPos(0), m_lYPos(0)
+	CChartAxis* pHorizAxis,
+	CChartAxis* pVertAxis)
+	: CChartCursor(pParent), m_pHorizontalAxis(pHorizAxis), m_pVerticalAxis(pVertAxis),
+	m_lXPos(0), m_lYPos(0)
 {
 }
 
@@ -37,7 +37,7 @@ CChartCrossHairCursor::~CChartCrossHairCursor()
 
 void CChartCrossHairCursor::Draw(CDC* pDC)
 {
-	CPen NewPen(PS_SOLID,1,m_colCursor);
+	CPen NewPen(PS_SOLID, 1, m_colCursor);
 	CPen* pOldPen = pDC->SelectObject(&NewPen);
 
 	CRect plottingRect = m_pParentCtrl->GetPlottingRect();

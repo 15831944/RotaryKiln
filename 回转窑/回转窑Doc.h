@@ -1,10 +1,7 @@
-
 // 回转窑Doc.h : C回转窑Doc 类的接口
 //
 
-
 #pragma once
-
 
 class C回转窑Doc : public CDocument
 {
@@ -12,13 +9,13 @@ protected: // 仅从序列化创建
 	C回转窑Doc();
 	DECLARE_DYNCREATE(C回转窑Doc)
 
-// 特性
+	// 特性
 public:
 
-// 操作
+	// 操作
 public:
 
-// 重写
+	// 重写
 public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
@@ -27,7 +24,7 @@ public:
 	virtual void OnDrawThumbnail(CDC& dc, LPRECT lprcBounds);
 #endif // SHARED_HANDLERS
 
-// 实现
+	// 实现
 public:
 	virtual ~C回转窑Doc();
 #ifdef _DEBUG
@@ -37,7 +34,7 @@ public:
 
 protected:
 
-// 生成的消息映射函数
+	// 生成的消息映射函数
 protected:
 	DECLARE_MESSAGE_MAP()
 

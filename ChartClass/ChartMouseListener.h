@@ -7,10 +7,10 @@
  *
  *
  *	This code may be used for any non-commercial and commercial purposes in a compiled form.
- *	The code may be redistributed as long as it remains unmodified and providing that the 
- *	author name and this disclaimer remain intact. The sources can be modified WITH the author 
+ *	The code may be redistributed as long as it remains unmodified and providing that the
+ *	author name and this disclaimer remain intact. The sources can be modified WITH the author
  *	consent only.
- *	
+ *
  *	This code is provided without any garanties. I cannot be held responsible for the damage or
  *	the loss of time it causes. Use it at your own risks
  *
@@ -24,19 +24,19 @@
 
 #pragma warning( disable : 4100 )
 
-//! Listener for mouse events occuring on the chart control.
-/**
-	This is an interface which must be implemented in order to receive
-	mouse notifications. You can then register your class with the chart
-	control by calling RegisterMouseListener.
-**/
+ //! Listener for mouse events occuring on the chart control.
+ /**
+	 This is an interface which must be implemented in order to receive
+	 mouse notifications. You can then register your class with the chart
+	 control by calling RegisterMouseListener.
+ **/
 class CChartMouseListener
 {
 public:
 	//! Constructor
-	CChartMouseListener()  { }
+	CChartMouseListener() { }
 	//! Destructor
-	virtual ~CChartMouseListener()  { }
+	virtual ~CChartMouseListener() { }
 
 	//! Enumeration listing the type of mouse events
 	enum MouseEvent
@@ -67,8 +67,8 @@ public:
 		@param pAxisClicked
 			The axis on which the event occured
 	**/
-	virtual void OnMouseEventAxis(MouseEvent mouseEvent, CPoint point, 
-									CChartAxis* pAxisClicked) { }
+	virtual void OnMouseEventAxis(MouseEvent mouseEvent, CPoint point,
+		CChartAxis* pAxisClicked) { }
 	//! Virtual function to implement in order to be notified when the legend is clicked.
 	/**
 		@param mouseEvent

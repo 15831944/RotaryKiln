@@ -6,7 +6,6 @@
 #include "..\ChartClass\ChartAxisLabel.h"
 #include<vector>
 
-
 #define MESSAGE_UPDATEPOS WM_USER+1001
 // HistoryCurve 对话框
 
@@ -18,14 +17,14 @@ public:
 	CChartCtrl m_ChartCtrl1;
 	BOOL m_check[10];
 	CButton m_checkcontrol[10];
-	std::vector<CChartLineSerie *>pLineSerie;
+	std::vector<CChartLineSerie*>pLineSerie;
 	std::vector<CString>* Time_x;
-	std::vector<std::vector<double>> *curve_y;
-	std::vector<CString> *region_name;
+	std::vector<std::vector<double>>* curve_y;
+	std::vector<CString>* region_name;
 	HistoryCurve(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~HistoryCurve();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_HISTORY_CURVE };
 
 protected:
@@ -33,7 +32,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	void InitData(std::vector<CString>* Time_x,std::vector<std::vector<double>> *curve_y,std::vector<CString> *region_name);
+	void InitData(std::vector<CString>* Time_x, std::vector<std::vector<double>>* curve_y, std::vector<CString>* region_name);
 	afx_msg void OnBnClickedButton1();
 protected:
 	afx_msg LRESULT OnMessageUpdatepos(WPARAM wParam, LPARAM lParam);

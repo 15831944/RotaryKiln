@@ -1,4 +1,3 @@
-
 // 回转窑Doc.cpp : C回转窑Doc 类的实现
 //
 
@@ -24,13 +23,11 @@ IMPLEMENT_DYNCREATE(C回转窑Doc, CDocument)
 BEGIN_MESSAGE_MAP(C回转窑Doc, CDocument)
 END_MESSAGE_MAP()
 
-
 // C回转窑Doc 构造/析构
 
 C回转窑Doc::C回转窑Doc()
 {
 	// TODO: 在此添加一次性构造代码
-
 }
 
 C回转窑Doc::~C回转窑Doc()
@@ -47,9 +44,6 @@ BOOL C回转窑Doc::OnNewDocument()
 
 	return TRUE;
 }
-
-
-
 
 // C回转窑Doc 序列化
 
@@ -76,7 +70,7 @@ void C回转窑Doc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 	CString strText = _T("TODO: implement thumbnail drawing here");
 	LOGFONT lf;
 
-	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT));
+	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT)GetStockObject(DEFAULT_GUI_FONT));
 	pDefaultGUIFont->GetLogFont(&lf);
 	lf.lfHeight = 36;
 
@@ -107,7 +101,7 @@ void C回转窑Doc::SetSearchContent(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = NULL;
+		CMFCFilterChunkValueImpl* pChunk = NULL;
 		ATLTRY(pChunk = new CMFCFilterChunkValueImpl);
 		if (pChunk != NULL)
 		{
@@ -132,6 +126,5 @@ void C回转窑Doc::Dump(CDumpContext& dc) const
 	CDocument::Dump(dc);
 }
 #endif //_DEBUG
-
 
 // C回转窑Doc 命令

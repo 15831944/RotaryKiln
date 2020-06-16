@@ -6,8 +6,6 @@
 #include "DlgDockable.h"
 #include "afxdialogex.h"
 
-
-
 //可停靠热像仪视图
 CDockableDlgThermal::CDockableDlgThermal()
 {
@@ -25,10 +23,10 @@ END_MESSAGE_MAP()
 int CDockableDlgThermal::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
-		return -1; 
+		return -1;
 
-	// TODO:  Add your specialized creation code here 
-	if (!m_thermaldlg.Create(IDD_VIEW_THERMAL,this))
+	// TODO:  Add your specialized creation code here
+	if (!m_thermaldlg.Create(IDD_VIEW_THERMAL, this))
 	{
 		TRACE0("未能创建窗口/n");
 		return -1;
@@ -48,14 +46,13 @@ void CDockableDlgThermal::OnDestroy()
 void CDockableDlgThermal::OnSize(UINT nType, int cx, int cy)
 {
 	CDockablePane::OnSize(nType, cx, cy);
-	if(m_thermaldlg.GetSafeHwnd())
+	if (m_thermaldlg.GetSafeHwnd())
 	{
 		CRect rect;
 		GetClientRect(rect);
 		m_thermaldlg.MoveWindow(rect);
 	}
 }
-
 
 //可停靠拼接视图
 CDockableDlgSplicing::CDockableDlgSplicing()
@@ -74,10 +71,10 @@ END_MESSAGE_MAP()
 int CDockableDlgSplicing::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
-		return -1; 
+		return -1;
 
-	// TODO:  Add your specialized creation code here 
-	if (!m_splicingdlg.Create(IDD_VIEW_SPLICING,this))
+	// TODO:  Add your specialized creation code here
+	if (!m_splicingdlg.Create(IDD_VIEW_SPLICING, this))
 	{
 		TRACE0("未能创建窗口/n");
 		return -1;
@@ -96,14 +93,13 @@ void CDockableDlgSplicing::OnDestroy()
 void CDockableDlgSplicing::OnSize(UINT nType, int cx, int cy)
 {
 	CDockablePane::OnSize(nType, cx, cy);
-	if(m_splicingdlg.GetSafeHwnd())
+	if (m_splicingdlg.GetSafeHwnd())
 	{
 		CRect rect;
 		GetClientRect(rect);
 		m_splicingdlg.MoveWindow(rect);
 	}
 }
-
 
 //可停靠分区域表格视图
 CDockableDlgRegionTable::CDockableDlgRegionTable()
@@ -122,10 +118,10 @@ END_MESSAGE_MAP()
 int CDockableDlgRegionTable::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
-		return -1; 
+		return -1;
 
-	// TODO:  Add your specialized creation code here 
-	if (!m_regiontabledlg.Create(IDD_VIEW_REGIONTABLE,this))
+	// TODO:  Add your specialized creation code here
+	if (!m_regiontabledlg.Create(IDD_VIEW_REGIONTABLE, this))
 	{
 		TRACE0("未能创建窗口/n");
 		return -1;
@@ -144,14 +140,13 @@ void CDockableDlgRegionTable::OnDestroy()
 void CDockableDlgRegionTable::OnSize(UINT nType, int cx, int cy)
 {
 	CDockablePane::OnSize(nType, cx, cy);
-	if(m_regiontabledlg.GetSafeHwnd())
+	if (m_regiontabledlg.GetSafeHwnd())
 	{
 		CRect rect;
 		GetClientRect(rect);
 		m_regiontabledlg.MoveWindow(rect);
 	}
 }
-
 
 //可停靠横剖面曲线视图
 CDockableDlgCurve::CDockableDlgCurve()
@@ -192,7 +187,7 @@ void CDockableDlgCurve::OnDestroy()
 void CDockableDlgCurve::OnSize(UINT nType, int cx, int cy)
 {
 	CDockablePane::OnSize(nType, cx, cy);
-	if(m_curvedlg.GetSafeHwnd())
+	if (m_curvedlg.GetSafeHwnd())
 	{
 		CRect rect;
 		GetClientRect(rect);

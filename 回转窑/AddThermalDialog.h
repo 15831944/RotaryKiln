@@ -1,6 +1,5 @@
 #pragma once
 
-
 // AddThermalDialog 对话框
 
 class AddThermalDialog : public CDialogEx
@@ -11,7 +10,7 @@ public:
 	AddThermalDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~AddThermalDialog();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_ADD_THERMAL };
 
 protected:

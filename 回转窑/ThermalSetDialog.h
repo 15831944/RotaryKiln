@@ -5,7 +5,6 @@
 #include "RegionSetDialog.h"
 #include "SplicingSetDialog.h"
 
-
 // CThermalSetDialog 对话框
 
 class CThermalSetDialog : public CDialogEx
@@ -16,7 +15,7 @@ public:
 	CThermalSetDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CThermalSetDialog();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_SET_THERMAL };
 
 protected:
@@ -32,7 +31,7 @@ public:
 	CIOSetDialog m_iosetdialog;
 	CRegionSetDialog   m_regionsetdialog;
 	CSplicingSetDialog m_splicingsetdialog;
-	
+
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedButtonSplicing();
 	afx_msg void OnBnClickedButtonRegion();

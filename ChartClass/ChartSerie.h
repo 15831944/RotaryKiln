@@ -7,10 +7,10 @@
  *
  *
  *	This code may be used for any non-commercial and commercial purposes in a compiled form.
- *	The code may be redistributed as long as it remains unmodified and providing that the 
- *	author name and this disclaimer remain intact. The sources can be modified WITH the author 
+ *	The code may be redistributed as long as it remains unmodified and providing that the
+ *	author name and this disclaimer remain intact. The sources can be modified WITH the author
  *	consent only.
- *	
+ *
  *	This code is provided without any garanties. I cannot be held responsible for the damage or
  *	the loss of time it causes. Use it at your own risks
  *
@@ -25,7 +25,6 @@
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
-
 
 #define INVALID_POINT	UINT_MAX
 
@@ -42,7 +41,7 @@ class CChartCtrl;
 
 //! Abstract class that provides a common "interface" for all series in the control
 /**
-	The class doesn't manipulate points (the type of point is unknown at this 
+	The class doesn't manipulate points (the type of point is unknown at this
 	level in the class hierarchy) but it provides all other functionalities
 	which are independant of the point type.
 
@@ -107,7 +106,7 @@ public:
 	//! Sets the name of the series, which is displayed in the legend.
 	void		 SetName(const TChartString& NewName);
 	//! Returns the name of the series.
-	TChartString GetName() const              { return m_strSerieName; }
+	TChartString GetName() const { return m_strSerieName; }
 
 	//! Converts any data point into its relative screen point.
 	/**
@@ -136,14 +135,14 @@ public:
 	**/
 	void SetVisible(bool bVisible);
 	//! Returns true if the series is visible.
-	bool IsVisible()  const         { return m_bIsVisible; }
+	bool IsVisible()  const { return m_bIsVisible; }
 
 	//! Returns the color of the series.
-	COLORREF GetColor() const			   { return m_SerieColor; }
+	COLORREF GetColor() const { return m_SerieColor; }
 	//! Sets the color of the series.
 	void SetColor(COLORREF NewColor);
 	//! Returns the color of the shadow.
-	COLORREF GetShadowColor() const		   { return m_ShadowColor; }
+	COLORREF GetShadowColor() const { return m_ShadowColor; }
 	//! Sets the color of the shadow.
 	void SetShadowColor(COLORREF NewColor);
 	//! Enables or disables the shadow for the series.
@@ -163,10 +162,10 @@ public:
 	virtual bool IsPointOnSerie(const CPoint& screenPoint, unsigned& uIndex) const = 0;
 
 	//! Returns the series Id.
-	unsigned GetSerieId() const  { return m_uSerieId; }
+	unsigned GetSerieId() const { return m_uSerieId; }
 	//! Enables or disables certain mouse notifications on the series.
 	/**
-		Checking if a point is on the series could degrade performances if 
+		Checking if a point is on the series could degrade performances if
 		it has to be done for each mouse event. This function allows to disable
 		certain notifications, in which case the test won't be done. By default
 		the series reacts on mouse clicks but not on mouse moves.
@@ -199,31 +198,31 @@ protected:
 		@param rectBitmap
 			The rectangle in which to draw the legend icon
 	**/
-    virtual void DrawLegend(CDC* pDC, const CRect& rectBitmap) const =0;
+	virtual void DrawLegend(CDC* pDC, const CRect& rectBitmap) const = 0;
 
 	//! Draws the most recent points of the series.
 	/**
 		This pure virtual function should be overriden by child classes.
-		This function should only draw the points that were not previously 
+		This function should only draw the points that were not previously
 		drawn.
 		@param pDC
 			The device context used to draw
 	**/
-	virtual void Draw(CDC* pDC) =0;
+	virtual void Draw(CDC* pDC) = 0;
 	//! Redraws the full series.
 	/**
 		This pure virtual function should be overriden by child classes.
 		@param pDC
 			The device context used to draw
 	**/
-	virtual void DrawAll(CDC *pDC) =0;
+	virtual void DrawAll(CDC* pDC) = 0;
 	//! Draws the labels of the series.
 	/**
 		This pure virtual function should be overriden by child classes.
 		@param pDC
 			The device context used to draw
 	**/
-	virtual void DrawLabels(CDC* pDC) =0;
+	virtual void DrawLabels(CDC* pDC) = 0;
 
 	//! Called when a mouse event is detected on the chart
 	/**
@@ -234,28 +233,28 @@ protected:
 			The screen point on which the event occured
 		@return true if the event occured on the series.
 	**/
-	virtual bool OnMouseEvent(CChartMouseListener::MouseEvent mouseEvent, 
-								const CPoint& screenPoint) = 0;
+	virtual bool OnMouseEvent(CChartMouseListener::MouseEvent mouseEvent,
+		const CPoint& screenPoint) = 0;
 
 	//! Returns true if the series reacts on mouse moves.
-	bool NotifyMouseMoveEnabled()  { return m_bMouseMoveNotifications;  }
+	bool NotifyMouseMoveEnabled() { return m_bMouseMoveNotifications; }
 	//! Returns true if the series reacts on mouse clicks.
 	bool NotifyMouseClickEnabled() { return m_bMouseClickNotifications; }
 
 	//! The parent charting control.
 	CChartCtrl* m_pParentCtrl;
 	//! The related vertical axis.
-	CChartAxis* m_pVerticalAxis;    
+	CChartAxis* m_pVerticalAxis;
 	//! The related horizontal axis.
-	CChartAxis* m_pHorizontalAxis;  
+	CChartAxis* m_pHorizontalAxis;
 
 	//! The series name displayed in the legend.
-	TChartString m_strSerieName;	
+	TChartString m_strSerieName;
 
 	//! Specifies if the series is visible.
 	bool        m_bIsVisible;
 	//! Specifies if the series has shadow enabled.
-	bool		m_bShadow;	
+	bool		m_bShadow;
 	//! Color of the series
 	COLORREF	m_SerieColor;
 	//! Color of the shadow
@@ -267,7 +266,7 @@ protected:
 
 private:
 	//! Sets the plotting rectangle.
-	void SetPlottingRect(const CRect& plottingRect)  { m_PlottingRect = plottingRect; }
+	void SetPlottingRect(const CRect& plottingRect) { m_PlottingRect = plottingRect; }
 
 	//! The next available series Id
 	static unsigned m_uNextFreeId;

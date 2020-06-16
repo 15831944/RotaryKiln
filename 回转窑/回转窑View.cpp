@@ -1,4 +1,3 @@
-
 // 回转窑View.cpp : C回转窑View 类的实现
 //
 
@@ -12,12 +11,9 @@
 #include "回转窑Doc.h"
 #include "回转窑View.h"
 
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-
 
 // C回转窑View
 
@@ -30,7 +26,7 @@ BEGIN_MESSAGE_MAP(C回转窑View, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &C回转窑View::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
-	ON_COMMAND_RANGE(IDC_TOOLBAR_DEFAULT,IDC_TOOLBAR_SAVE,NULL)
+	ON_COMMAND_RANGE(IDC_TOOLBAR_DEFAULT, IDC_TOOLBAR_SAVE, NULL)
 END_MESSAGE_MAP()
 
 // C回转窑View 构造/析构
@@ -38,7 +34,6 @@ END_MESSAGE_MAP()
 C回转窑View::C回转窑View()
 {
 	// TODO: 在此处添加构造代码
-
 }
 
 C回转窑View::~C回转窑View()
@@ -64,9 +59,7 @@ void C回转窑View::OnDraw(CDC* /*pDC*/)
 	// TODO: 在此处为本机数据添加绘制代码
 }
 
-
 // C回转窑View 打印
-
 
 void C回转窑View::OnFilePrintPreview()
 {
@@ -104,7 +97,6 @@ void C回转窑View::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 #endif
 }
 
-
 // C回转窑View 诊断
 
 #ifdef _DEBUG
@@ -125,7 +117,4 @@ C回转窑Doc* C回转窑View::GetDocument() const // 非调试版本是内联的
 }
 #endif //_DEBUG
 
-
 // C回转窑View 消息处理程序
-
-

@@ -31,7 +31,7 @@ typedef unsigned long long u64;
 #define S32_MIN			(-2147483647 - 1)
 #define U32_MAX			0xffffffff
 
-typedef struct _bgra{
+typedef struct _bgra {
 	u8 b;
 	u8 g;
 	u8 r;
@@ -57,7 +57,7 @@ typedef struct _bgra{
 /*
 数据类型
 */
-enum xxxdatatype{
+enum xxxdatatype {
 	xxxdatatype_temp = 2,		///< 温度流
 	xxxdatatype_video = 3,		///< 视频流
 	xxxdatatype_rtsp = 4,		///< rtsp流
@@ -66,7 +66,7 @@ enum xxxdatatype{
 /*
 数据文件类型
 */
-enum xxxmediafile{
+enum xxxmediafile {
 	xxxmediafile_bmpx = 0,			///< 单帧温度文件, bmp扩展
 	xxxmediafile_pngx,				///< 单帧温度文件, png扩展
 	xxxmediafile_stream,			///< 多帧温度文件
@@ -77,10 +77,10 @@ enum xxxmediafile{
 /**
 设备文件类型
 */
-enum xxxcamerafile{
+enum xxxcamerafile {
 	xxxcamerafile_bin = 0,			///< 设备程序包
 	xxxcamerafile_cali,				///< 校准表
-	xxxcamerafile_com,				///< 
+	xxxcamerafile_com,				///<
 	xxxcamerafile_log,				///< 日志
 
 	xxxcamerafile_cali2,			///< 校准表2
@@ -98,7 +98,7 @@ enum xxxcamerafile{
 /**
 调色板类型
 */
-enum xxxpalette{
+enum xxxpalette {
 	xxxpalette_Autumn = 0,
 	xxxpalette_BlackHot,
 	xxxpalette_GlowBow,
@@ -116,7 +116,7 @@ enum xxxpalette{
 /**
 红外调色板
 */
-typedef struct _xxxpalettedata{
+typedef struct _xxxpalettedata {
 	char name[32];				///< 名称
 	bgra data[256];				///< 数据
 }xxxpalettedata;
@@ -124,7 +124,7 @@ typedef struct _xxxpalettedata{
 /**
 发现热像仪方式
 */
-enum xxxdiscoverflags{
+enum xxxdiscoverflags {
 	xxxdiscoverflags_broadcast = 0x0001,		///< 广播
 	xxxdiscoverflags_multicast = 0x0002,		///< 组播
 	xxxdiscoverflags_broadcast2 = 0x0004,	///< 广播2
@@ -133,7 +133,7 @@ enum xxxdiscoverflags{
 /**
 测温结果
 */
-typedef struct _xxxmeasure_result{
+typedef struct _xxxmeasure_result {
 	float amin;			///< 最小值
 	float amax;			///< 最大值
 	float aavg;			///< 平均值
@@ -151,7 +151,7 @@ typedef struct _xxxmeasure_result{
 /**
 点
 */
-typedef struct _xxxpoint{
+typedef struct _xxxpoint {
 	u16 x;			///< 坐标x
 	u16 y;			///< 坐标y
 	u16 radius;		///< 半径, 以中心(x,y), 边长(radius*2+1)的方块代表点
@@ -160,7 +160,7 @@ typedef struct _xxxpoint{
 /**
 线
 */
-typedef struct _xxxline{
+typedef struct _xxxline {
 	u16 x0;			///< 起点x
 	u16 y0;			///< 起点y
 	u16 x1;			///< 终点x
@@ -171,7 +171,7 @@ typedef struct _xxxline{
 /**
 矩形
 */
-typedef struct _xxxrectangle{
+typedef struct _xxxrectangle {
 	u16 xmin;			///< x最小
 	u16 ymin;			///< y最小
 	u16 xmax;			///< x最大
@@ -181,7 +181,7 @@ typedef struct _xxxrectangle{
 /**
 测温对象类型
 */
-enum xxxmeasure_type{
+enum xxxmeasure_type {
 	xxxmeasure_type_point = 0,			///< 点
 	xxxmeasure_type_line = 1,			///< 线
 	xxxmeasure_type_rectangle = 2,		///< 矩形
@@ -191,17 +191,17 @@ enum xxxmeasure_type{
 /**
 报警类型
 */
-enum xxxalarm_type{
+enum xxxalarm_type {
 	xxxalarm_type_none = 0,				///< 无
 	xxxalarm_type_max,					///< 最大值
 	xxxalarm_type_min,					///< 最小值
-	xxxalarm_type_mid					///< 
+	xxxalarm_type_mid					///<
 };
 
 /**
 测温对象
 */
-typedef struct _xxxmeasure_object{
+typedef struct _xxxmeasure_object {
 	char measure_id[16];				///< 名称
 	u8 measure_type;					///< 类型
 	u8 alarm_type;						///< 报警类型
@@ -222,7 +222,7 @@ typedef struct _xxxmeasure_object{
 /**
 串口数据位
 */
-enum xxxspdatabits{
+enum xxxspdatabits {
 	xxxspdatabits_5 = 5,
 	xxxspdatabits_6,
 	xxxspdatabits_7,
@@ -232,7 +232,7 @@ enum xxxspdatabits{
 /**
 串口校验位
 */
-enum xxxspparity{
+enum xxxspparity {
 	xxxspparity_none = 0,
 	xxxspparity_odd,
 	xxxspparity_even,
@@ -241,7 +241,7 @@ enum xxxspparity{
 /**
 串口停止位
 */
-enum xxxspstopbits{
+enum xxxspstopbits {
 	xxxspstopbits_1 = 0,
 	xxxspstopbits_2,
 };
@@ -249,7 +249,7 @@ enum xxxspstopbits{
 /**
 串口波特率
 */
-enum xxxspbaudrate{
+enum xxxspbaudrate {
 	xxxspbaudrate_2400 = 0,
 	xxxspbaudrate_4800,
 	xxxspbaudrate_9600,
@@ -263,7 +263,7 @@ enum xxxspbaudrate{
 /**
 串口用法
 */
-enum xxxspusage{
+enum xxxspusage {
 	xxxspusage_custom = 0,
 	xxxspusage_pelcod,
 	xxxspusage_pelcop
@@ -272,7 +272,7 @@ enum xxxspusage{
 /**
 GPIO输入类型
 */
-enum xxxgpioinputtype{
+enum xxxgpioinputtype {
 	xxxgpioinputtype_none = 0,			///< 关闭
 	xxxgpioinputtype_check,				///< 检查
 	xxxgpioinputtype_capture,			///< 截图
@@ -281,17 +281,15 @@ enum xxxgpioinputtype{
 /**
 GPIO输出类型
 */
-enum xxxgpiooutputtype{
+enum xxxgpiooutputtype {
 	xxxgpiooutputtype_close = 0,		///< 关闭
 	xxxgpiooutputtype_open,				///< 打开
 };
 
-
-
 /**
 对焦区域
 */
-typedef struct _xxxfocusrect{
+typedef struct _xxxfocusrect {
 	u16 xmin;		///< x最小
 	u16 ymin;		///< y最小
 	u16 xmax;		///< x最大
@@ -301,7 +299,7 @@ typedef struct _xxxfocusrect{
 /**
 GPIO报警类型
 */
-enum xxxgpioalarmtype{
+enum xxxgpioalarmtype {
 	xxxgpioalarmtype_manual = 0,		///< 手动
 	xxxgpioalarmtype_auto				///< 自动
 };
@@ -309,7 +307,7 @@ enum xxxgpioalarmtype{
 /**
 GPIO报警值
 */
-enum xxxgpioalarmvalue{
+enum xxxgpioalarmvalue {
 	xxxgpioalarmvalue_low = 0,			///< 低
 	xxxgpioalarmvalue_high,				///< 高
 	xxxgpioalarmvalue_ignore,			///< 无
@@ -318,7 +316,7 @@ enum xxxgpioalarmvalue{
 /**
 GPIO报警
 */
-typedef struct _xxxgpioalarm{
+typedef struct _xxxgpioalarm {
 	u8 value0;			///< 报警值0
 	u8 type0;			///< 报警类型0
 	u8 time0;			///< 报警时间0
@@ -331,7 +329,7 @@ typedef struct _xxxgpioalarm{
 /**
 串口数据
 */
-typedef struct _xxxserialportdata{
+typedef struct _xxxserialportdata {
 	u8 size;				///< 数据大小
 	u8 data[31];			///< 数据区
 }xxxserialportdata;
@@ -339,7 +337,7 @@ typedef struct _xxxserialportdata{
 /**
 时间
 */
-typedef struct _xxxdatetime{
+typedef struct _xxxdatetime {
 	s32 year;			///< 年
 	s32 mon;			///< 月
 	s32 day;			///< 日
@@ -349,7 +347,7 @@ typedef struct _xxxdatetime{
 	s32 sec;			///< 秒
 }xxxdatetime;
 
-typedef struct _xf_config{
+typedef struct _xf_config {
 	short ms_full;//ms
 	short fc_full;//fc
 	short fc1;//fc, cc0

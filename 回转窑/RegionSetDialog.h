@@ -1,7 +1,6 @@
 #pragma once
 #include "afxcmn.h"
 
-
 // CRegionSetDialog 对话框
 
 class CRegionSetDialog : public CDialogEx
@@ -12,7 +11,7 @@ public:
 	CRegionSetDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CRegionSetDialog();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_SET_THERMAL_REGION };
 
 protected:
@@ -25,17 +24,17 @@ public:
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnClose();
 	afx_msg void OnPaint();
-	afx_msg void OnDeltaposSpinLeft(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinLeft(NMHDR* pNMHDR, LRESULT* pResult);
 	CString m_left;
 	CString m_right;
-	afx_msg void OnDeltaposSpinRight(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnDeltaposSpinTop(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinRight(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnDeltaposSpinTop(NMHDR* pNMHDR, LRESULT* pResult);
 	CString m_top;
 	CString m_bottom;
-	afx_msg void OnDeltaposSpinBottom(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpinBottom(NMHDR* pNMHDR, LRESULT* pResult);
 	CListCtrl m_listctrl;
 	CString m_regionname;
-	afx_msg void OnItemchangedListRegioninfo(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnItemchangedListRegioninfo(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	virtual void OnOK();

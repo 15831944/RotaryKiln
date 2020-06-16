@@ -1,7 +1,6 @@
 #ifndef MD5_H
 #define MD5_H
 
-
 #pragma once
 #include <string>
 #include <fstream>

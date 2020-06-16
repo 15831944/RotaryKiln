@@ -10,9 +10,7 @@
 #include "SQLConnect.hpp"
 #include "easylogging++.h"
 
-
 #define MD5STR "南京工程学院计算工程学院王杰"
-
 
 extern CString userNumber;
 
@@ -27,7 +25,7 @@ AddModiUserDialog::AddModiUserDialog(CWnd* pParent /*=NULL*/)
 	, m_usernumber(_T(""))
 	, m_usertypevalue(_T(""))
 {
-	memset(m_check,false,sizeof(bool)*QXNUM);
+	memset(m_check, false, sizeof(bool) * QXNUM);
 }
 
 AddModiUserDialog::~AddModiUserDialog()
@@ -63,27 +61,23 @@ void AddModiUserDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT2, m_username);
 	DDX_CBString(pDX, IDC_COMBO1, m_usertypevalue);
 	DDX_Control(pDX, IDC_EDIT1, m_usercontrol);
-	
 }
-
 
 BEGIN_MESSAGE_MAP(AddModiUserDialog, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &AddModiUserDialog::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
-
 // AddModiUserDialog 消息处理程序
-
 
 BOOL AddModiUserDialog::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-	m_usertype.InsertString(0,"管理员");
-	m_usertype.InsertString(1,"操作员");
-	m_usertype.InsertString(2,"普通人员");
-	if(usernumber=="")
+	m_usertype.InsertString(0, "管理员");
+	m_usertype.InsertString(1, "操作员");
+	m_usertype.InsertString(2, "普通人员");
+	if (usernumber == "")
 	{
 		SetWindowText(_T("添加用户"));
 		SetDlgItemText(IDC_BUTTON1, _T("添加"));
@@ -92,11 +86,11 @@ BOOL AddModiUserDialog::OnInitDialog()
 	{
 		CString select_sql_by_user;
 		//select_sql_by_user.Format("execute user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
-		select_sql_by_user.Format("select * from user_info where user_number= \'%s\'",usernumber);
+		select_sql_by_user.Format("select * from user_info where user_number= \'%s\'", usernumber.GetString());
 		AccessResult res;
 		if (SUCCEEDED(accessConnect.select(select_sql_by_user.GetString(), res)))//检测查询成功
 		{
-			if(res.empty()) //查询结果为空
+			if (res.empty()) //查询结果为空
 				AfxMessageBox("用户不存在");
 			else
 			{
@@ -113,69 +107,66 @@ BOOL AddModiUserDialog::OnInitDialog()
 				UpdateData(FALSE);
 				AfxMessageBox("密码为空将不修改密码！");
 			}
-
 		}
 	}
 	AccessResult res;
 	CString select_sql_by_user;
 	//select_sql_by_user.Format("execute user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
-	select_sql_by_user.Format("select * from user_info where user_number= \'%s\'",userNumber);
+	select_sql_by_user.Format("select * from user_info where user_number= \'%s\'", userNumber.GetString());
 	if (SUCCEEDED(accessConnect.select(select_sql_by_user.GetString(), res))) //检测查询成功
 	{
-		if(res.empty()) //查询结果为空
+		if (res.empty()) //查询结果为空
 		{
 			AfxMessageBox("用户不存在");
 		}
 		else
 		{
-			CString strqx= res[0]["user_permission"].c_str();
-			for(int i=0;i<QXNUM;i++)
+			CString strqx = res[0]["user_permission"].c_str();
+			for (int i = 0; i < QXNUM; i++)
 			{
-				if(strqx.Find (65+i)==-1)
+				if (strqx.Find(65 + i) == -1)
 					m_checkcontrol[i].EnableWindow(FALSE);
 			}
-			if(m_check[3])
+			if (m_check[3])
 				m_checkcontrol[3].EnableWindow(FALSE);
-			UpdateData(FALSE);		
+			UpdateData(FALSE);
 		}
-
 	}
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
-
 
 void AddModiUserDialog::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	//获取用户权限
 	UpdateData(TRUE);
-	CString strqx="";
-	for(int i=0;i<QXNUM;i++)
+	CString strqx = "";
+	for (int i = 0; i < QXNUM; i++)
 	{
-		if(!m_check[i]) continue;
+		if (!m_check[i]) continue;
 		CString strcheck;
-		strcheck.Format("%c",65+i);
-		strqx=strqx+strcheck;
+		strcheck.Format("%c", 65 + i);
+		strqx = strqx + strcheck;
 	}
 	MD5 md5;
 	CString user_passwd = m_usernumber + m_userpwd + MD5STR + std::to_string(MachineKey).c_str();
 	md5.update(user_passwd.GetBuffer());
-	user_passwd=md5.toString().c_str();
+	user_passwd = md5.toString().c_str();
 
 	CString sql_command;
 	//select_sql_by_user.Format("execute user_number,user_passwd from userinfo where user_number= \'%s\'",user_number);
-	if(usernumber=="")
+	if (usernumber == "")
 	{
 		//sql_command.Format("insert into region_info (region_index,region_name,region_left,region_right,region_top,region_bottom,region_emissivity)  values(%s,\'%s\',%s,%s,%s,%s,%s)",m_listctrl.GetItemText(i, 0),m_listctrl.GetItemText(i, 1),m_listctrl.GetItemText(i, 2),m_listctrl.GetItemText(i, 3),m_listctrl.GetItemText(i,4),m_listctrl.GetItemText(i,5),m_listctrl.GetItemText(i,6));
 		//sql_command.Format("insert into user_info (user_permission,user_passwd,user_type,user_name,add_datetime) values(\'%s\',\'%s\',\'%s\',\'%s\',current_timestamp)",strqx,user_passwd,m_usertypevalue,m_username);
-		if(m_usernumber=="")
+		if (m_usernumber == "")
 		{
 			AfxMessageBox("用户名不能为空!");
 			return;
 		}
-		sql_command.Format("insert into user_info (user_permission,user_passwd,user_type,user_name,user_number,add_user_number) values(\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')",strqx,user_passwd,m_usertypevalue,m_username,m_usernumber,userNumber);
-		
+		sql_command.Format("insert into user_info (user_permission,user_passwd,user_type,user_name,user_number,add_user_number) values(\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')", strqx.GetString(), user_passwd.GetString(), m_usertypevalue.GetString(), m_username.GetString(), m_usernumber.GetString(), userNumber.GetString());
+
 		if (FAILED(accessConnect.execute(sql_command.GetString())))
 		{
 			AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
@@ -185,18 +176,17 @@ void AddModiUserDialog::OnBnClickedButton1()
 	}
 	else
 	{
-		if(m_userpwd=="")
-			sql_command.Format("update user_info set user_permission=\'%s\',user_type=\'%s\',user_name=\'%s\' where  user_number=\'%s\'",strqx,m_usertypevalue,m_username,m_usernumber);
+		if (m_userpwd == "")
+			sql_command.Format("update user_info set user_permission=\'%s\',user_type=\'%s\',user_name=\'%s\' where  user_number=\'%s\'", strqx.GetString(), m_usertypevalue.GetString(), m_username.GetString(), m_usernumber.GetString());
 		else
-			sql_command.Format("update user_info set user_permission=\'%s\',user_passwd=\'%s\',user_type=\'%s\',user_name=\'%s\' where  user_number=\'%s\'",strqx,user_passwd,m_usertypevalue,m_username,m_usernumber);
-		if(FAILED(accessConnect.execute(sql_command.GetString())))
+			sql_command.Format("update user_info set user_permission=\'%s\',user_passwd=\'%s\',user_type=\'%s\',user_name=\'%s\' where  user_number=\'%s\'", strqx.GetString(), user_passwd.GetString(), m_usertypevalue.GetString(), m_username.GetString(), m_usernumber.GetString());
+		if (FAILED(accessConnect.execute(sql_command.GetString())))
 		{
 			AfxMessageBox(("操作失败: " + accessConnect.getLastError()).c_str());
 			LOG(ERROR) << "修改用户失败" << accessConnect.getLastError();
 			return;
 		}
-		
 	}
 	AfxMessageBox("操作成功!");
-	LOG(INFO)<< "用户操作成功";
+	LOG(INFO) << "用户操作成功";
 }

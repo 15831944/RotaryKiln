@@ -1,4 +1,3 @@
-
 // stdafx.h : 标准系统包含文件的包含文件，
 // 或是经常使用但不常更改的
 // 特定于项目的包含文件
@@ -23,10 +22,7 @@
 #include <afxwin.h>         // MFC 核心组件和标准组件
 #include <afxext.h>         // MFC 扩展
 
-
 #include <afxdisp.h>        // MFC 自动化类
-
-
 
 #ifndef _AFX_NO_OLE_SUPPORT
 #include <afxdtctl.h>           // MFC 对 Internet Explorer 4 公共控件的支持
@@ -37,9 +33,7 @@
 
 #include <afxcontrolbars.h>     // 功能区和控件条的 MFC 支持
 
-
-
-#import "C:\Program Files\Common Files\System\ADO\msado15.dll"  no_namespace  rename ("EOF", "adoEOF")  
+#import "C:\Program Files\Common Files\System\ADO\msado15.dll"  no_namespace  rename ("EOF", "adoEOF")
 
 #include "SQLConnect.hpp"
 extern int MachineKey;
@@ -54,5 +48,3 @@ extern AccessConnection accessConnect;
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
 #endif
-
-

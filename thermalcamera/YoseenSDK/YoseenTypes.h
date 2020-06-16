@@ -11,7 +11,7 @@
 /*
 错误码
 */
-enum YoseenErrorType{
+enum YoseenErrorType {
 	YET_None = 0,					///< 正常
 	YET_Undefined = -1,				///< 未定义
 	YET_NotImplemented = -2,			///< 未实现
@@ -34,7 +34,7 @@ enum YoseenErrorType{
 	//
 	YET_SocketOpen = -100,					///< Socket打开失败
 	YET_SocketConn = -101,					///< Socket连接失败
-	YET_SocketSend = -102,					///< Socket发送失败				
+	YET_SocketSend = -102,					///< Socket发送失败
 	YET_SocketRecv = -103,					///< Socket接收失败
 	YET_SocketData = -104,					///< Socket数据有错
 
@@ -55,7 +55,7 @@ enum YoseenErrorType{
 /*
 设备基本信息
 */
-enum TransformType{
+enum TransformType {
 	TransformType_None = 0,
 	TransformType_Rotate90,
 	TransformType_Rotate180,
@@ -66,7 +66,7 @@ enum TransformType{
 	TransformType_MirrorY,
 };
 
-typedef struct _CameraBasicInfo{
+typedef struct _CameraBasicInfo {
 	char CameraId[32];				///< 序列号
 	char CameraName[32];			///< 名称
 	char CameraType[16];			///< 类型
@@ -103,7 +103,7 @@ typedef struct _CameraBasicInfo{
 /**
 设备网络信息
 */
-typedef struct _CameraNetworkInfo{
+typedef struct _CameraNetworkInfo {
 	bool UseStaticIp;				///< 是否使用静态IP
 	u8 pad;
 	u16 MulticastPort;				///< 组播端口, 未使用
@@ -125,7 +125,7 @@ typedef struct _CameraNetworkInfo{
 /**
 挡板校零信息
 */
-typedef struct _FFCInfo{
+typedef struct _FFCInfo {
 	u8 frames_skipped_after_close;			///< 挡板关闭后忽略帧数
 	u8 frames_accumlated_when_closed;		///< 挡板关闭后累积帧数
 	u8 frames_skipped_after_open;			///< 挡板打开后忽略帧数
@@ -140,7 +140,7 @@ typedef struct _FFCInfo{
 /**
 测温修正信息
 */
-typedef struct _FixInfo{
+typedef struct _FixInfo {
 	float AtmosphericTemperature;		///< 气温
 	float RelativeHumidity;				///< 相对湿度
 	float Visibility;					///< 能见度
@@ -159,7 +159,7 @@ typedef struct _FixInfo{
 /**
 测温对象信息
 */
-typedef struct _MeasureInfo{
+typedef struct _MeasureInfo {
 	s32					MOC;		///< 测温对象数量
 	xxxmeasure_object	MOS[8];		///< 测温对象数组
 }MeasureInfo;
@@ -167,7 +167,7 @@ typedef struct _MeasureInfo{
 /**
 模拟视频信息
 */
-enum XuiDisplayFlags{
+enum XuiDisplayFlags {
 	XDF_Palette = 0x0001,				///< 显示调色板
 	XDF_TrackHigh = 0x0002,				///< 显示高温追踪
 	XDF_TrackLow = 0x0004,				///< 显示低温追踪
@@ -177,7 +177,7 @@ enum XuiDisplayFlags{
 	XDF_NoLocalMeasures = 0x0020,		///< 不显示局部测温对象
 };
 
-typedef struct _TvoutInfo{
+typedef struct _TvoutInfo {
 	bool				EnableTvout;		///< 是否开启模拟视频
 	u8					PaletteType;		///< 调色板类型
 	u8					pad;
@@ -201,7 +201,7 @@ typedef struct _TvoutInfo{
 /**
 串口信息
 */
-typedef struct _SerialPortInfo{
+typedef struct _SerialPortInfo {
 	u8 Usage;					///< 用法
 	u8 PortAddr;				///< 串口地址
 	u8 BaudRate;				///< 波特率
@@ -214,7 +214,7 @@ typedef struct _SerialPortInfo{
 /**
 GPIO信息
 */
-typedef struct _GpioInfo{
+typedef struct _GpioInfo {
 	u8 Input0;		///< 输入0
 	u8 Input1;		///< 输入1
 	u8 Output0;		///< 输出0
@@ -225,7 +225,7 @@ typedef struct _GpioInfo{
 /**
 设备时间信息
 */
-typedef struct _CameraTimeInfo{
+typedef struct _CameraTimeInfo {
 	char	NtpServer[32];			///< 主NTP服务器
 	char	NtpServer2[32];			///< 次NTP服务器
 	char	TimeZone[32];			///< 时区
@@ -235,7 +235,7 @@ typedef struct _CameraTimeInfo{
 /*
 设备OSD信息
 */
-typedef struct _CameraOSDInfo{
+typedef struct _CameraOSDInfo {
 	u16 X1;				///< 坐标X1
 	u16 Y1;				///< 坐标Y1
 	char Text1[64];		///< 文本1, utf-8编码
@@ -253,11 +253,10 @@ typedef struct _CameraOSDInfo{
 	char Text4[64];		///< 文本4
 }CameraOSDInfo;
 
-
 /*
 温度帧头
 */
-typedef struct _DataFrameHeader{
+typedef struct _DataFrameHeader {
 	u16 Width;						///< 宽度
 	u16 Height;						///< 高度
 	u32 ComSize;					///< 压缩大小
@@ -287,13 +286,12 @@ typedef struct _DataFrameHeader{
 /**
 控制类型
 */
-enum CtlType{
-	CtlType_Debug = 0,				///< 
-	CtlType_ChangeDataType,			///< 
-	CtlType_MoveShutter,				///< 
-	CtlType_StoreFactory,				///< 
+enum CtlType {
+	CtlType_Debug = 0,				///<
+	CtlType_ChangeDataType,			///<
+	CtlType_MoveShutter,				///<
+	CtlType_StoreFactory,				///<
 	CtlType_RestartCamera,			///< 重启设备
-
 
 	CtlType_ManualFFC = 32,			///< 手动挡板校零
 	CtlType_RestoreFactory,			///< 恢复出厂配置
@@ -307,7 +305,7 @@ enum CtlType{
 /**
 控制
 */
-typedef struct _Ctl{
+typedef struct _Ctl {
 	u16 Type;					///< 类型
 	union {
 		u8 reserved[8];				///< 联合体大小
@@ -324,7 +322,7 @@ typedef struct _Ctl{
 /**
 控制X类型
 */
-enum CtlXType{
+enum CtlXType {
 	CtlXType_GetTime = 0,	///< 获取设备时间, UTC
 	CtlXType_SetTime,		///< 设置设备仪时间, UTC
 	CtlXType_GetGear,		///< 获取测温档位
@@ -343,7 +341,7 @@ enum CtlXType{
 /**
 控制操作
 */
-typedef struct _CtlX{
+typedef struct _CtlX {
 	s32 Type;						///< 类型
 	union {
 		u8				Reserved[64];
@@ -361,17 +359,16 @@ typedef struct _CtlX{
 /**
 发现热像仪响应2
 */
-typedef struct _DiscoverCameraResp2{
+typedef struct _DiscoverCameraResp2 {
 	CameraBasicInfo BasicInfo;				///< 基本信息
 	u32 CameraIp;							///< 设备IP
 	struct _DiscoverCameraResp2* pNext;		///< 下一条响应
 }DiscoverCameraResp2;
 
-
 /*
 登入信息
 */
-typedef struct _YoseenLoginInfo{
+typedef struct _YoseenLoginInfo {
 	char CameraAddr[128];			///< 设备地址
 	char Username[32];				///< 用户名
 	char Password[32];				///< 密码
@@ -380,7 +377,7 @@ typedef struct _YoseenLoginInfo{
 /*
 H264起始帧
 */
-typedef struct _H264FrameStart{
+typedef struct _H264FrameStart {
 	u32 EncDataSize;				///< 编码器数据大小
 	u16 Width;						///< 数据宽度
 	u16 Height;						///< 数据高度
@@ -395,7 +392,7 @@ typedef struct _H264FrameStart{
 /*
 H264帧测温结果
 */
-typedef struct _H264_MeasureResult{
+typedef struct _H264_MeasureResult {
 	s8	Index;				//序号; 0:全局测温结果; 1:中心测温结果; [2-9]:局部测温结果; x无效测温结果
 	s8	Pad[3];				//
 
@@ -412,7 +409,7 @@ typedef struct _H264_MeasureResult{
 /*
 H264帧头
 */
-typedef struct _H264FrameHeader{
+typedef struct _H264FrameHeader {
 	s32 Size;						//帧大小
 	u16 Width;						//数据宽度
 	u16 Height;						//数据高度
@@ -430,7 +427,7 @@ typedef struct _H264FrameHeader{
 /*
 数据帧
 */
-typedef struct _DataFrame{
+typedef struct _DataFrame {
 	void* Head;					///< 温度数据帧头
 	void* Temp;					///< 温度数据
 	void* Com;					///< 温度数据压缩
@@ -445,12 +442,12 @@ typedef struct _DataFrame{
 @param dataFrame 数据帧
 @param customData 用户数据
 */
-typedef void(__stdcall *YoseenPreviewCallback)(s32 errorCode, DataFrame* dataFrame, void* customData);
+typedef void(__stdcall* YoseenPreviewCallback)(s32 errorCode, DataFrame* dataFrame, void* customData);
 
 /*
 预览信息
 */
-typedef struct _YoseenPreviewInfo{
+typedef struct _YoseenPreviewInfo {
 	s32 DataType;							///< xxxdatatype_video 视频流, xxxdatatype_temp 温度流
 	void* Hwnd;									///< 显示窗口句柄, 可以为空
 	YoseenPreviewCallback CustomCallback;		///< 预览回调
@@ -463,7 +460,7 @@ typedef struct _YoseenPreviewInfo{
 	u16 OutputHeight;							///< 显示画面高度
 }YoseenPreviewInfo;
 
-typedef struct _YoseenRtspInfo{
+typedef struct _YoseenRtspInfo {
 	char Url[256];
 
 	u16 CropX;
@@ -479,7 +476,7 @@ typedef struct _YoseenRtspInfo{
 /**
 温度转位图算法配置修改标志
 */
-enum StrechControlFlags{
+enum StrechControlFlags {
 	SCF_StrechType = 0x0001,	///< 算法类型
 	SCF_Contrast = 0x0002,		///< 对比度
 	SCF_Brightness = 0x0004,	///< 亮度
@@ -492,7 +489,7 @@ enum StrechControlFlags{
 /**
 温度转位图算法类型
 */
-enum StrechType{
+enum StrechType {
 	StrechType_PHE = 1,			///< PHE
 	StrechType_LINEAR,			///< LINEAR
 };
@@ -500,7 +497,7 @@ enum StrechType{
 /**
 温度转位图算法配置
 */
-typedef struct _strech_control{
+typedef struct _strech_control {
 	s32 flags;						///< 标志
 
 	u8 strech_type;					///< 算法类型

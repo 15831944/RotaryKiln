@@ -7,10 +7,10 @@
  *
  *
  *	This code may be used for any non-commercial and commercial purposes in a compiled form.
- *	The code may be redistributed as long as it remains unmodified and providing that the 
- *	author name and this disclaimer remain intact. The sources can be modified WITH the author 
+ *	The code may be redistributed as long as it remains unmodified and providing that the
+ *	author name and this disclaimer remain intact. The sources can be modified WITH the author
  *	consent only.
- *	
+ *
  *	This code is provided without any garanties. I cannot be held responsible for the damage or
  *	the loss of time it causes. Use it at your own risks
  *
@@ -24,8 +24,8 @@
 #include "ChartCtrl.h"
 
 CChartDragLineCursor::CChartDragLineCursor(CChartCtrl* pParent,
-										   CChartAxis* pRelatedAxis)
-  : CChartCursor(pParent), m_pRelatedAxis(pRelatedAxis), m_lPosition(0),
+	CChartAxis* pRelatedAxis)
+	: CChartCursor(pParent), m_pRelatedAxis(pRelatedAxis), m_lPosition(0),
 	m_bDragged(false)
 {
 }
@@ -36,7 +36,7 @@ CChartDragLineCursor::~CChartDragLineCursor()
 
 void CChartDragLineCursor::Draw(CDC* pDC)
 {
-	CPen NewPen(PS_SOLID,1,m_colCursor);
+	CPen NewPen(PS_SOLID, 1, m_colCursor);
 	CPen* pOldPen = pDC->SelectObject(&NewPen);
 
 	CRect plottingRect = m_pParentCtrl->GetPlottingRect();
@@ -46,7 +46,7 @@ void CChartDragLineCursor::Draw(CDC* pDC)
 		pDC->MoveTo(m_lPosition, plottingRect.top);
 		pDC->LineTo(m_lPosition, plottingRect.bottom);
 	}
-	else 
+	else
 	{
 		pDC->MoveTo(plottingRect.left, m_lPosition);
 		pDC->LineTo(plottingRect.right, m_lPosition);
@@ -56,23 +56,23 @@ void CChartDragLineCursor::Draw(CDC* pDC)
 	NewPen.DeleteObject();
 }
 
-void CChartDragLineCursor::OnMouseButtonDown(CPoint mousePoint)  
-{ 
+void CChartDragLineCursor::OnMouseButtonDown(CPoint mousePoint)
+{
 	long position = 0;
 	if (m_pRelatedAxis->IsHorizontal())
 		position = mousePoint.x;
 	else
 		position = mousePoint.y;
 
-	if ( (position >= m_lPosition-3) && 
-		 (position <= m_lPosition+3) )
+	if ((position >= m_lPosition - 3) &&
+		(position <= m_lPosition + 3))
 	{
 		m_bDragged = true;
 	}
 }
 
-void CChartDragLineCursor::OnMouseButtonUp(CPoint /*mousePoint*/)    
-{ 
+void CChartDragLineCursor::OnMouseButtonUp(CPoint /*mousePoint*/)
+{
 	m_bDragged = false;
 }
 

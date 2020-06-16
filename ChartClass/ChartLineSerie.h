@@ -7,10 +7,10 @@
  *
  *
  *	This code may be used for any non-commercial and commercial purposes in a compiled form.
- *	The code may be redistributed as long as it remains unmodified and providing that the 
- *	author name and this disclaimer remain intact. The sources can be modified WITH the author 
+ *	The code may be redistributed as long as it remains unmodified and providing that the
+ *	author name and this disclaimer remain intact. The sources can be modified WITH the author
  *	consent only.
- *	
+ *
  *	This code is provided without any garanties. I cannot be held responsible for the damage or
  *	the loss of time it causes. Use it at your own risks
  *
@@ -28,19 +28,19 @@
 
 #include "ChartXYSerie.h"
 
-//! Specialization of a CChartSerie to display a line series.
-/**
-	The data points are connected by line segments. The curve can also
-	be smoothed.
-**/
-class CChartLineSerie : public CChartXYSerie  
+ //! Specialization of a CChartSerie to display a line series.
+ /**
+	 The data points are connected by line segments. The curve can also
+	 be smoothed.
+ **/
+class CChartLineSerie : public CChartXYSerie
 {
 public:
 	//! Returns the pen style (plain, dashed, dotted, ...)
 	/**
 		For a list of pen styles available, see the CreatePen function in MSDN.
 	**/
-	int  GetPenStyle() const        { return m_iPenStyle; }
+	int  GetPenStyle() const { return m_iPenStyle; }
 	//! Sets the pen style (plain, dashed, dotted, ...)
 	/**
 		For a list of pen styles available, see the CreatePen function in MSDN.
@@ -48,7 +48,7 @@ public:
 	void SetPenStyle(int NewStyle);
 
 	//! Returns the pen width
-	int	 GetWidth() const       { return m_iLineWidth; }
+	int	 GetWidth() const { return m_iLineWidth; }
 	//! Sets the pen width
 	void SetWidth(int PenWidth);
 	//! Enables the smoothing of the curve (slower).
@@ -63,7 +63,7 @@ public:
 	/**
 		This function returns true if the screen point is close to a line segment.
 		If the screen point is also close to a specific point of the series, the
-		index of the point is stored in the uIndex parameter. Otherwise, this 
+		index of the point is stored in the uIndex parameter. Otherwise, this
 		parameter contains INVALID_POINT.
 		@param screenPoint
 			The screen point to test
@@ -81,11 +81,11 @@ private:
 		@param rectBitmap
 			The rectangle in which to draw the legend icon
 	**/
-    void DrawLegend(CDC* pDC, const CRect& rectBitmap) const;
+	void DrawLegend(CDC* pDC, const CRect& rectBitmap) const;
 
 	//! Draws the most recent points of the series.
 	/**
-		This function should only draw the points that were not previously 
+		This function should only draw the points that were not previously
 		drawn.
 		@param pDC
 			The device context used to draw
@@ -96,12 +96,11 @@ private:
 		@param pDC
 			The device context used to draw
 	**/
-	void DrawAll(CDC *pDC);
+	void DrawAll(CDC* pDC);
 
 	//! Checks whether a point is close to a line segment
-	bool IsNearLine(long Axl, long Ayl,long Bxl, 
-					long Byl, long Cxl, long Cyl) const;
-
+	bool IsNearLine(long Axl, long Ayl, long Bxl,
+		long Byl, long Cxl, long Cyl) const;
 
 	//! The pen width
 	int m_iLineWidth;
