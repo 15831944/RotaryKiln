@@ -614,6 +614,8 @@ BOOL C»Ø×ªÒ¤App::InitInstance()
 		cfg.ReadFile("application.cfg");
 		accessConnect.setLogger(cfg.Read<std::string>("AccessLog", "logs/access.log"));
 		dbFile = cfg.Read<std::string>("DatabasePath", "db/RotaryKiln.accdb");
+		cfg.Add("AccessLog", "logs/access.log");
+		cfg.Add("DatabasePath", dbFile);
 	}
 	catch (Config::File_not_found e)
 	{

@@ -22,11 +22,11 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputBaseFilename=RotaryKilnSetup
-SetupIconFile=E:\Visual Studio Application\回转窑\Package\RotaryKiln\Setup.ico
+SetupIconFile=E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\Setup.ico
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=admin      
-InfoAfterFile=E:\Visual Studio Application\回转窑\Package\RotaryKiln\注意.txt
+InfoAfterFile=E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\注意.txt
 
 [Languages]
 Name: "chinesesimp"; MessagesFile: "compiler:Default.isl"
@@ -35,35 +35,35 @@ Name: "chinesesimp"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\RotaryKiln.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\api-ms-win-core-libraryloader-l1-2-0.dll"; DestDir: "{app}"; Flags: ignoreversion       
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\api-ms-win-crt-runtime-l1-1-0.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\MachineRegistrationClient.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\mfc140.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\msvcp120.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\msvcp140.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\msvcp140d.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\msvcr100.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\msvcr120.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\opencv_core2411.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\opencv_highgui2411.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\opencv_imgproc2411.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\pthreadGC2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\vcruntime140d.dll"; DestDir: "{app}"; Flags: ignoreversion   
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\YoseenFfmpeg.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\YoseenSDK.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\oledb32.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\sqloledb.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\region.dat"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\opcdata"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\vc_redist.x86.exe"; DestDir: "{app}"; Flags: ignoreversion    
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\AccessDatabaseEngine 2010.exe"; DestDir: "{app}"; Flags: ignoreversion 
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\Engine_install.bat"; DestDir: "{app}"; Flags: ignoreversion 
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\Engine_install_passive.bat"; DestDir: "{app}"; Flags: ignoreversion 
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\注意.txt"; DestDir: "{app}"; Flags: ignoreversion     
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\db"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs    
-Source: "E:\Visual Studio Application\回转窑\Package\RotaryKiln\db\RotaryKiln.accdb"; DestDir: "{app}\db"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\RotaryKiln.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\api-ms-win-core-libraryloader-l1-2-0.dll"; DestDir: "{app}"; Flags: ignoreversion       
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\api-ms-win-crt-runtime-l1-1-0.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\MachineRegistrationClient.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\mfc140.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\msvcp120.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\msvcp140.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\msvcp140d.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\msvcr100.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\msvcr120.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\opencv_core2411.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\opencv_highgui2411.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\opencv_imgproc2411.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\pthreadGC2.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\vcruntime140d.dll"; DestDir: "{app}"; Flags: ignoreversion   
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\YoseenFfmpeg.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\YoseenSDK.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\oledb32.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\sqloledb.dll"; DestDir: "{app}"; Flags: ignoreversion       
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\region.dat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\回转窑RotaryKiln安装激活步骤.pdf"; DestDir: "{app}"; Flags: ignoreversion     
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\opcdata"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\vc_redist.x86.exe"; DestDir: "{app}"; Flags: ignoreversion    
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\AccessDatabaseEngine 2010.exe"; DestDir: "{app}"; Flags: ignoreversion 
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\Engine_install.bat"; DestDir: "{app}"; Flags: ignoreversion 
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\Engine_install_passive.bat"; DestDir: "{app}"; Flags: ignoreversion 
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\db"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs    
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\db\RotaryKiln.accdb"; DestDir: "{app}\db"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; 注意: 不要在任何共享系统文件上使用“Flags: ignoreversion”
 
 [Icons]
