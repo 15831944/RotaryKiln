@@ -35,7 +35,7 @@ Name: "chinesesimp"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\RotaryKiln.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\Visual Studio Application\RotaryKiln\Release\RotaryKiln.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\api-ms-win-core-libraryloader-l1-2-0.dll"; DestDir: "{app}"; Flags: ignoreversion       
 Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\api-ms-win-crt-runtime-l1-1-0.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\MachineRegistrationClient.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -61,8 +61,7 @@ Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\opcdata"; De
 Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\vc_redist.x86.exe"; DestDir: "{app}"; Flags: ignoreversion    
 Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\AccessDatabaseEngine 2010.exe"; DestDir: "{app}"; Flags: ignoreversion 
 Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\Engine_install.bat"; DestDir: "{app}"; Flags: ignoreversion 
-Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\Engine_install_passive.bat"; DestDir: "{app}"; Flags: ignoreversion 
-Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\db"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs    
+Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\Engine_install_passive.bat"; DestDir: "{app}"; Flags: ignoreversion  
 Source: "E:\Visual Studio Application\RotaryKiln\Package\RotaryKiln\db\RotaryKiln.accdb"; DestDir: "{app}\db"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; 注意: 不要在任何共享系统文件上使用“Flags: ignoreversion”
 

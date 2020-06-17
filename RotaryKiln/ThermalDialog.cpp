@@ -361,6 +361,15 @@ void CThermalDialog::OnSave(int type)
 	imag.Create(rect.Width(), rect.Height(), 32);
 	::BitBlt(imag.GetDC(), 0, 0, rect.Width(), rect.Height(), pdc->m_hDC, 0, 0, SRCCOPY);
 	CTime tm = CTime::GetCurrentTime();
+	static CTime lastTime = 0;
+	if (type == 1)
+	{
+		if (tm - lastTime > CTimeSpan(0, 0, 5, 0))
+			lastTime = tm;
+		else// 小于5分钟不截图
+			return;
+	}
+
 	CString strpicturename, strPath;
 	if (0 == type)
 		strPath = "热像仪抓图";

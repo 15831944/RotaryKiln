@@ -435,6 +435,7 @@ DWORD WINAPI   ThreadVideoProc(LPVOID lpParameter)
 			//显示默认区域和温度
 			areavessel.onDraw();
 			//热像仪报警保存
+
 			for (int i = 0; i < areavessel.defaultAreaNum; i++)
 			{
 				if (areavessel.areaVector[i].AlarmInfo.alarmlevel != NormalLevel)
