@@ -28,4 +28,6 @@ public:
 protected:
 
 	int regKeyValue = -1;
+public:
+	afx_msg void OnBnClickedBtntry();
 };

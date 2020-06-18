@@ -28,6 +28,7 @@ void MachineRegisterDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(MachineRegisterDialog, CDialogEx)
 	ON_BN_CLICKED(IDOK, &MachineRegisterDialog::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_BTNTRY, &MachineRegisterDialog::OnBnClickedBtntry)
 END_MESSAGE_MAP()
 
 // MachineRegisterDialog 消息处理程序
@@ -62,6 +63,13 @@ void MachineRegisterDialog::OnBnClickedOk()
 	CDialogEx::OnOK();
 }
 
+void MachineRegisterDialog::OnBnClickedBtntry()
+{
+	regKeyValue = -(rand() % 0xffff + 5);
+	TryCode = regKeyValue;
+	CDialogEx::OnOK();
+}
+
 int VerifyMachineDialog()
 {
 	try
@@ -80,3 +88,4 @@ int VerifyMachineDialog()
 		return dlg.regKeyValue;
 	}
 }
+

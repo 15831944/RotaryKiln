@@ -179,7 +179,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 	}
 
-	SetTimer(1, 1000, NULL);
+	SetTimer(TIMER_REDRAW_STATUS, 1000, NULL);
+
+	if (MachineKey == TryCode)
+		SetTimer(TIMER_TRY_CLOSE, 18000000, NULL);
 
 	CMenu* pMenu = GetSystemMenu(false);
 	UINT nID = pMenu->GetMenuItemID(pMenu->GetMenuItemCount() - 1);
@@ -433,9 +436,25 @@ void CMainFrame::ThermalSet()
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
-	CMainFrame* pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;//要求包含MainFrm.h头文件
-	pFrame->m_wndStatusBar.SetPaneText(0, "用户名：" + userNumber);
-	CFrameWndEx::OnTimer(nIDEvent);
+	switch (nIDEvent)
+	{
+	case TIMER_REDRAW_STATUS:
+	{
+		CMainFrame* pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;//要求包含MainFrm.h头文件
+		pFrame->m_wndStatusBar.SetPaneText(0, "用户名：" + userNumber);
+		break;
+	}
+	case TIMER_TRY_CLOSE:
+		HermalShowFlag = false;
+		KillTimer(TIMER_TRY_CLOSE);
+		KillTimer(TIMER_REDRAW_STATUS);
+		AfxMessageBox("试用结束，软件即将关闭");
+		::SendMessage(AfxGetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);
+		break;
+	default:
+		CFrameWndEx::OnTimer(nIDEvent);
+		break;
+	}
 }
 
 void CMainFrame::OnChangeUser()

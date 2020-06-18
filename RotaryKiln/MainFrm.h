@@ -41,6 +41,13 @@ public:  // 控件条嵌入成员
 	CDockableDlgCurve m_dockabledlgcurve;
 	CThermalSetDialog* m_theralsetdialog;
 
+protected:
+	enum{
+		TIMER_REDRAW_STATUS = 1000
+		, TIMER_TRY_CLOSE
+	};
+
+
 	// 生成的消息映射函数
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

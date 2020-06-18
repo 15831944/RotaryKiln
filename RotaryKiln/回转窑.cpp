@@ -254,7 +254,7 @@ DWORD WINAPI   ThreadSignProc(LPVOID lpParameter)
 	SignFlag = true;
 	return 0;
 }
-DWORD WINAPI   ThreadVideoProc(LPVOID lpParameter)
+DWORD WINAPI ThreadVideoProc(LPVOID lpParameter)
 {
 	//HWND hwnd = (HWND)lpParameter;
 	////连接信号设备
@@ -275,6 +275,7 @@ DWORD WINAPI   ThreadVideoProc(LPVOID lpParameter)
 	s32 userHandle;
 	//strcpy(loginInfo.CameraAddr,"192.168.1.103");
 	s32 previewHandle = Camera_login(loginInfo, cameraBasicInfo, userHandle);
+
 	if (previewHandle < 0)
 	{
 		AfxMessageBox("连接热像仪失败！");
@@ -584,7 +585,14 @@ BOOL C回转窑App::InitInstance()
 		MessageBox(nullptr, "注册码错误", "验证失败", MB_OK);
 		return FALSE;
 	}
-
+	else if (MachineKey == TryCode)
+	{
+	}
+	else if (MachineKey < 0)
+	{
+		MessageBox(nullptr, "未知错误", "验证失败", MB_OK | MB_ICONSTOP);
+		return FALSE;
+	}
 	InitContextMenuManager();
 
 	InitKeyboardManager();

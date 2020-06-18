@@ -37,6 +37,7 @@
 
 #include "SQLConnect.hpp"
 extern int MachineKey;
+extern int TryCode;
 extern AccessConnection accessConnect;
 
 #ifdef _UNICODE

@@ -7,3 +7,4 @@
 AccessConnection accessConnect;
 
 int MachineKey = 0;
+int TryCode = 0;

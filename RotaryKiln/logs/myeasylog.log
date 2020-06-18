@@ -14,3 +14,5 @@
 11/10/2019 21:41:01.359 ERROR login:Lost connection to MySQL server at 'reading initial communication packet', system error: 0
 05/06/2020 11:04:59.875 ERROR login:Access denied for user 'root'@'localhost' (using password: YES)
 13/06/2020 18:04:51.359 ERROR login:
+18/06/2020 10:34:52.921 ERROR login:[ErrorMessage:Unknown error 0x800A0E7A, Source:ADODB.Connection, Description:未找到提供程序。该程序可能未正确安装。]
+18/06/2020 10:36:56.921 ERROR login:[ErrorMessage:未指定的错误, Source:Microsoft Access Database Engine, Description:“E:\Visual Studio Application\RotaryKiln\RotaryKiln\db\RotaryKiln.accdb”不是一个有效的路径。确定路径名称拼写是否正确，以及是否连接到文件存放的服务器。]

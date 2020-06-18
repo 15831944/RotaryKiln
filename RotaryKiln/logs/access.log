@@ -85,3 +85,15 @@
 2020-6-16 11:02:02  [ERROR]  SQL:update sys_para set para0='niho',para1='0.0.0.0', para2='' ,  para3='' , para4='' where para_name='thermalequipment' Failure.ErrorCode: 80004005, Message:未指定的错误, Source:Microsoft Access Database Engine, Description:字段 'sys_para.para2' 不能是零长度的字符串。
 2020-6-16 11:07:59  [INFO]  Open RotaryKiln.accdb
 2020-6-16 11:08:29  [INFO]  Open RotaryKiln.accdb
+2020-6-18 10:34:40  [INFO]  Open db/RotaryKiln.accdb
+2020-6-18 10:34:41  [ERROR]  Open db/RotaryKiln.accdb[ErrorMessage:Unknown error 0x800A0E7A, Source:ADODB.Connection, Description:未找到提供程序。该程序可能未正确安装。]
+2020-6-18 10:36:53  [INFO]  Open db/RotaryKiln.accdb
+2020-6-18 10:36:53  [ERROR]  Open db/RotaryKiln.accdb[ErrorMessage:未指定的错误, Source:Microsoft Access Database Engine, Description:“E:\Visual Studio Application\RotaryKiln\RotaryKiln\db\RotaryKiln.accdb”不是一个有效的路径。确定路径名称拼写是否正确，以及是否连接到文件存放的服务器。]
+2020-6-18 10:37:09  [INFO]  Open db/RotaryKiln.accdb
+2020-6-18 10:38:30  [INFO]  Open db/RotaryKiln.accdb
+2020-6-18 10:48:39  [INFO]  Open db/RotaryKiln.accdb
+2020-6-18 10:58:38  [INFO]  Open db/RotaryKiln.accdb
+2020-6-18 10:59:34  [INFO]  Open db/RotaryKiln.accdb
+2020-6-18 11:03:12  [INFO]  Open db/RotaryKiln.accdb
+2020-6-18 11:04:26  [INFO]  Open db/RotaryKiln.accdb
+2020-6-18 11:05:55  [INFO]  Open db/RotaryKiln.accdb
