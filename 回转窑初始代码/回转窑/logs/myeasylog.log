@@ -1,0 +1,14 @@
+20/08/2019 08:03:25.531 ERROR login:Lost connection to MySQL server at 'reading authorization packet', system error: 2
+21/08/2019 10:01:27.734 ERROR login:Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+06/09/2019 18:42:37.140 ERROR login:Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+13/09/2019 15:04:48.546 ERROR login:Can't connect to MySQL server on 'localhost' (10061)
+13/09/2019 15:05:16.078 ERROR login:Can't connect to MySQL server on 'localhost' (10061)
+13/09/2019 15:05:35.359 ERROR login:Can't connect to MySQL server on 'localhost' (10061)
+14/09/2019 13:47:14.750 ERROR login:Can't connect to MySQL server on 'localhost' (10061)
+14/09/2019 13:47:31.296 ERROR login:Can't connect to MySQL server on 'localhost' (10061)
+15/09/2019 08:43:26.562 ERROR login:Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+16/09/2019 10:34:21.890 ERROR login:Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+18/09/2019 17:52:01.312 ERROR login:Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+24/09/2019 10:25:09.390 ERROR login:Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+27/09/2019 08:08:09.875 ERROR login:Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+11/10/2019 21:41:01.359 ERROR login:Lost connection to MySQL server at 'reading initial communication packet', system error: 0
