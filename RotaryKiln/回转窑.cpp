@@ -187,8 +187,8 @@ int ConnectSign(CSocket& mysocket)
 	}
 	if (!mysocket.Connect(IP, atoi(Port))) //连接服务器
 	{
-		AfxMessageBox("连接服务器失败!");
-		LOG(ERROR) << "连接服务器失败";
+		AfxMessageBox("连接服务器失败! IP:" + IP + " Port:" + Port);
+		LOG(ERROR) << "连接服务器失败! IP:" + IP + " Port:" + Port;
 		return 0;
 	}
 	return 1;
@@ -544,6 +544,8 @@ BOOL C回转窑App::InitInstance()
 	InitCommonControlsEx(&InitCtrls);
 
 	CWinAppEx::InitInstance();
+
+	AfxSocketInit(); // 初始化Socket
 
 	// 初始化 OLE 库
 	if (!AfxOleInit())
