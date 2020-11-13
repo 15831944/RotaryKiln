@@ -50,10 +50,16 @@ void AddThermalDialog::OnBnClickedButton1()
 	CString strIP;
 	pIP = (unsigned char*)&m_ip;
 	strIP.Format("%u.%u.%u.%u", *(pIP + 3), *(pIP + 2), *(pIP + 1), *pIP);
-	sql_command.Format("update sys_para set para0=\'%s\',para1=\'%s\', para2=\'%s\' ,  para3=\'%s\' , para4=\'%s\' where para_name='thermalequipment'", m_thermalname, strIP, m_port, m_name, m_psd);
+	sql_command.Format(R"(update sys_para set para0='%s',para1='%s', para2='%s' ,  para3='%s' , para4='%s' where para_name='thermalequipment')", m_thermalname, strIP, m_port, m_name, m_psd);
 
 	if (SUCCEEDED(accessConnect.execute(sql_command.GetString())))
+	{
+		LOG_INFO("设置热像仪成功 ", m_thermalname.GetString(), "[", strIP.GetString(), ":", m_port, "]{", m_name, ":", m_psd, "}");
 		AfxMessageBox("添加成功！");
+	}
 	else
+	{
+		LOG_ERROR("设置热像仪失败 ", m_thermalname.GetString(), "[", strIP.GetString(), ":", m_port, "]{", m_name, ":", m_psd, "}");
 		AfxMessageBox("添加失败！");
+	}
 }

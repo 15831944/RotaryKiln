@@ -6,5 +6,7 @@
 
 AccessConnection accessConnect;
 
+thatboy::logger::FileLogger logger{ "running.log" };
+
 int MachineKey = 0;
 int TryCode = 0;
